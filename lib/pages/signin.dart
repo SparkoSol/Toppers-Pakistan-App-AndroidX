@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:topperspakistan/models/customer_model.dart';
 import 'package:topperspakistan/models/local-data.dart';
 import 'package:topperspakistan/pages/first.dart';
 import 'package:topperspakistan/pages/forgot-password.dart';
 import 'package:topperspakistan/pages/loading.dart';
 import 'package:topperspakistan/services/customer_service.dart';
+
+import '../firebase_auth.dart';
 
 class Signin extends StatefulWidget {
   final _service = CustomerService();
@@ -39,7 +42,7 @@ class _SigninState extends State<Signin> {
         });
         _showErrorDialog();
       } else {
-        LocalData.currentCustomer = signedCustomer;
+        LocalData.setProfile(signedCustomer);
         setState(() {
           loading = false;
         });
@@ -204,6 +207,176 @@ class _SigninState extends State<Signin> {
                       fontWeight: FontWeight.w400,
                     ),
                   ),
+                ),
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              SizedBox(
+                child: ButtonTheme(
+                  minWidth: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height / 15,
+                  child: RaisedButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(28.0),
+                      ),
+                      color: Color(0xffBC282B),
+                      child: Text(
+                        "Sign in with Google",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      onPressed: () async {
+                        FirebaseAuthentication.googleAuth((user) async {
+                          if (user == null) {
+                            await GoogleSignIn().disconnect();
+                            await GoogleSignIn().signOut();
+                            print("Issue while signing in with google");
+                            showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                      title: Text("Error"),
+                                      content: Text(
+                                          "Error Occurred while signing-in"),
+                                      actions: <Widget>[
+                                        FlatButton(
+                                            child: Text("Ok"),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            })
+                                      ],
+                                    ));
+                          } else {
+                            setState(() {
+                              loading = true;
+                            });
+                            CustomerModel customerModel = new CustomerModel();
+                            customerModel.name = user.displayName;
+                            customerModel.email = user.email;
+                            customerModel.password = "12345678";
+
+                            var prof =
+                                await widget._service.login(customerModel);
+                            if (prof != null) {
+                              print(prof.email);
+                              if (prof.email == null) {
+                                print("no sign in prof");
+                                setState(() {
+                                  loading = false;
+                                });
+                                await GoogleSignIn().disconnect();
+                                await GoogleSignIn().signOut();
+                                _showErrorDialog();
+                              } else {
+                                print("sign in");
+                                LocalData.setProfile(prof);
+                                setState(() {
+                                  loading = false;
+                                });
+
+                                print(LocalData.currentCustomer.name);
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => First()));
+                              }
+                            } else {
+                              print("no sign in");
+                              setState(() {
+                                loading = false;
+                              });
+                              await GoogleSignIn().disconnect();
+                              await GoogleSignIn().signOut();
+                              _showErrorDialog();
+                            }
+                          }
+                        });
+                      }),
+                ),
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              SizedBox(
+                child: ButtonTheme(
+                  minWidth: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height / 15,
+                  child: RaisedButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(28.0),
+                      ),
+                      color: Color(0xffBC282B),
+                      child: Text(
+                        "Sign in with Facebook",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      onPressed: () async {
+                        FirebaseAuthentication.facebookAuth((user) async {
+                          if (user == null) {
+                            print("Issue while signing in with fb");
+                            showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                      title: Text("Error"),
+                                      content: Text(
+                                          "Error Occurred while signing-in"),
+                                      actions: <Widget>[
+                                        FlatButton(
+                                            child: Text("Ok"),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            })
+                                      ],
+                                    ));
+                          } else {
+                            setState(() {
+                              loading = true;
+                            });
+                            CustomerModel customerModel = new CustomerModel();
+                            customerModel.name = user.displayName;
+                            customerModel.email = user.email;
+                            customerModel.password = "12345678";
+
+                            var prof =
+                                await widget._service.login(customerModel);
+                            if (prof != null) {
+                              print(prof.email);
+                              if (prof.email == null) {
+                                print("no sign in prof");
+                                setState(() {
+                                  loading = false;
+                                });
+                                _showErrorDialog();
+                              } else {
+                                print("sign in");
+                                LocalData.setProfile(prof);
+                                setState(() {
+                                  loading = false;
+                                });
+
+                                print(LocalData.currentCustomer.name);
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => First()));
+                              }
+                            } else {
+                              print("no sign in");
+                              setState(() {
+                                loading = false;
+                              });
+                              _showErrorDialog();
+                            }
+                          }
+                        });
+                      }),
                 ),
               ),
             ],

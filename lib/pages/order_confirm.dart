@@ -36,7 +36,7 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder(
+      body: FutureBuilder<List<UnitModel>>(
         future: widget._service.fetchAllById(widget.product.unitId),
         builder: (context, AsyncSnapshot<List<UnitModel>> snapshot) {
           if (snapshot.hasData) {

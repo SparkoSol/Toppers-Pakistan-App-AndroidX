@@ -173,7 +173,7 @@ class _FirstState extends State<First> {
                   height: 10,
                 ),
                 Expanded(
-                  child: FutureBuilder(
+                  child: FutureBuilder<List<CategoryModel>>(
                     future: _service.fetchAll(),
                     builder:
                         (context, AsyncSnapshot<List<CategoryModel>> snapshot) {

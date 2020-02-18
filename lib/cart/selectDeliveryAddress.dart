@@ -130,7 +130,7 @@ class _SelectDeliveryAddressState extends State<SelectDeliveryAddress> {
             ),
           ),
           Expanded(
-            child: SimpleFutureBuilder.simpler(
+            child: SimpleFutureBuilder<List<AddressModel>>.simpler(
               future: _service.fetchAllByCustomerId(),
               context: context,
               builder: (AsyncSnapshot<List<AddressModel>> snapshot) {

@@ -24,15 +24,15 @@ class _PlaceOrderState extends State<PlaceOrder> {
   Future<List<BranchModel>> branchListFuture;
   List<BranchModel> branchList;
   BranchModel selectedBranch;
-  
+
   @override
   void initState() {
     super.initState();
     branchListFuture = _branchService.fetchAll();
-     branchListFuture.then((data) {
+    branchListFuture.then((data) {
       branchList = data;
     });
-    }
+  }
 
   void _storeOrder() async {
     final _service = OrderService();
@@ -69,7 +69,7 @@ class _PlaceOrderState extends State<PlaceOrder> {
         context, MaterialPageRoute(builder: (context) => OrderHistory()));
   }
 
-  void _placeorder(String title,String content) {
+  void _placeorder(String title, String content) {
     showDialog(
         context: context,
         builder: (BuildContext contex) {
@@ -94,9 +94,9 @@ class _PlaceOrderState extends State<PlaceOrder> {
                       fontWeight: FontWeight.w600),
                 ),
                 onPressed: () {
-                  if(title != 'Error'){
-                  _storeOrder();
-                  }else{
+                  if (title != 'Error') {
+                    _storeOrder();
+                  } else {
                     Navigator.pop(context);
                   }
                 },
@@ -198,11 +198,10 @@ class _PlaceOrderState extends State<PlaceOrder> {
             SizedBox(
               height: 10,
             ),
-                        SimpleFutureBuilder.simpler(
+            SimpleFutureBuilder<List<BranchModel>>.simpler(
               context: context,
               future: branchListFuture,
               builder: (AsyncSnapshot<List<BranchModel>> snapshot) {
-                
                 return RoundDropDownButton<BranchModel>(
                   hint: Text('Restaurant Branch'),
                   items: branchList.map((branch) {
@@ -226,10 +225,10 @@ class _PlaceOrderState extends State<PlaceOrder> {
                 child: RaisedButton(
                   color: Color(0xffCE862A),
                   onPressed: () {
-                    if(selectedBranch == null){
-                    _placeorder('Error','Please Select Restaurant Branch.');
-                    }else{
-                    _placeorder('Sucess','Your Order is Placed.');
+                    if (selectedBranch == null) {
+                      _placeorder('Error', 'Please Select Restaurant Branch.');
+                    } else {
+                      _placeorder('Sucess', 'Your Order is Placed.');
                     }
                   },
                   child: Text("Place Order",

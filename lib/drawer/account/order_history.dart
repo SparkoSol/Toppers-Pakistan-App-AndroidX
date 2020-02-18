@@ -20,7 +20,7 @@ class _OrderHistoryState extends State<OrderHistory> {
         title: Text("ORDER HISTORY"),
         centerTitle: true,
       ),
-      body: SimpleFutureBuilder.simpler(
+      body: SimpleFutureBuilder<List<OrderModel>>.simpler(
         future: _service.fetchAllOrderByCustomerId(),
         context: context,
         builder: (AsyncSnapshot<List<OrderModel>> snapshot) {

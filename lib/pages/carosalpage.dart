@@ -16,7 +16,7 @@ class _CarosalState extends State<Carosal> {
 
   @override
   Widget build(BuildContext context) {
-    return SimpleFutureBuilder.simpler(
+    return SimpleFutureBuilder<List<CaroselModel>>.simpler(
         future: _caroselService.fetchAll(),
         context: context,
         builder: (AsyncSnapshot<List<CaroselModel>> snapshot) {

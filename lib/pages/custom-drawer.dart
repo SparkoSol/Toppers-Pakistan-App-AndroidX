@@ -4,6 +4,7 @@ import 'package:topperspakistan/drawer/about_us.dart';
 import 'package:topperspakistan/drawer/account.dart';
 import 'package:topperspakistan/drawer/notification.dart';
 import 'package:topperspakistan/models/local-data.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../cart_list.dart';
 
@@ -157,12 +158,22 @@ class CustomDrawer extends StatelessWidget {
             height: 0,
           ),
           ListTile(
-            onTap: () {
+            onTap: () async {
+              // showDialog(
+              //     context: context,
+              //     barrierDismissible: false,
+              //     builder: (context) => AlertDialog(
+              //         content: SizedBox(
+              //             width: 70,
+              //             height: 59,
+              //             child: Center(child: CircularProgressIndicator()))));
               LocalData.currentCustomer = null;
               CartList.orderItems = new List();
               CartList.instruction = "";
               CartList.address = null;
               CartList.totalPrice = 0;
+              await GoogleSignIn().disconnect();
+              await GoogleSignIn().signOut();
               Navigator.pop(context);
               Navigator.pop(context);
             },

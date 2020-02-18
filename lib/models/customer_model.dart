@@ -5,10 +5,9 @@ class CustomerModel extends Model {
   String email;
   String password;
   String phone;
-  String address;
 
   CustomerModel(
-      {int id, this.name, this.email, this.password, this.phone, this.address})
+      {int id, this.name, this.email, this.password, this.phone})
       : super(id: id);
 
   CustomerModel.fromJson(Map<String, dynamic> json)
@@ -18,7 +17,6 @@ class CustomerModel extends Model {
           email: json['email'],
           password: json['password'],
           phone: json['phone'],
-          address: json['address'].toString(),
         );
 
   @override
@@ -27,6 +25,5 @@ class CustomerModel extends Model {
         'email': email,
         'phone': phone,
         'password': password,
-        'address': address
       };
 }

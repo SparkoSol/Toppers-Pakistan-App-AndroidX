@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:topperspakistan/models/customer_model.dart';
 import 'package:topperspakistan/models/local-data.dart';
 import 'package:topperspakistan/pages/first.dart';
 import 'package:topperspakistan/pages/loading.dart';
 import 'package:topperspakistan/services/customer_service.dart';
+
+import '../firebase_auth.dart';
 
 class SignUp extends StatefulWidget {
   final _service = CustomerService();
@@ -15,6 +18,8 @@ class _SignUpState extends State<SignUp> {
   bool autoValidate = false;
   bool loading = false;
 
+  var _isUnique = false;
+  final _service = CustomerService();
   var _formKey = GlobalKey<FormState>();
 
   TextEditingController nameController = new TextEditingController();
@@ -93,7 +98,7 @@ class _SignUpState extends State<SignUp> {
       } else {
         print("sign in");
 
-        LocalData.currentCustomer = signedCustomer;
+        LocalData.setProfile(signedCustomer);
         setState(() {
           loading = false;
         });
@@ -345,6 +350,216 @@ class _SignUpState extends State<SignUp> {
                   ),
                 ),
               ),
+              SizedBox(
+                height: 20.0,
+              ),
+              SizedBox(
+                child: ButtonTheme(
+                  minWidth: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height / 15,
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(28.0),
+                    ),
+                    color: Color(0xffBC282B),
+                    child: Text(
+                      "Sign Up with Google",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    onPressed: () async {
+                      await FirebaseAuthentication.googleAuth(
+                        (user) async {
+                          if (user == null) {
+                            await GoogleSignIn().disconnect();
+                            await GoogleSignIn().signOut();
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: Text("Error"),
+                                content:
+                                    Text("Error Occurred while signing-up"),
+                                actions: <Widget>[
+                                  FlatButton(
+                                      child: Text("Ok"),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      })
+                                ],
+                              ),
+                            );
+                          } else {
+                            setState(() {
+                              loading = true;
+                            });
+                            print(user.email);
+                            _isUnique = await _service.userExists(user.email);
+                            print(" Username unique: $_isUnique");
+                            if (_isUnique) {
+                              await GoogleSignIn().disconnect();
+                              await GoogleSignIn().signOut();
+                              Navigator.of(context).pop();
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: Text("User already exists!"),
+                                  content: Text("Please sign in!"),
+                                  actions: <Widget>[
+                                    FlatButton(
+                                        child: Text("Ok"),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        })
+                                  ],
+                                ),
+                              );
+                              setState(() {
+                                loading = false;
+                              });
+                            } else {
+                              CustomerModel customerModel = new CustomerModel();
+                              customerModel.name = user.displayName;
+                              customerModel.email = user.email;
+                              if (user.phoneNumber == null) {
+                                customerModel.phone = "00000000000";
+                              } else {
+                                customerModel.phone = user.phoneNumber;
+                              }
+                              customerModel.password = "12345678";
+
+                              CustomerModel prof =
+                                  await _service.insert(customerModel);
+
+                              print(prof.toString());
+                              if (prof != null) {
+                                print(prof.email);
+                                if (prof.email == null) {
+                                  await GoogleSignIn().disconnect();
+                                  await GoogleSignIn().signOut();
+                                  print("no sign in prof");
+                                  setState(() {
+                                    loading = false;
+                                  });
+                                  _showErrorDialog();
+                                } else {
+                                  print("sign in");
+                                  LocalData.setProfile(prof);
+                                  setState(() {
+                                    loading = false;
+                                  });
+
+                                  print(LocalData.currentCustomer.name);
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => First()));
+                                }
+                              } else {
+                                print("no sign in");
+                                setState(() {
+                                  loading = false;
+                                });
+                                await GoogleSignIn().disconnect();
+                                await GoogleSignIn().signOut();
+                                _showErrorDialog();
+                              }
+                            }
+                          }
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 10.0,
+              ),
+              SizedBox(
+                child: ButtonTheme(
+                  minWidth: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height / 15,
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(28.0),
+                    ),
+                    color: Color(0xffBC282B),
+                    child: Text(
+                      "Sign Up with Facebook",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    onPressed: () async {
+                      await FirebaseAuthentication.facebookAuth((user) async {
+                        if (user == null) {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: Text("Error"),
+                              content: Text("Error Occurred while signing-up"),
+                              actions: <Widget>[
+                                FlatButton(
+                                    child: Text("Ok"),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    })
+                              ],
+                            ),
+                          );
+                        } else {
+                          CustomerModel customerModel = new CustomerModel();
+                          customerModel.name = user.displayName;
+                          customerModel.email = user.email;
+                          if (user.phoneNumber == null) {
+                            customerModel.phone = "00000000000";
+                          } else {
+                            customerModel.phone = user.phoneNumber;
+                          }
+                          customerModel.password = "12345678";
+
+                          CustomerModel prof =
+                              await _service.insert(customerModel);
+
+                          print(prof.toString());
+                          if (prof != null) {
+                            print(prof.email);
+                            if (prof.email == null) {
+                              print("no sign in prof");
+                              setState(() {
+                                loading = false;
+                              });
+                              _showErrorDialog();
+                            } else {
+                              print("sign in");
+                              LocalData.setProfile(prof);
+                              setState(() {
+                                loading = false;
+                              });
+
+                              print(LocalData.currentCustomer.name);
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => First()));
+                            }
+                          } else {
+                            print("no sign in");
+                            setState(() {
+                              loading = false;
+                            });
+                            _showErrorDialog();
+                          }
+                        }
+                      });
+                    },
+                  ),
+                ),
+              )
             ],
           ),
         ),

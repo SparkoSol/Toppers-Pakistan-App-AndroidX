@@ -27,7 +27,7 @@ class _AddressState extends State<Address> {
         title: Text("Address"),
         centerTitle: true,
       ),
-      body: SimpleFutureBuilder.simpler(
+      body: SimpleFutureBuilder<List<AddressModel>>.simpler(
         future: _service.fetchAllByCustomerId(),
         context: context,
         builder: (AsyncSnapshot<List<AddressModel>> snapshot) {

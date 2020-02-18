@@ -21,7 +21,7 @@ class _OrderState extends State<Order> {
     return Scaffold(
       // backgroundColor: Colors.black,
       backgroundColor: Colors.white,
-      body: FutureBuilder(
+      body: FutureBuilder<List<ProductModel>>(
           future: widget.categoryModel.fetchProduct(widget.categoryModel.id),
           builder: (context, AsyncSnapshot<List<ProductModel>> snapshot) {
             if (snapshot.hasData) {

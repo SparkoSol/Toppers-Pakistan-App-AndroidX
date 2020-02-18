@@ -13,7 +13,7 @@ class CustomerService extends Service<CustomerModel> {
   Future<CustomerModel> insert(CustomerModel customerModel) async {
     var jsonData = jsonEncode(customerModel);
     print(jsonData);
-    print("$apiUrl/register-customer");
+
     try {
       var response = await http.post(
           Uri.encodeFull("$apiUrl/register-customer"),
@@ -23,6 +23,7 @@ class CustomerService extends Service<CustomerModel> {
             "Accept": "application/json"
           });
       var data = jsonDecode(response.body);
+      print(data);
       return parse(data);
     } catch (e) {
       print(e);
@@ -62,6 +63,28 @@ class CustomerService extends Service<CustomerModel> {
       var data = jsonDecode(response.body);
       print(parse(data).email);
       return parse(data);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<bool> userExists(email) async {
+    var data =   {"email": "$email"}; 
+    var jsonData = jsonEncode(data);
+    print(jsonData);
+    try {
+      var response = await http.post(Uri.encodeFull("$apiUrl/userExists"),
+          body: jsonData,
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          });
+      var data = jsonDecode(response.body);
+      if(data == true){
+        return true;
+      }else{
+        return false;
+      }
     } catch (e) {
       return null;
     }

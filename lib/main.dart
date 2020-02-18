@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:topperspakistan/pages/splash.dart';
 
-void main() => runApp(MyApp());
+import 'models/local-data.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await LocalData.initPath();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
