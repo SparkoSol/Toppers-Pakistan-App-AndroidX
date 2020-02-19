@@ -31,41 +31,47 @@ class _AddressState extends State<Address> {
         future: _service.fetchAllByCustomerId(),
         context: context,
         builder: (AsyncSnapshot<List<AddressModel>> snapshot) {
-          return ListView.builder(
-            itemCount: snapshot.data.length,
-            itemBuilder: (context, i) {
-              return Column(
-                children: <Widget>[
-                  Divider(
-                    color: Colors.black,
-                  ),
-                  ListTile(
-                    title: Text(snapshot.data[i].description),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(snapshot.data[i].house +
-                            ", " +
-                            snapshot.data[i].street +
-                            ", " +
-                            snapshot.data[i].area),
-                        Text("Phone:" + snapshot.data[i].mobile),
-                      ],
+          if (snapshot.data.isEmpty) {
+            return Center(
+              child: Text('No data Found'),
+            );
+          } else {
+            return ListView.builder(
+              itemCount: snapshot.data.length,
+              itemBuilder: (context, i) {
+                return Column(
+                  children: <Widget>[
+                    Divider(
+                      color: Colors.black,
                     ),
-                    trailing: IconButton(
-                        icon: Icon(Icons.delete),
-                        onPressed: () {
-                          _service.delete(snapshot.data[i]);
-                          setState(() {});
-                        }),
-                  ),
-                  Divider(
-                    color: Colors.black,
-                  ),
-                ],
-              );
-            },
-          );
+                    ListTile(
+                      title: Text(snapshot.data[i].description),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(snapshot.data[i].house +
+                              ", " +
+                              snapshot.data[i].street +
+                              ", " +
+                              snapshot.data[i].area),
+                          Text("Phone:" + snapshot.data[i].mobile),
+                        ],
+                      ),
+                      trailing: IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: () {
+                            _service.delete(snapshot.data[i]);
+                            setState(() {});
+                          }),
+                    ),
+                    Divider(
+                      color: Colors.black,
+                    ),
+                  ],
+                );
+              },
+            );
+          }
         },
       ),
       // ListView(

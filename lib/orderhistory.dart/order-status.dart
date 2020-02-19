@@ -623,6 +623,8 @@ class _Order1State extends State<Order1> {
   final _productService = ProductService();
   @override
   Widget build(BuildContext context) {
+    totalPrice = widget.orderModel.totatlPrice;
+    subTotal = widget.orderModel.totatlPrice - deliveryCharges - taxCharges ;
     return CustomScrollView(
       slivers: <Widget>[
         SliverToBoxAdapter(
@@ -734,60 +736,55 @@ class _Order1State extends State<Order1> {
             ),
           ),
         ),
-        SliverList(
-          delegate: SliverChildListDelegate([
-            Container(
-              child: SimpleFutureBuilder<List<OrderItemModel>>.simpler(
-                future:
-                    _service.fetchAllOrderItemsByOrder(widget.orderModel.id),
-                context: context,
-                builder: (AsyncSnapshot<List<OrderItemModel>> snapshot) {
-                  return Text(snapshot.data.toString());
-                },
-              ),
-            ),
-          ]),
+        SimpleFutureBuilder<List<OrderItemModel>>.simplerSliver(
+          future: _service.fetchAllOrderItemsByOrder(widget.orderModel.id),
+          context: context,
+          builder: (AsyncSnapshot<List<OrderItemModel>> snapshot) {
+            return SliverList(
+              delegate: SliverChildBuilderDelegate((context, i) {
+                return SimpleFutureBuilder<ProductModel>.simpler(
+                    future: _productService
+                        .fetchAllProductsByItem(snapshot.data[i].id),
+                    context: context,
+                    builder: (AsyncSnapshot<ProductModel> snapshot1) {
+                      return Padding(
+                        padding: const EdgeInsets.fromLTRB(5, 10, 5, 5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Expanded(
+                                flex: 5,
+                                child: Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(10, 10, 0, 5),
+                                    child: Text(snapshot1.data.name,
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold)))),
+                            Expanded(
+                                flex: 2,
+                                child:
+                                    Text(snapshot.data[i].quantity.toString())),
+                            Expanded(
+                                flex: 2,
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 5, 5, 5),
+                                  child: Text(
+                                      "Rs. " +
+                                          (int.parse(snapshot1.data.unitPrice) *
+                                                  snapshot.data[i].quantity)
+                                              .toString(),
+                                      style: TextStyle(fontSize: 16)),
+                                )),
+                          ],
+                        ),
+                      );
+                    });
+              }, childCount: snapshot.data.length),
+            );
+          },
         ),
-        // SliverToBoxAdapter(
-        //   child: SimpleFutureBuilder<List<OrderItemModel>>.simpler(
-        //     future: _service.fetchAllOrderItemsByOrder(widget.orderModel.id),
-        //     context: context,
-        //     builder: (AsyncSnapshot<List<OrderItemModel>> snapshot) {
-        //       return SliverList(
-        //         delegate: SliverChildBuilderDelegate(
-        //           (context, i) {
-        //             return Padding(
-        //               padding: const EdgeInsets.fromLTRB(5, 10, 5, 5),
-        //               child: Row(
-        //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //                 children: <Widget>[
-        //                   Expanded(
-        //                       flex: 5,
-        //                       child: Padding(
-        //                           padding:
-        //                               const EdgeInsets.fromLTRB(10, 10, 0, 5),
-        //                           child: Text("Fish Tempura Boneless",
-        //                               style: TextStyle(
-        //                                   fontSize: 16,
-        //                                   fontWeight: FontWeight.bold)))),
-        //                   Expanded(flex: 2, child: Text("data")),
-        //                   Expanded(
-        //                       flex: 2,
-        //                       child: Padding(
-        //                         padding: const EdgeInsets.fromLTRB(0, 5, 5, 5),
-        //                         child: Text("RS. 55ddd0",
-        //                             style: TextStyle(fontSize: 16)),
-        //                       )),
-        //                 ],
-        //               ),
-        //             );
-        //           },
-        //           childCount: snapshot.data.length,
-        //         ),
-        //       );
-        //     },
-        //   ),
-        // ),
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -805,7 +802,7 @@ class _Order1State extends State<Order1> {
                 Text("Sub Total",
                     style:
                         TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-                Text("Rs.1000.00",
+                Text("Rs. "+ subTotal.toString(),
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500))
               ],
             ),
@@ -828,7 +825,7 @@ class _Order1State extends State<Order1> {
                 Text("Tax",
                     style:
                         TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-                Text("Rs.0",
+                Text("Rs. " + taxCharges.toString(),
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500))
               ],
             ),
@@ -851,7 +848,7 @@ class _Order1State extends State<Order1> {
                 Text("Delivery Charges",
                     style:
                         TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-                Text("Rs.80",
+                Text("Rs. " + deliveryCharges.toString(),
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500))
               ],
             ),
@@ -874,7 +871,7 @@ class _Order1State extends State<Order1> {
                 Text("Total",
                     style:
                         TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-                Text("Rs.1020.00",
+                Text("Rs. "+ totalPrice.toString(),
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500))
               ],
             ),

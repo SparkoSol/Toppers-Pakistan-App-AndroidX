@@ -1,10 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:topperspakistan/cart/cart.dart';
 import 'package:topperspakistan/drawer/about_us.dart';
 import 'package:topperspakistan/drawer/account.dart';
 import 'package:topperspakistan/drawer/notification.dart';
+import 'package:topperspakistan/firebase_auth.dart';
 import 'package:topperspakistan/models/local-data.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:topperspakistan/pages/homepage.dart';
 
 import '../cart_list.dart';
 
@@ -159,23 +163,25 @@ class CustomDrawer extends StatelessWidget {
           ),
           ListTile(
             onTap: () async {
-              // showDialog(
-              //     context: context,
-              //     barrierDismissible: false,
-              //     builder: (context) => AlertDialog(
-              //         content: SizedBox(
-              //             width: 70,
-              //             height: 59,
-              //             child: Center(child: CircularProgressIndicator()))));
+              if (await GoogleSignIn().isSignedIn()) {
+                print("google sign out");
+                await GoogleSignIn().disconnect();
+                await GoogleSignIn().signOut();
+              }
+              if(await FacebookLogin().isLoggedIn){
+                print(true);
+                await FacebookLogin().logOut();
+                await FirebaseAuth.instance.signOut();
+              }
+              print("object");
               LocalData.currentCustomer = null;
               CartList.orderItems = new List();
               CartList.instruction = "";
               CartList.address = null;
               CartList.totalPrice = 0;
-              await GoogleSignIn().disconnect();
-              await GoogleSignIn().signOut();
               Navigator.pop(context);
-              Navigator.pop(context);
+                      Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => HomePage()));
             },
             leading: Icon(
               Icons.devices_other,

@@ -21,7 +21,7 @@ class FirebaseAuthentication {
         break;
       case FacebookLoginStatus.error:
         onComplete(null);
-        print("FB login error");
+        print(authResult.errorMessage);
         break;
     }
   }
@@ -34,5 +34,10 @@ class FirebaseAuthentication {
     );
     onComplete(
         (await FirebaseAuth.instance.signInWithCredential(credential)).user);
+  }
+
+  static googleDestroy() async{
+    await GoogleSignIn().disconnect();
+    await GoogleSignIn().signOut();
   }
 }
