@@ -21,7 +21,7 @@ class CategoryModel extends Model {
 
   Future<List<ProductModel>> fetchProduct(id) async {
     var response = await http.get(
-        Uri.encodeFull("http://nabeel-pc:8000/api/category/$id/products"),
+        Uri.encodeFull("http://toppers-pakistan.toppers-mart.com/api/category/$id/products"),
         headers: {"Accept": "application/json"});
     var data = jsonDecode(response.body) as List;
 

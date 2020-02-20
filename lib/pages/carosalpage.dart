@@ -46,7 +46,7 @@ class _CarosalState extends State<Carosal> {
                       width: MediaQuery.of(context).size.width,
                       margin: EdgeInsets.symmetric(horizontal: 10.0),
                       child: Image.network(
-                        "http://nabeel-pc:8000/images/carosel/" +
+                        "http://toppers-pakistan.toppers-mart.com/images/carosel/" +
                             imgUrl.image,
                         fit: BoxFit.fill,
                       ),

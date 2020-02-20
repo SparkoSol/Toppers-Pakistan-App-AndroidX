@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:topperspakistan/models/local-data.dart';
 
 abstract class Service<T extends Model> {
-  final apiUrl = "http://nabeel-pc:8000/api";
+  final apiUrl = "http://toppers-pakistan.toppers-mart.com/api";
 
   String get route;
 

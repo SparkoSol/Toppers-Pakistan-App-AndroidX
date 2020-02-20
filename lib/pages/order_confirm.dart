@@ -46,7 +46,7 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
                 return Column(
                   children: <Widget>[
                     Image.network(
-                      "http://nabeel-pc:8000/images/products/" +
+                      "http://toppers-pakistan.toppers-mart.com/images/products/" +
                           widget.product.image,
                       width: MediaQuery.of(context).size.width,
                       fit: BoxFit.cover,
