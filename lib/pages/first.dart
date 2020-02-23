@@ -67,7 +67,7 @@ class _FirstState extends State<First> {
           context: context,
           child: new AlertDialog(
             title: new Text('Do you want to exit this application?'),
-            content: new Text('We hate to see you leave...'),
+            content: new Text('Hope to see you again!'),
             actions: <Widget>[
               new FlatButton(
                 onPressed: () => Navigator.of(context).pop(false),

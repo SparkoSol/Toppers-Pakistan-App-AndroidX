@@ -523,6 +523,7 @@ import 'package:topperspakistan/models/order-item_model.dart';
 import 'package:topperspakistan/models/order_model.dart';
 import 'package:date_format/date_format.dart';
 import 'package:topperspakistan/models/product_model.dart';
+import 'package:topperspakistan/orderhistory.dart/reorder.dart';
 import 'package:topperspakistan/services/order-item_service.dart';
 import 'package:topperspakistan/services/product_service.dart';
 import 'package:topperspakistan/simple-future-builder.dart';
@@ -612,7 +613,7 @@ class _Order1State extends State<Order1> {
         .toString();
   }
 
-  int deliveryCharges = 80;
+  int deliveryCharges = 50;
   int taxCharges = 0;
   int subTotal;
   int totalPrice;
@@ -624,7 +625,7 @@ class _Order1State extends State<Order1> {
   @override
   Widget build(BuildContext context) {
     totalPrice = widget.orderModel.totatlPrice;
-    subTotal = widget.orderModel.totatlPrice - deliveryCharges - taxCharges ;
+    subTotal = widget.orderModel.totatlPrice - deliveryCharges - taxCharges;
     return CustomScrollView(
       slivers: <Widget>[
         SliverToBoxAdapter(
@@ -740,6 +741,7 @@ class _Order1State extends State<Order1> {
           future: _service.fetchAllOrderItemsByOrder(widget.orderModel.id),
           context: context,
           builder: (AsyncSnapshot<List<OrderItemModel>> snapshot) {
+            orderItems = snapshot.data;
             return SliverList(
               delegate: SliverChildBuilderDelegate((context, i) {
                 return SimpleFutureBuilder<ProductModel>.simpler(
@@ -802,7 +804,7 @@ class _Order1State extends State<Order1> {
                 Text("Sub Total",
                     style:
                         TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-                Text("Rs. "+ subTotal.toString(),
+                Text("Rs. " + subTotal.toString(),
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500))
               ],
             ),
@@ -871,7 +873,7 @@ class _Order1State extends State<Order1> {
                 Text("Total",
                     style:
                         TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-                Text("Rs. "+ totalPrice.toString(),
+                Text("Rs. " + totalPrice.toString(),
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500))
               ],
             ),
@@ -894,8 +896,12 @@ class _Order1State extends State<Order1> {
               child: RaisedButton(
                 color: Color(0xffCE862A),
                 onPressed: () {
-                  // Navigator.push(context,
-                  //     MaterialPageRoute(builder: (context) => ReOrder()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ReOrder(
+                              order: widget.orderModel,
+                              orderItems: orderItems)));
                 },
                 child: Text("Re-Order",
                     style: TextStyle(

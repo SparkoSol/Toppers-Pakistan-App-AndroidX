@@ -17,7 +17,7 @@ class PlaceOrder extends StatefulWidget {
 }
 
 class _PlaceOrderState extends State<PlaceOrder> {
-  int deliveryCharges = 80;
+  int deliveryCharges = 50;
   int taxCharges = 0;
   final _branchService = BranchService();
 
