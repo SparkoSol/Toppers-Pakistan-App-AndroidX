@@ -20,6 +20,12 @@ import 'package:topperspakistan/pages/model.dart';
 import 'package:topperspakistan/pages/order.dart';
 
 import '../simple-future-builder.dart';
+import 'dart:async';
+import 'dart:io';
+
+import "package:cloud_firestore/cloud_firestore.dart";
+import 'package:firebase_messaging/firebase_messaging.dart';
+
 
 class First extends StatefulWidget {
   @override
@@ -28,6 +34,52 @@ class First extends StatefulWidget {
 
 class _FirstState extends State<First> {
   final _service = CategoryService();
+
+  final Firestore _db = Firestore.instance;
+  final FirebaseMessaging _fcm = FirebaseMessaging();
+
+
+  @override
+  void initState() {
+    super.initState();
+    _fcm.subscribeToTopic("notifications");
+    _fcm.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("On Message : $message");
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            content: ListTile(
+              title: Row(
+                children: <Widget>[
+                  Icon(Icons.notifications, color: Colors.blue),
+                  SizedBox(width: 15),
+                  Text(message['notification']['title']),
+                  
+                ],
+              ),
+              subtitle: 
+                  Text(message['notification']['body']),
+               
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text("OK"),
+                onPressed: ()=>Navigator.of(context).pop(),
+              )
+            ],
+          )
+        );
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch : $message");
+        
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("onResume : $message");
+      }
+    );
+  }
 
   void _showErrorDialog(String title, String content) {
     showDialog(
