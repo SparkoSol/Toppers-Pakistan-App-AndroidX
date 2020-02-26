@@ -46,6 +46,7 @@ class _SigninState extends State<Signin> {
         setState(() {
           loading = false;
         });
+        print("Sign in id manual=> " + LocalData.getProfile().id.toString());
         print(LocalData.currentCustomer.name);
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => First()));
@@ -276,7 +277,7 @@ class _SigninState extends State<Signin> {
                                 setState(() {
                                   loading = false;
                                 });
-
+                                print("Google Sign in=> " + LocalData.getProfile().id.toString());
                                 print(LocalData.currentCustomer.name);
                                 Navigator.pushReplacement(
                                     context,
@@ -360,7 +361,7 @@ class _SigninState extends State<Signin> {
                                 setState(() {
                                   loading = false;
                                 });
-
+                                print("Facebook Sign in=> " + LocalData.getProfile().id.toString());
                                 print(LocalData.currentCustomer.name);
                                 Navigator.pushReplacement(
                                     context,

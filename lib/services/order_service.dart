@@ -12,6 +12,7 @@ class OrderService extends Service<OrderModel> {
   }
 
   Future<List<OrderModel>> fetchAllOrderByCustomerId() async {
+    print("ID Of logged customer => " + LocalData.getProfile().id.toString());
     var response = await http.get(
         Uri.encodeFull(
             "$apiUrl/customer-order/" + LocalData.currentCustomer.id.toString()),

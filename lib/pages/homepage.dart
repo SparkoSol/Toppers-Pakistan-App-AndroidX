@@ -12,6 +12,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
+    print("Profile=>" + LocalData.getProfile().toString());
     return LocalData.getProfile() == null
         ? Scaffold(
             backgroundColor: Colors.black,

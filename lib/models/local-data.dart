@@ -44,7 +44,6 @@ class LocalData {
 
     try {
       Map<String, dynamic> data = jsonDecode(await _dataFile.readAsString());
-
       currentCustomer = CustomerModel.fromJson(data);
       _signedIn = true;
     } catch (ex) {

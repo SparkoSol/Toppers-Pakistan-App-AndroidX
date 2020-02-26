@@ -27,7 +27,7 @@ abstract class Service<T extends Model> {
   }
 
   Future<List<T>> fetchAllByCustomerId() async {
-    print(LocalData.getProfile().id);
+    print("ID Of logged customer => " + LocalData.getProfile().id.toString());
     var response = await http.get(
         Uri.encodeFull(
             "$apiUrl/$route/" + LocalData.currentCustomer.id.toString()),
