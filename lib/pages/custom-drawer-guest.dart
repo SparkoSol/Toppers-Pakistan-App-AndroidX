@@ -71,10 +71,6 @@ class CustomDrawerGuest extends StatelessWidget {
           ListTile(
             onTap: () {
               LocalData.currentCustomer = null;
-              CartList.orderItems = new List();
-              CartList.instruction = null;
-              CartList.address = null;
-              CartList.totalPrice = null;
               Navigator.pop(context);
               Navigator.pushReplacement(
                   context, MaterialPageRoute(builder: (context) => Signin()));
@@ -95,10 +91,6 @@ class CustomDrawerGuest extends StatelessWidget {
           ListTile(
             onTap: () {
               LocalData.currentCustomer = null;
-              CartList.orderItems = new List();
-              CartList.instruction = null;
-              CartList.address = null;
-              CartList.totalPrice = null;
               Navigator.pop(context);
               Navigator.pushReplacement(
                   context, MaterialPageRoute(builder: (context) => SignUp()));

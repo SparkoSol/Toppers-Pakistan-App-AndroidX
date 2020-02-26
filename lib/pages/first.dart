@@ -34,49 +34,107 @@ class First extends StatefulWidget {
 
 class _FirstState extends State<First> {
   final _service = CategoryService();
+  bool notification = false;
 
   final Firestore _db = Firestore.instance;
   final FirebaseMessaging _fcm = FirebaseMessaging();
 
-
+final _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   void initState() {
     super.initState();
+
     _fcm.subscribeToTopic("notifications");
     _fcm.configure(
       onMessage: (Map<String, dynamic> message) async {
+        final snackBar = SnackBar(content: Text(message['notification']['title']));
         print("On Message : $message");
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            content: ListTile(
-              title: Row(
-                children: <Widget>[
-                  Icon(Icons.notifications, color: Colors.blue),
-                  SizedBox(width: 15),
-                  Text(message['notification']['title']),
+              Future.delayed(Duration(seconds: 1)).then(
+    (_) => _displaySnackbar(message['notification']['title'],message['notification']['body'] ));
+           if(LocalData.currentCustomer != null ) {
+            Scaffold.of(context).showSnackBar(snackBar);
+
+          Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => Notification2()));
+          setState(() {
+            notification = true;
+          });
+        }
+       
+           
+        //  Scaffold.of(context).showSnackBar(snackBar);
+        //         print("On Print : $message");
+
+        
+            //     WidgetsBinding.instance
+            // .addPostFrameCallback((_) => _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text("Your message here.."))));
+        // showDialog(
+        //   context: context,
+        //   builder: (context) => AlertDialog(
+        //     content: ListTile(
+        //       title: Row(
+        //         children: <Widget>[
+        //           Icon(Icons.notifications, color: Colors.blue),
+        //           SizedBox(width: 15),
+        //           Text(message['notification']['title']),
                   
-                ],
-              ),
-              subtitle: 
-                  Text(message['notification']['body']),
+        //         ],
+        //       ),
+        //       subtitle: 
+        //           Text(message['notification']['body']),
                
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: Text("OK"),
-                onPressed: ()=>Navigator.of(context).pop(),
-              )
-            ],
-          )
-        );
+        //     ),
+        //     actions: <Widget>[
+        //       FlatButton(
+        //         child: Text("OK"),
+        //         onPressed: ()=>Navigator.of(context).pop(),
+        //       )
+        //     ],
+        //   )
+        // );
+
       },
       onLaunch: (Map<String, dynamic> message) async {
         print("onLaunch : $message");
+           if(LocalData.currentCustomer != null ) {
+          Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => Notification2()));
+        }
+  
         
       },
       onResume: (Map<String, dynamic> message) async {
         print("onResume : $message");
+        if(LocalData.currentCustomer != null ) {
+          Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => Notification2()));
+        }
+         
+         
+        //          showDialog(
+        //   context: context,
+        //   builder: (context) => AlertDialog(
+        //     content: ListTile(
+        //       title: Row(
+        //         children: <Widget>[
+        //           Icon(Icons.notifications, color: Colors.blue),
+        //           SizedBox(width: 15),
+        //           Text(message['notification']['title']),
+                  
+        //         ],
+        //       ),
+        //       subtitle: 
+        //           Text(message['notification']['body']),
+               
+        //     ),
+        //     actions: <Widget>[
+        //       FlatButton(
+        //         child: Text("OK"),
+        //         onPressed: ()=>Navigator.of(context).pop(),
+        //       )
+        //     ],
+        //   )
+        // );
       }
     );
   }
@@ -137,9 +195,11 @@ class _FirstState extends State<First> {
 
   @override
   Widget build(BuildContext context) {
+    
     return WillPopScope(
       onWillPop: () => _exitApp(context),
       child: Scaffold(
+        key: _scaffoldKey,
         //  backgroundColor: Colors.black,
         appBar: AppBar(
           centerTitle: true,
@@ -153,8 +213,8 @@ class _FirstState extends State<First> {
           children: <Widget>[
             FloatingActionButton(
               onPressed: () {
-                print(CartList.orderItems.length);
-                if (CartList.orderItems.length == 0) {
+                print(CartList.getItems().length);
+                if (CartList.getItems().length == 0) {
                   _showErrorDialog("Warning", "Your Cart is Empty!");
                 } else {
                   if (LocalData.currentCustomer == null) {
@@ -183,9 +243,9 @@ class _FirstState extends State<First> {
                   minHeight: 14,
                 ),
                 child: Text(
-                  CartList.orderItems == null
+                  CartList.getItems() == null
                       ? "0"
-                      : CartList.orderItems.length.toString(),
+                      : CartList.getItems().length.toString(),
                   style: TextStyle(
                     color: Colors.red,
                     fontSize: 12,
@@ -312,7 +372,18 @@ class _FirstState extends State<First> {
                 ),
               ]),
         ),
+
+
+
       ),
     );
+
   }
+  void  _displaySnackbar(title, message){
+  _scaffoldKey.currentState.showSnackBar(SnackBar(
+    duration: Duration(seconds: 2),
+    content: Text(message)
+  ));
+  }
+  
 }

@@ -512,47 +512,74 @@ class _SignUpState extends State<SignUp> {
                             ),
                           );
                         } else {
-                          CustomerModel customerModel = new CustomerModel();
-                          customerModel.name = user.displayName;
-                          customerModel.email = user.email;
-                          if (user.phoneNumber == null) {
-                            customerModel.phone = "00000000000";
+                          setState(() {
+                            loading = true;
+                          });
+                          print(user.email);
+                          _isUnique = await _service.userExists(user.email);
+                          print(" Username unique: $_isUnique");
+                          if (_isUnique) {
+                            Navigator.of(context).pop();
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: Text("User already exists!"),
+                                content: Text("Please sign in!"),
+                                actions: <Widget>[
+                                  FlatButton(
+                                      child: Text("Ok"),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      })
+                                ],
+                              ),
+                            );
+                            setState(() {
+                              loading = false;
+                            });
                           } else {
-                            customerModel.phone = user.phoneNumber;
-                          }
-                          customerModel.password = "12345678";
+                            CustomerModel customerModel = new CustomerModel();
+                            customerModel.name = user.displayName;
+                            customerModel.email = user.email;
+                            if (user.phoneNumber == null) {
+                              customerModel.phone = "00000000000";
+                            } else {
+                              customerModel.phone = user.phoneNumber;
+                            }
+                            customerModel.password = "12345678";
 
-                          CustomerModel prof =
-                              await _service.insert(customerModel);
+                            CustomerModel prof =
+                                await _service.insert(customerModel);
 
-                          print(prof.toString());
-                          if (prof != null) {
-                            print(prof.email);
-                            if (prof.email == null) {
-                              print("no sign in prof");
+                            print(prof.toString());
+                            if (prof != null) {
+                              print(prof.email);
+                              if (prof.email == null) {
+                                print("no sign in prof");
+                                setState(() {
+                                  loading = false;
+                                });
+                                _showErrorDialog();
+                              } else {
+                                print("sign in");
+                                LocalData.setProfile(prof);
+                                setState(() {
+                                  loading = false;
+                                });
+
+                                print(LocalData.currentCustomer.name);
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => First()));
+                              }
+                            } else {
+                              print("no sign in");
                               setState(() {
                                 loading = false;
                               });
                               _showErrorDialog();
-                            } else {
-                              print("sign in");
-                              LocalData.setProfile(prof);
-                              setState(() {
-                                loading = false;
-                              });
-
-                              print(LocalData.currentCustomer.name);
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => First()));
                             }
-                          } else {
-                            print("no sign in");
-                            setState(() {
-                              loading = false;
-                            });
-                            _showErrorDialog();
                           }
                         }
                       });

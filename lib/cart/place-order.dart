@@ -51,22 +51,18 @@ class _PlaceOrderState extends State<PlaceOrder> {
     OrderModel newOrder = await _service.insert(order);
     print(newOrder.id);
 
-    for (var orderItem in CartList.orderItems) {
+    for (var orderItem in CartList.getItems()) {
       orderItem.orderId = newOrder.id.toString();
 
       await _serviceOrderItem.insert(orderItem);
     }
 
-    CartList.orderItems = new List();
+    CartList.emptyCartList();
     CartList.address = null;
     CartList.instruction = null;
     CartList.totalPrice = null;
 
-    for (var i = 0; i < 5; i++) {
-      Navigator.pop(context);
-    }
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => OrderHistory()));
+    _placeorder('Success', 'Your Order is Placed.');
   }
 
   void _placeorder(String title, String content) {
@@ -95,7 +91,15 @@ class _PlaceOrderState extends State<PlaceOrder> {
                 ),
                 onPressed: () {
                   if (title != 'Error') {
-                    _storeOrder();
+                    // _storeOrder();
+                    for (var i = 0; i < 5; i++) {
+                      Navigator.pop(context);
+                    }
+
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => OrderHistory()));
                   } else {
                     Navigator.pop(context);
                   }
@@ -144,7 +148,7 @@ class _PlaceOrderState extends State<PlaceOrder> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    "Your order will be delivered tommorrow between 12:00 pm to 04:00 pm .",
+                    "Your order will be delivered tommorrow between 12:00 pm to 04:00 pm.",
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,
@@ -228,7 +232,8 @@ class _PlaceOrderState extends State<PlaceOrder> {
                     if (selectedBranch == null) {
                       _placeorder('Error', 'Please Select Restaurant Branch.');
                     } else {
-                      _placeorder('Sucess', 'Your Order is Placed.');
+                      // _placeorder('Sucess', 'Your Order is Placed.');
+                      _storeOrder();
                     }
                   },
                   child: Text("Place Order",

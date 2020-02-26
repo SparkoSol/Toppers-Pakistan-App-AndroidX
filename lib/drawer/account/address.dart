@@ -74,40 +74,6 @@ class _AddressState extends State<Address> {
           }
         },
       ),
-      // ListView(
-      //   children: <Widget>[
-      //     Container(
-      //       child: Column(
-      //         children: <Widget>[
-      //           Divider(
-      //             color: Colors.black,
-      //           ),
-      //           Padding(
-      //             padding: EdgeInsets.fromLTRB(10, 5, 5, 5),
-      //             child: Column(
-      //               mainAxisAlignment: MainAxisAlignment.start,
-      //               crossAxisAlignment: CrossAxisAlignment.start,
-      //               children: <Widget>[
-      //                 Text("Description"),
-      //                 Row(
-      //                   children: <Widget>[
-      //                     Text("House"),
-      //                     Text(","),
-      //                     Text("Street"),
-      //                   ],
-      //                 ),
-      //                 Text("Phone:"),
-      //               ],
-      //             ),
-      //           ),
-      //           Divider(
-      //             color: Colors.black,
-      //           ),
-      //         ],
-      //       ),
-      //     )
-      //   ],
-      // ),
     );
   }
 }

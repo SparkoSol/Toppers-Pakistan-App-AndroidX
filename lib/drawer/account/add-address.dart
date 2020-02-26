@@ -47,6 +47,9 @@ class _AddAddressState extends State<AddAddress> {
         child: ListView(
           children: <Widget>[
             TextFormField(
+              validator: (value) {
+                return value.isEmpty ? "Please Enter Description" : null;
+              },
               controller: descriptionController,
               decoration: new InputDecoration(
                   contentPadding: EdgeInsets.all(15), hintText: "Description"),

@@ -53,7 +53,7 @@ class _AboutUSState extends State<AboutUS> {
 
               Icon(Icons.train,color: Colors.black45,size:20, ),
               Text("Delivery Charges",style: TextStyle(color: Colors.black45),),
-                            Text("(PKR 80.00)",style: TextStyle(color: Colors.black45),)
+                            Text("(PKR 50.00)",style: TextStyle(color: Colors.black45),)
             ],
           ),),),
 

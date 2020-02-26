@@ -154,7 +154,7 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
                         child: RaisedButton(
                           color: Color(0xffcdaa44),
                           onPressed: () {
-                            for (var orderItem in CartList.orderItems) {
+                            for (var orderItem in CartList.getItems()) {
                               if (orderItem.productId ==
                                   widget.product.id.toString()) {
                                 orderItem.quantity = value;
@@ -177,7 +177,7 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
                             orderItem.unitPrice = widget.product.unitPrice;
                             orderItem.image = widget.product.image;
                             orderItem.weight = widget.product.quantity;
-                            CartList.orderItems.add(orderItem);
+                            CartList.addToCart(orderItem);
                             Navigator.pop(context);
                             Navigator.pop(context);
                           },

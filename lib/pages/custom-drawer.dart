@@ -19,7 +19,7 @@ class CustomDrawer extends StatelessWidget {
         builder: (BuildContext contex) {
           return AlertDialog(
             title: new Text(
-              "Warning",
+              "Warning!",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
             ),
             content: Text(
@@ -83,7 +83,7 @@ class CustomDrawer extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
-              if (CartList.orderItems.length == 0) {
+              if (CartList.getItems().length == 0) {
                 _showErrorDialog(context);
               } else {
                 Navigator.pop(context);
@@ -175,7 +175,7 @@ class CustomDrawer extends StatelessWidget {
               }
               print("object");
               LocalData.currentCustomer = null;
-              CartList.orderItems = new List();
+              CartList.emptyCartList();
               CartList.instruction = "";
               CartList.address = null;
               CartList.totalPrice = 0;

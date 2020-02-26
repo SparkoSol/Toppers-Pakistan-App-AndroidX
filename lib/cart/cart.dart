@@ -20,7 +20,7 @@ class _CartState extends State<Cart> {
 
   int calcTotal() {
     int total = 0;
-    for (var orderItem in CartList.orderItems) {
+    for (var orderItem in CartList.getItems()) {
       total += orderItem.quantity * int.parse(orderItem.unitPrice);
     }
     return total;
@@ -82,14 +82,15 @@ class _CartState extends State<Cart> {
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, i) {
+                var items = CartList.getItems();
                 return Dismissible(
                   onDismissed: (direction) {
                     Scaffold.of(context).showSnackBar(SnackBar(
                         content:
-                            Text("${CartList.orderItems[i].name} Dissmised")));
+                            Text("${items[i].name} Dissmised")));
                     setState(() {
-                      CartList.orderItems.removeAt(i);
-                      if(CartList.orderItems.length == 0 ){
+                      CartList.removeFromCart(i);
+                      if(CartList.getItems().length == 0 ){
                         Navigator.pop(context);
                       }
                     });
@@ -117,15 +118,15 @@ class _CartState extends State<Cart> {
                               child: ListTile(
                                 subtitle: Text(
                                   "(" +
-                                      CartList.orderItems[i].weight +
+                                      items[i].weight +
                                       " " +
-                                      CartList.orderItems[i].unit +
+                                      items[i].unit +
                                       " " +
-                                      CartList.orderItems[i].unitPrice +
+                                      items[i].unitPrice +
                                       ")",
                                 ),
                                 title: Text(
-                                  CartList.orderItems[i].name,
+                                  items[i].name,
                                   style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold),
@@ -142,23 +143,23 @@ class _CartState extends State<Cart> {
                                     icon:
                                         Icon(Icons.remove, color: Colors.black),
                                     onPressed: () {
-                                      if (CartList.orderItems[i].quantity > 0) {
+                                      if (items[i].quantity > 0) {
                                         setState(() {
-                                          CartList.orderItems[i].quantity--;
+                                          items[i].quantity--;
                                         });
                                       }
                                     }),
                                 Padding(
                                   padding:
                                       const EdgeInsets.symmetric(horizontal: 2),
-                                  child: Text(CartList.orderItems[i].quantity
+                                  child: Text(items[i].quantity
                                       .toString()),
                                 ),
                                 IconButton(
                                   icon: Icon(Icons.add, color: Colors.black),
                                   onPressed: () {
                                     setState(() {
-                                      CartList.orderItems[i].quantity++;
+                                      items[i].quantity++;
                                     });
                                   },
                                 )
@@ -169,8 +170,8 @@ class _CartState extends State<Cart> {
                             child: Padding(
                               padding: const EdgeInsets.fromLTRB(30, 5, 5, 5),
                               child: Text(
-                                  (int.parse(CartList.orderItems[i].unitPrice) *
-                                          CartList.orderItems[i].quantity)
+                                  (int.parse(items[i].unitPrice) *
+                                          items[i].quantity)
                                       .toString(),
                                   style: TextStyle(fontSize: 16)),
                             ),
@@ -184,7 +185,7 @@ class _CartState extends State<Cart> {
                   ),
                 );
               },
-              childCount: CartList.orderItems.length,
+              childCount: CartList.getItems().length,
             ),
           ),
           SliverToBoxAdapter(
@@ -207,7 +208,7 @@ class _CartState extends State<Cart> {
                     child: TextField(
                       controller: instructionController,
                       decoration: InputDecoration(
-                        hintText: "Addtional Instructions",
+                        hintText: "Additional Instructions",
                         border: InputBorder.none,
                       ),
                       maxLines: 5,
