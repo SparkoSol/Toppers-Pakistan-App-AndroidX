@@ -15,12 +15,24 @@ class CustomDrawerGuest extends StatelessWidget {
     return Drawer(
       child: ListView(
         children: <Widget>[
+          SizedBox(
+            height: 30.0,
+          ),
+          Container(
+            child: Center(
+              child: Image.asset('images/ToppersPakistanLogo.png'),
+            ),
+            height: MediaQuery.of(context).size.height / 5,
+          ),
+          SizedBox(
+            height: 30.0,
+          ),
           Container(
             color: Colors.red,
             height: MediaQuery.of(context).size.height / 15,
             child: Center(
               child: Text(
-                "MENU",
+              "Welcome Guest",
                 style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,

@@ -21,6 +21,15 @@ class _PaymentMethodState extends State<PaymentMethod> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Payment Method'),
+        actions: <Widget>[
+            new IconButton(
+            icon: new Image.asset('images/ToppersPakistanLogo.png'),
+            onPressed: null,
+          ),
+          SizedBox(
+              width: 10.0,
+            ),
+          ],
       ),
       bottomNavigationBar: BottomAppBar(
         elevation: 0,

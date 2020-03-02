@@ -116,6 +116,15 @@ class _PlaceOrderState extends State<PlaceOrder> {
         appBar: AppBar(
           title: Text("Place Order"),
           centerTitle: true,
+          actions: <Widget>[
+            new IconButton(
+            icon: new Image.asset('images/ToppersPakistanLogo.png'),
+            onPressed: null,
+          ),
+          SizedBox(
+              width: 10.0,
+            ),
+          ],
         ),
         body: ListView(
           padding: EdgeInsets.fromLTRB(10, 20, 10, 20),

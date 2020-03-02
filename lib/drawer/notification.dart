@@ -22,8 +22,19 @@ class _Notification2State extends State<Notification2> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("NOTIFICATION"),
+        title: Text("NOTIFICATION",
+          style: TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
+        actions: <Widget>[
+            new IconButton(
+            icon: new Image.asset('images/ToppersPakistanLogo.png'),
+            onPressed: null,
+          ),
+          SizedBox(
+              width: 10.0,
+            ),
+          ],
       ),
       body:_showNotifications ());
   }

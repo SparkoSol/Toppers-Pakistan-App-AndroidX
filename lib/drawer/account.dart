@@ -13,8 +13,19 @@ class _AccountState extends State<Account> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("SETTINGS"),
+        title: Text("SETTINGS",
+          style: TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
+        actions: <Widget>[
+            new IconButton(
+            icon: new Image.asset('images/ToppersPakistanLogo.png'),
+            onPressed: null,
+          ),
+          SizedBox(
+              width: 10.0,
+            ),
+          ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(18.0),

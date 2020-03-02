@@ -26,6 +26,8 @@ import 'dart:io';
 import "package:cloud_firestore/cloud_firestore.dart";
 import 'package:firebase_messaging/firebase_messaging.dart';
 
+import 'package:google_fonts/google_fonts.dart';
+
 
 class First extends StatefulWidget {
   @override
@@ -202,6 +204,15 @@ final _scaffoldKey = GlobalKey<ScaffoldState>();
         key: _scaffoldKey,
         //  backgroundColor: Colors.black,
         appBar: AppBar(
+          actions: <Widget>[
+            new IconButton(
+            icon: new Image.asset('images/ToppersPakistanLogo.png'),
+            onPressed: null,
+          ),
+          SizedBox(
+              width: 10.0,
+            ),
+          ],
           centerTitle: true,
           // backgroundColor: Colors.black,
           title: Text(

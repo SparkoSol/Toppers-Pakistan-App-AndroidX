@@ -88,7 +88,18 @@ class _ChangePasswordState extends State<ChangePassword> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Change Password"),
+        title: Text("Change Password",
+          style: TextStyle(color: Colors.white),
+        ),
+        actions: <Widget>[
+            new IconButton(
+            icon: new Image.asset('images/ToppersPakistanLogo.png'),
+            onPressed: null,
+          ),
+          SizedBox(
+              width: 10.0,
+            ),
+          ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(13.0),

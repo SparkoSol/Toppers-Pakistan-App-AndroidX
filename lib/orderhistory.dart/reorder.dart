@@ -47,7 +47,18 @@ class _ReOrderState extends State<ReOrder> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("RE-ORDER"),
+        title: Text("RE-ORDER",
+          style: TextStyle(color: Colors.white),
+        ),
+        actions: <Widget>[
+            new IconButton(
+            icon: new Image.asset('images/ToppersPakistanLogo.png'),
+            onPressed: null,
+          ),
+          SizedBox(
+              width: 10.0,
+            ),
+          ],
       ),
       body: ListView(
         padding: EdgeInsets.fromLTRB(15, 25, 15, 0),

@@ -69,6 +69,15 @@ class _SelectDeliveryAddressState extends State<SelectDeliveryAddress> {
       appBar: AppBar(
         title: Text("Address"),
         centerTitle: true,
+        actions: <Widget>[
+            new IconButton(
+            icon: new Image.asset('images/ToppersPakistanLogo.png'),
+            onPressed: null,
+          ),
+          SizedBox(
+              width: 10.0,
+            ),
+          ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       bottomNavigationBar: BottomAppBar(

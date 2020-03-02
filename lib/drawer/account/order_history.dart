@@ -17,8 +17,19 @@ class _OrderHistoryState extends State<OrderHistory> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("ORDER HISTORY"),
+        title: Text("ORDER HISTORY",
+          style: TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
+        actions: <Widget>[
+            new IconButton(
+            icon: new Image.asset('images/ToppersPakistanLogo.png'),
+            onPressed: null,
+          ),
+          SizedBox(
+              width: 10.0,
+            ),
+          ],
       ),
       body: SimpleFutureBuilder<List<OrderModel>>.simpler(
         future: _service.fetchAllOrderByCustomerId(),

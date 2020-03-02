@@ -39,7 +39,19 @@ class _AddAddressState extends State<AddAddress> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("ADD ADDRESS"),
+        title: Text(
+          "ADD ADDRESS",
+          style: TextStyle(color: Colors.white),
+        ),
+        actions: <Widget>[
+          new IconButton(
+            icon: new Image.asset('images/ToppersPakistanLogo.png'),
+            onPressed: null,
+          ),
+          SizedBox(
+            width: 10.0,
+          ),
+        ],
       ),
       body: Form(
         autovalidate: autoValidate,

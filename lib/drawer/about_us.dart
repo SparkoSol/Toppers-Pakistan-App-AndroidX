@@ -10,8 +10,19 @@ class _AboutUSState extends State<AboutUS> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("ABOUT US"),
+        title: Text("ABOUT US",
+          style: TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
+        actions: <Widget>[
+            new IconButton(
+            icon: new Image.asset('images/ToppersPakistanLogo.png'),
+            onPressed: null,
+          ),
+          SizedBox(
+              width: 10.0,
+            ),
+          ],
       ),
       body: ListView(
         padding: EdgeInsets.all(10),
@@ -42,7 +53,7 @@ class _AboutUSState extends State<AboutUS> {
                     height: 10,
                   ),
                   Text(
-                    "Here at Toppers Pakistan we use fresh , locally sourced produce to create healthy, convenient meals dlivered direct to you",
+                    "Here at Toppers Pakistan we use fresh , locally sourced produce to create healthy, convenient meals delivered direct to you",
                     style: TextStyle(color: Colors.black45),
                   )
                 ],
@@ -52,7 +63,7 @@ class _AboutUSState extends State<AboutUS> {
             children: <Widget>[
 
               Icon(Icons.train,color: Colors.black45,size:20, ),
-              Text("Delivery Charges",style: TextStyle(color: Colors.black45),),
+              Text("Delivery Charges ",style: TextStyle(color: Colors.black45),),
                             Text("(PKR 50.00)",style: TextStyle(color: Colors.black45),)
             ],
           ),),),
@@ -63,12 +74,11 @@ class _AboutUSState extends State<AboutUS> {
 
             children: <Widget>[
              Row(children: <Widget>[  Icon(Icons.timer,color: Colors.black45,size:20, ),
-              Text("Delivery Times",style: TextStyle(color: Colors.black45),),
+              Text("Delivery Time",style: TextStyle(color: Colors.black45),),
              ],),SizedBox(height: 10,),
-              Text("Order palce before 11 am, customer can choose can choose 11 am to 4 pm same day delivery time.",style: TextStyle(color: Colors.black45),),
+              Text("Order palce before 11 am, customer can choose 11 am to 4 pm same day delivery time.",style: TextStyle(color: Colors.black45),),
               SizedBox(height: 10,),
-              Text("Order palce between 11 am to 4 pm order can deliver  same day after 4 pm.",style: TextStyle(color: Colors.black45),),
-              
+              Text("Order palce between 11 am to 4 pm order can deliver same day after 4 pm.",style: TextStyle(color: Colors.black45),),
            
             ],
           ),

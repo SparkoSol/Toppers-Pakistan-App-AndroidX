@@ -51,12 +51,24 @@ class CustomDrawer extends StatelessWidget {
     return Drawer(
       child: ListView(
         children: <Widget>[
+          SizedBox(
+            height: 30.0,
+          ),
+          Container(
+            child: Center(
+              child: Image.asset('images/ToppersPakistanLogo.png'),
+            ),
+            height: MediaQuery.of(context).size.height / 5,
+          ),
+          SizedBox(
+            height: 30.0,
+          ),
           Container(
             color: Colors.red,
             height: MediaQuery.of(context).size.height / 15,
             child: Center(
               child: Text(
-                "MENU",
+                "Welcome " + LocalData.getProfile().name,
                 style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -168,7 +180,7 @@ class CustomDrawer extends StatelessWidget {
                 await GoogleSignIn().disconnect();
                 await GoogleSignIn().signOut();
               }
-              if(await FacebookLogin().isLoggedIn){
+              if (await FacebookLogin().isLoggedIn) {
                 print(true);
                 await FacebookLogin().logOut();
                 await FirebaseAuth.instance.signOut();
@@ -180,8 +192,8 @@ class CustomDrawer extends StatelessWidget {
               CartList.address = null;
               CartList.totalPrice = 0;
               Navigator.pop(context);
-                      Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => HomePage()));
+              Navigator.pushReplacement(
+                  context, MaterialPageRoute(builder: (context) => HomePage()));
             },
             leading: Icon(
               Icons.devices_other,

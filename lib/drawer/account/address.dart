@@ -24,8 +24,20 @@ class _AddressState extends State<Address> {
                 context, MaterialPageRoute(builder: (context) => AddAddress()));
           }),
       appBar: AppBar(
-        title: Text("Address"),
+        title: Text(
+          "Address",
+          style: TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
+        actions: <Widget>[
+          new IconButton(
+            icon: new Image.asset('images/ToppersPakistanLogo.png'),
+            onPressed: null,
+          ),
+          SizedBox(
+            width: 10.0,
+          ),
+        ],
       ),
       body: SimpleFutureBuilder<List<AddressModel>>.simpler(
         future: _service.fetchAllByCustomerId(),

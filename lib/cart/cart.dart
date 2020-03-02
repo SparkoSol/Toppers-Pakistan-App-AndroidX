@@ -32,6 +32,15 @@ class _CartState extends State<Cart> {
       appBar: AppBar(
         centerTitle: true,
         title: Text("CART"),
+        actions: <Widget>[
+            new IconButton(
+            icon: new Image.asset('images/ToppersPakistanLogo.png'),
+            onPressed: null,
+          ),
+          SizedBox(
+              width: 10.0,
+            ),
+          ],
       ),
       body: CustomScrollView(
         slivers: <Widget>[
