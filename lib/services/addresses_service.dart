@@ -11,7 +11,7 @@ class AddressService extends Service<AddressModel> {
   }
 
   Future<AddressModel> insert(AddressModel addressModel) async {
-    // print("Model=> " +addressModel.toString());
+    print("Model=> " +addressModel.toString());
     var jsonData = jsonEncode(addressModel);
     var response = await http.post(Uri.encodeFull("$apiUrl/$route"),
         body: jsonData,
@@ -21,6 +21,7 @@ class AddressService extends Service<AddressModel> {
         });
     try {
       var data = jsonDecode(response.body);
+      print(data);
       return parse(data);
     } catch (e) {
       return null;
