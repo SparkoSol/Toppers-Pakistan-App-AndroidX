@@ -16,14 +16,37 @@ class _HomePageState extends State<HomePage> {
     return LocalData.getProfile() == null
         ? Scaffold(
             backgroundColor: Colors.black,
+            // body: Center(
+            //   child: RaisedButton(
+            //     onPressed: () {},
+            //     textColor: Colors.white,
+            //     padding: const EdgeInsets.all(0.0),
+            //     child: Container(
+            //       decoration: const BoxDecoration(
+            //         gradient: LinearGradient(
+            //           colors: <Color>[
+            //             Color(0xffCE862A),
+            //             Color(0xff000000),
+            //             Color(0xffCE862A),
+            //             Color(0xff000000),
+            //             Color(0xffCE862A),
+            //           ],
+            //         ),
+            //       ),
+            //       padding: const EdgeInsets.all(10.0),
+            //       child: const Text('Gradient Button',
+            //           style: TextStyle(fontSize: 20)),
+            //     ),
+            //   ),
+            // ),
             body: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Container(
-                    height: MediaQuery.of(context).size.height/4,
-                    width: MediaQuery.of(context).size.width ,
+                    height: MediaQuery.of(context).size.height / 4,
+                    width: MediaQuery.of(context).size.width,
                     child: ClipRRect(
                       child: Image.asset(
                         "images/ToppersPakistanLogo.png",
@@ -97,7 +120,7 @@ class _HomePageState extends State<HomePage> {
                             fontWeight: FontWeight.w400),
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

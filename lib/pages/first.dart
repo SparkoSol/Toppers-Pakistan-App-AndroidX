@@ -28,7 +28,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
-
 class First extends StatefulWidget {
   @override
   _FirstState createState() => _FirstState();
@@ -41,104 +40,95 @@ class _FirstState extends State<First> {
   final Firestore _db = Firestore.instance;
   final FirebaseMessaging _fcm = FirebaseMessaging();
 
-final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   void initState() {
     super.initState();
 
     _fcm.subscribeToTopic("notifications");
-    _fcm.configure(
-      onMessage: (Map<String, dynamic> message) async {
-        final snackBar = SnackBar(content: Text(message['notification']['title']));
-        print("On Message : $message");
-              Future.delayed(Duration(seconds: 1)).then(
-    (_) => _displaySnackbar(message['notification']['title'],message['notification']['body'] ));
-           if(LocalData.currentCustomer != null ) {
-            Scaffold.of(context).showSnackBar(snackBar);
+    _fcm.configure(onMessage: (Map<String, dynamic> message) async {
+      final snackBar =
+          SnackBar(content: Text(message['notification']['title']));
+      print("On Message : $message");
+      Future.delayed(Duration(seconds: 1)).then((_) => _displaySnackbar(
+          message['notification']['title'], message['notification']['body']));
+      if (LocalData.currentCustomer != null) {
+        Scaffold.of(context).showSnackBar(snackBar);
 
-          Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => Notification2()));
-          setState(() {
-            notification = true;
-          });
-        }
-       
-           
-        //  Scaffold.of(context).showSnackBar(snackBar);
-        //         print("On Print : $message");
-
-        
-            //     WidgetsBinding.instance
-            // .addPostFrameCallback((_) => _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text("Your message here.."))));
-        // showDialog(
-        //   context: context,
-        //   builder: (context) => AlertDialog(
-        //     content: ListTile(
-        //       title: Row(
-        //         children: <Widget>[
-        //           Icon(Icons.notifications, color: Colors.blue),
-        //           SizedBox(width: 15),
-        //           Text(message['notification']['title']),
-                  
-        //         ],
-        //       ),
-        //       subtitle: 
-        //           Text(message['notification']['body']),
-               
-        //     ),
-        //     actions: <Widget>[
-        //       FlatButton(
-        //         child: Text("OK"),
-        //         onPressed: ()=>Navigator.of(context).pop(),
-        //       )
-        //     ],
-        //   )
-        // );
-
-      },
-      onLaunch: (Map<String, dynamic> message) async {
-        print("onLaunch : $message");
-           if(LocalData.currentCustomer != null ) {
-          Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => Notification2()));
-        }
-  
-        
-      },
-      onResume: (Map<String, dynamic> message) async {
-        print("onResume : $message");
-        if(LocalData.currentCustomer != null ) {
-          Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => Notification2()));
-        }
-         
-         
-        //          showDialog(
-        //   context: context,
-        //   builder: (context) => AlertDialog(
-        //     content: ListTile(
-        //       title: Row(
-        //         children: <Widget>[
-        //           Icon(Icons.notifications, color: Colors.blue),
-        //           SizedBox(width: 15),
-        //           Text(message['notification']['title']),
-                  
-        //         ],
-        //       ),
-        //       subtitle: 
-        //           Text(message['notification']['body']),
-               
-        //     ),
-        //     actions: <Widget>[
-        //       FlatButton(
-        //         child: Text("OK"),
-        //         onPressed: ()=>Navigator.of(context).pop(),
-        //       )
-        //     ],
-        //   )
-        // );
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => Notification2()));
+        setState(() {
+          notification = true;
+        });
       }
-    );
+
+      //  Scaffold.of(context).showSnackBar(snackBar);
+      //         print("On Print : $message");
+
+      //     WidgetsBinding.instance
+      // .addPostFrameCallback((_) => _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text("Your message here.."))));
+      // showDialog(
+      //   context: context,
+      //   builder: (context) => AlertDialog(
+      //     content: ListTile(
+      //       title: Row(
+      //         children: <Widget>[
+      //           Icon(Icons.notifications, color: Colors.blue),
+      //           SizedBox(width: 15),
+      //           Text(message['notification']['title']),
+
+      //         ],
+      //       ),
+      //       subtitle:
+      //           Text(message['notification']['body']),
+
+      //     ),
+      //     actions: <Widget>[
+      //       FlatButton(
+      //         child: Text("OK"),
+      //         onPressed: ()=>Navigator.of(context).pop(),
+      //       )
+      //     ],
+      //   )
+      // );
+    }, onLaunch: (Map<String, dynamic> message) async {
+      print("onLaunch : $message");
+      if (LocalData.currentCustomer != null) {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => Notification2()));
+      }
+    }, onResume: (Map<String, dynamic> message) async {
+      print("onResume : $message");
+      if (LocalData.currentCustomer != null) {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => Notification2()));
+      }
+
+      //          showDialog(
+      //   context: context,
+      //   builder: (context) => AlertDialog(
+      //     content: ListTile(
+      //       title: Row(
+      //         children: <Widget>[
+      //           Icon(Icons.notifications, color: Colors.blue),
+      //           SizedBox(width: 15),
+      //           Text(message['notification']['title']),
+
+      //         ],
+      //       ),
+      //       subtitle:
+      //           Text(message['notification']['body']),
+
+      //     ),
+      //     actions: <Widget>[
+      //       FlatButton(
+      //         child: Text("OK"),
+      //         onPressed: ()=>Navigator.of(context).pop(),
+      //       )
+      //     ],
+      //   )
+      // );
+    });
   }
 
   void _showErrorDialog(String title, String content) {
@@ -197,7 +187,6 @@ final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
-    
     return WillPopScope(
       onWillPop: () => _exitApp(context),
       child: Scaffold(
@@ -206,10 +195,10 @@ final _scaffoldKey = GlobalKey<ScaffoldState>();
         appBar: AppBar(
           actions: <Widget>[
             new IconButton(
-            icon: new Image.asset('images/ToppersPakistanLogo.png'),
-            onPressed: null,
-          ),
-          SizedBox(
+              icon: new Image.asset('images/ToppersPakistanLogo.png'),
+              onPressed: null,
+            ),
+            SizedBox(
               width: 10.0,
             ),
           ],
@@ -237,7 +226,7 @@ final _scaffoldKey = GlobalKey<ScaffoldState>();
                   }
                 }
               },
-              backgroundColor: Colors.red,
+              backgroundColor: Color(0xffbc282b),
               child: Icon(Icons.add_shopping_cart),
             ),
             Positioned(
@@ -258,7 +247,7 @@ final _scaffoldKey = GlobalKey<ScaffoldState>();
                       ? "0"
                       : CartList.getItems().length.toString(),
                   style: TextStyle(
-                    color: Colors.red,
+                    color: Color(0xffbc282b),
                     fontSize: 12,
                   ),
                   textAlign: TextAlign.center,
@@ -366,7 +355,20 @@ final _scaffoldKey = GlobalKey<ScaffoldState>();
                                             width: 140,
                                           ),
                                           SizedBox(height: 9),
-                                          Text(snapshot.data[i].name)
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(6),
+                                              color: Color(0xffbc282b),
+                                            ),
+                                            padding: EdgeInsets.all(8.0),
+                                            child: Text(
+                                              snapshot.data[i].name,
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          )
                                         ],
                                       ),
                                     ));
@@ -383,18 +385,12 @@ final _scaffoldKey = GlobalKey<ScaffoldState>();
                 ),
               ]),
         ),
-
-
-
       ),
     );
+  }
 
+  void _displaySnackbar(title, message) {
+    _scaffoldKey.currentState.showSnackBar(
+        SnackBar(duration: Duration(seconds: 2), content: Text(message)));
   }
-  void  _displaySnackbar(title, message){
-  _scaffoldKey.currentState.showSnackBar(SnackBar(
-    duration: Duration(seconds: 2),
-    content: Text(message)
-  ));
-  }
-  
 }

@@ -31,7 +31,7 @@ class _CartState extends State<Cart> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("CART"),
+        title: Text("CART",style: TextStyle(color: Colors.white),),
         actions: <Widget>[
             new IconButton(
             icon: new Image.asset('images/ToppersPakistanLogo.png'),
@@ -234,7 +234,7 @@ class _CartState extends State<Cart> {
                     minWidth: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height / 15,
                     child: RaisedButton(
-                      color: Color(0xffcdaa44),
+                      color: Color(0xffCE862A),
                       onPressed: selectDelivery,
                       child: Text(
                         "Select Delivery Address",

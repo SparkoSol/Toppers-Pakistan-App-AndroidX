@@ -28,7 +28,7 @@ class CustomDrawerGuest extends StatelessWidget {
             height: 30.0,
           ),
           Container(
-            color: Colors.red,
+            color: Color(0xffbc282b),
             height: MediaQuery.of(context).size.height / 15,
             child: Center(
               child: Text(

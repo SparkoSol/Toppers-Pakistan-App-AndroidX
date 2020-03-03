@@ -20,7 +20,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Payment Method'),
+        title: Text('Payment Method',style: TextStyle(color:Colors.white),),
         actions: <Widget>[
             new IconButton(
             icon: new Image.asset('images/ToppersPakistanLogo.png'),
@@ -39,13 +39,13 @@ class _PaymentMethodState extends State<PaymentMethod> {
             minWidth: MediaQuery.of(context).size.width / 1.1,
             height: MediaQuery.of(context).size.height / 15,
             child: RaisedButton(
-              color: Color(0xffcdaa44),
+              color: Color(0xffCE862A),
               onPressed: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => PlaceOrder()));
               },
               child: Text("Proceed",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400,color:Colors.white)),
             ),
           ),
         ),

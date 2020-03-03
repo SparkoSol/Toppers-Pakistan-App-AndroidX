@@ -67,17 +67,20 @@ class _SelectDeliveryAddressState extends State<SelectDeliveryAddress> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Address"),
+        title: Text(
+          "Address",
+          style: TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
         actions: <Widget>[
-            new IconButton(
+          new IconButton(
             icon: new Image.asset('images/ToppersPakistanLogo.png'),
             onPressed: null,
           ),
           SizedBox(
-              width: 10.0,
-            ),
-          ],
+            width: 10.0,
+          ),
+        ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       bottomNavigationBar: BottomAppBar(
@@ -88,7 +91,7 @@ class _SelectDeliveryAddressState extends State<SelectDeliveryAddress> {
             minWidth: MediaQuery.of(context).size.width / 1.1,
             height: MediaQuery.of(context).size.height / 15,
             child: RaisedButton(
-              color: Color(0xffcdaa44),
+              color: Color(0xffCE862A),
               onPressed: () {
                 if (CartList.address == null) {
                   _showErrorDialog();
@@ -98,12 +101,13 @@ class _SelectDeliveryAddressState extends State<SelectDeliveryAddress> {
                 }
               },
               child: Text("Select Payment Method",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400,color:Colors.white)),
             ),
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(0xffbc282b),
         child: Icon(Icons.add),
         onPressed: () {
           Navigator.push(
@@ -119,13 +123,14 @@ class _SelectDeliveryAddressState extends State<SelectDeliveryAddress> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 CircleAvatar(
-                    maxRadius: 8,
-                    backgroundColor: Colors.black,
-                    child: Icon(
-                      Icons.check,
-                      size: 10,
-                      color: Colors.white,
-                    )),
+                  maxRadius: 8,
+                  backgroundColor: Colors.black,
+                  child: Icon(
+                    Icons.check,
+                    size: 10,
+                    color: Colors.white,
+                  ),
+                ),
                 SizedBox(
                   width: 10,
                 ),

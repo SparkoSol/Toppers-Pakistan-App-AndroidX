@@ -47,15 +47,15 @@ class _PlaceOrderState extends State<PlaceOrder> {
     order.instruction = CartList.instruction;
     order.branchId = selectedBranch.id.toString();
 
-    print(order.customerId);
     OrderModel newOrder = await _service.insert(order);
-    print(newOrder.id);
 
     for (var orderItem in CartList.getItems()) {
       orderItem.orderId = newOrder.id.toString();
 
       await _serviceOrderItem.insert(orderItem);
     }
+
+    _service.sendMail(newOrder, CartList.getItems());
 
     CartList.emptyCartList();
     CartList.address = null;
@@ -114,14 +114,17 @@ class _PlaceOrderState extends State<PlaceOrder> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Place Order"),
+          title: Text(
+            "Place Order",
+            style: TextStyle(color: Colors.white),
+          ),
           centerTitle: true,
           actions: <Widget>[
             new IconButton(
-            icon: new Image.asset('images/ToppersPakistanLogo.png'),
-            onPressed: null,
-          ),
-          SizedBox(
+              icon: new Image.asset('images/ToppersPakistanLogo.png'),
+              onPressed: null,
+            ),
+            SizedBox(
               width: 10.0,
             ),
           ],
