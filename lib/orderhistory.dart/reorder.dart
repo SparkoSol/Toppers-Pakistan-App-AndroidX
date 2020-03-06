@@ -52,12 +52,10 @@ class _ReOrderState extends State<ReOrder> {
         ),
         actions: <Widget>[
             new IconButton(
-            icon: new Image.asset('images/ToppersPakistanLogo.png'),
+            icon: new Image.asset('images/LogoTrans.png'),
+            iconSize: 80.0,
             onPressed: null,
           ),
-          SizedBox(
-              width: 10.0,
-            ),
           ],
       ),
       body: ListView(

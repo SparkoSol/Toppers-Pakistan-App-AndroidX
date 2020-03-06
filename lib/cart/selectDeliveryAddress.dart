@@ -74,11 +74,9 @@ class _SelectDeliveryAddressState extends State<SelectDeliveryAddress> {
         centerTitle: true,
         actions: <Widget>[
           new IconButton(
-            icon: new Image.asset('images/ToppersPakistanLogo.png'),
+            icon: new Image.asset('images/LogoTrans.png'),
+            iconSize: 80.0,
             onPressed: null,
-          ),
-          SizedBox(
-            width: 10.0,
           ),
         ],
       ),

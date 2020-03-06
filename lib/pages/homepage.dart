@@ -15,7 +15,7 @@ class _HomePageState extends State<HomePage> {
     print("Profile=>" + LocalData.getProfile().toString());
     return LocalData.getProfile() == null
         ? Scaffold(
-            backgroundColor: Colors.black,
+            backgroundColor: Color(0xffBE311A),
             // body: Center(
             //   child: RaisedButton(
             //     onPressed: () {},
@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
                     width: MediaQuery.of(context).size.width,
                     child: ClipRRect(
                       child: Image.asset(
-                        "images/ToppersPakistanLogo.png",
+                        "images/Logo.png",
                       ),
                     ),
                   ),

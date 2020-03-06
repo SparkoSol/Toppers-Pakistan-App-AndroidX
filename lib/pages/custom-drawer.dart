@@ -56,7 +56,7 @@ class CustomDrawer extends StatelessWidget {
           ),
           Container(
             child: Center(
-              child: Image.asset('images/ToppersPakistanLogo.png'),
+              child: Image.asset('images/LogoTrans.png'),
             ),
             height: MediaQuery.of(context).size.height / 5,
           ),

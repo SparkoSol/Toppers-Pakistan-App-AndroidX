@@ -45,11 +45,9 @@ class _AddAddressState extends State<AddAddress> {
         ),
         actions: <Widget>[
           new IconButton(
-            icon: new Image.asset('images/ToppersPakistanLogo.png'),
+            icon: new Image.asset('images/LogoTrans.png'),
             onPressed: null,
-          ),
-          SizedBox(
-            width: 10.0,
+            iconSize: 80.0,
           ),
         ],
       ),
