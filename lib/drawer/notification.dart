@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:topperspakistan/utils/connectivityService.dart';
+import 'package:topperspakistan/utils/no-internet-widget.dart';
 
 class Notification2 extends StatefulWidget {
   @override
@@ -18,23 +20,47 @@ class _Notification2State extends State<Notification2> {
     });
   }
 
+  bool isInternetConnected = false;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("NOTIFICATION",
-          style: TextStyle(color: Colors.white),
-        ),
-        centerTitle: true,
-        actions: <Widget>[
-            new IconButton(
-            icon: new Image.asset('images/LogoTrans.png'),
-            iconSize: 80.0,
-            onPressed: null,
-          ),
-          ],
-      ),
-      body:_showNotifications ());
+    isInternetConnected = checkConnectionStatus(context);
+    return !isInternetConnected
+        ? Scaffold(
+            appBar: AppBar(
+              title: Text(
+                "NOTIFICATION",
+                style: TextStyle(color: Colors.white),
+              ),
+              centerTitle: true,
+              actions: <Widget>[
+                new IconButton(
+                  icon: new Image.asset('images/LogoTrans.png'),
+                  iconSize: 80.0,
+                  onPressed: null,
+                ),
+              ],
+            ),
+            body: Center(
+              child: ShowNoInternet(),
+            ),
+          )
+        : Scaffold(
+            appBar: AppBar(
+              title: Text(
+                "NOTIFICATION",
+                style: TextStyle(color: Colors.white),
+              ),
+              centerTitle: true,
+              actions: <Widget>[
+                new IconButton(
+                  icon: new Image.asset('images/LogoTrans.png'),
+                  iconSize: 80.0,
+                  onPressed: null,
+                ),
+              ],
+            ),
+            body: _showNotifications());
   }
 
   Widget _showNotifications() {
@@ -56,19 +82,26 @@ class _Notification2State extends State<Notification2> {
                     Icon(Icons.notifications),
                     SizedBox(width: 10),
                     Expanded(
-                      child: Text("${querySnapshot.documents[i].data['title']}")
-                    ),
+                        child: Text(
+                            "${querySnapshot.documents[i].data['title']}")),
                   ],
                 ),
                 subtitle: Row(
                   children: <Widget>[
-                    SizedBox(width: 35,),
-                    Expanded(child: Text("${querySnapshot.documents[i].data['message']}")),
+                    SizedBox(
+                      width: 35,
+                    ),
+                    Expanded(
+                        child: Text(
+                            "${querySnapshot.documents[i].data['message']}")),
                   ],
-                ), 
+                ),
               ),
-              Divider(color: Colors.grey, indent: 10, endIndent: 10,)
-           
+              Divider(
+                color: Colors.grey,
+                indent: 10,
+                endIndent: 10,
+              )
             ],
           );
         },
@@ -81,7 +114,10 @@ class _Notification2State extends State<Notification2> {
   }
 
   getNotifications() async {
-    return await Firestore.instance.collection('notifications').orderBy('timestamp', descending: false).getDocuments();
-    // 
+    return await Firestore.instance
+        .collection('notifications')
+        .orderBy('timestamp', descending: false)
+        .getDocuments();
+    //
   }
 }

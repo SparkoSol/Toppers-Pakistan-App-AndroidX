@@ -34,13 +34,13 @@ class _SigninState extends State<Signin> {
       setState(() {
         loading = false;
       });
-      _showErrorDialog();
+      _showErrorDialog("Error", "Please Provide Valid Credentials");
     } else {
       if (signedCustomer.email == null) {
         setState(() {
           loading = false;
         });
-        _showErrorDialog();
+        _showErrorDialog("Error", "Please Provide Valid Credentials");
       } else {
         LocalData.setProfile(signedCustomer);
         setState(() {
@@ -54,17 +54,17 @@ class _SigninState extends State<Signin> {
     }
   }
 
-  void _showErrorDialog() {
+  void _showErrorDialog(title, message) {
     showDialog(
         context: context,
         builder: (BuildContext contex) {
           return AlertDialog(
             title: new Text(
-              "Error",
+              title,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
             ),
             content: Text(
-              "Please Provide Valid Credentials",
+              message,
               style: TextStyle(
                 fontSize: 18,
               ),
@@ -211,6 +211,17 @@ class _SigninState extends State<Signin> {
                 ),
               ),
               SizedBox(
+                height: 10.0,
+              ),
+              GestureDetector(
+                child: Text(
+                  "Forget Password",
+                  style: TextStyle(color: Colors.white),
+                ),
+                onTap: () => Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => ForgotPassword() )),
+              ),
+              SizedBox(
                 height: 20.0,
               ),
               SizedBox(
@@ -270,14 +281,16 @@ class _SigninState extends State<Signin> {
                                 });
                                 await GoogleSignIn().disconnect();
                                 await GoogleSignIn().signOut();
-                                _showErrorDialog();
+                                _showErrorDialog(
+                                    "Error", "No Profile Found Please Sign Up");
                               } else {
                                 print("sign in");
                                 LocalData.setProfile(prof);
                                 setState(() {
                                   loading = false;
                                 });
-                                print("Google Sign in=> " + LocalData.getProfile().id.toString());
+                                print("Google Sign in=> " +
+                                    LocalData.getProfile().id.toString());
                                 print(LocalData.currentCustomer.name);
                                 Navigator.pushReplacement(
                                     context,
@@ -291,7 +304,8 @@ class _SigninState extends State<Signin> {
                               });
                               await GoogleSignIn().disconnect();
                               await GoogleSignIn().signOut();
-                              _showErrorDialog();
+                              _showErrorDialog(
+                                  "Error", "No Profile Found Please Sign Up");
                             }
                           }
                         });
@@ -319,7 +333,9 @@ class _SigninState extends State<Signin> {
                         ),
                       ),
                       onPressed: () async {
+                        print('fb start');
                         FirebaseAuthentication.facebookAuth((user) async {
+                          print(user.toString());
                           if (user == null) {
                             print("Issue while signing in with fb");
                             showDialog(
@@ -340,6 +356,7 @@ class _SigninState extends State<Signin> {
                             setState(() {
                               loading = true;
                             });
+                            print("User=>" + user.displayName.toString());
                             CustomerModel customerModel = new CustomerModel();
                             customerModel.name = user.displayName;
                             customerModel.email = user.email;
@@ -354,14 +371,16 @@ class _SigninState extends State<Signin> {
                                 setState(() {
                                   loading = false;
                                 });
-                                _showErrorDialog();
+                                _showErrorDialog(
+                                    "Error", "No profile found please sign up");
                               } else {
                                 print("sign in");
                                 LocalData.setProfile(prof);
                                 setState(() {
                                   loading = false;
                                 });
-                                print("Facebook Sign in=> " + LocalData.getProfile().id.toString());
+                                print("Facebook Sign in=> " +
+                                    LocalData.getProfile().id.toString());
                                 print(LocalData.currentCustomer.name);
                                 Navigator.pushReplacement(
                                     context,
@@ -373,7 +392,8 @@ class _SigninState extends State<Signin> {
                               setState(() {
                                 loading = false;
                               });
-                              _showErrorDialog();
+                              _showErrorDialog(
+                                  "Error", "No profile found please sign up");
                             }
                           }
                         });

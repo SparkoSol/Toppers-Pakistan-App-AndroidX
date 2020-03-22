@@ -15,7 +15,7 @@ abstract class Service<T extends Model> {
         headers: {"Accept": "application/json"});
 
     var data = jsonDecode(response.body) as List;
-
+    
     return data.map((item) => parse(item)).toList();
   }
 
@@ -34,6 +34,7 @@ abstract class Service<T extends Model> {
             "$apiUrl/$route/" + LocalData.currentCustomer.id.toString()),
         headers: {"Accept": "application/json"});
     var data = jsonDecode(response.body) as List;
+    // print("CusId"+ data.toString());
     return data.map((item) => parse(item)).toList();
   }
 

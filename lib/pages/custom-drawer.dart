@@ -186,7 +186,7 @@ class CustomDrawer extends StatelessWidget {
                 await FirebaseAuth.instance.signOut();
               }
               print("object");
-              LocalData.currentCustomer = null;
+              LocalData.logout();
               CartList.emptyCartList();
               CartList.instruction = "";
               CartList.address = null;

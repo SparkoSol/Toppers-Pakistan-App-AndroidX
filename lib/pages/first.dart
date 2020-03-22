@@ -10,6 +10,7 @@ import 'package:topperspakistan/models/local-data.dart';
 import 'package:topperspakistan/pages/carosalpage.dart';
 import 'package:topperspakistan/pages/custom-drawer-guest.dart';
 import 'package:topperspakistan/pages/custom-drawer.dart';
+import 'package:topperspakistan/pages/subCategories.dart';
 import 'package:topperspakistan/services/carosel_service.dart';
 import 'package:topperspakistan/services/category_service.dart';
 import 'package:topperspakistan/models/category_model.dart';
@@ -18,6 +19,8 @@ import 'package:shimmer/shimmer.dart';
 import 'package:topperspakistan/drawer/notification.dart';
 import 'package:topperspakistan/pages/model.dart';
 import 'package:topperspakistan/pages/order.dart';
+import 'package:topperspakistan/utils/connectivityService.dart';
+import 'package:topperspakistan/utils/no-internet-widget.dart';
 
 import '../simple-future-builder.dart';
 import 'dart:async';
@@ -185,208 +188,243 @@ class _FirstState extends State<First> {
         false;
   }
 
+  bool isInternetConnected = false;
+
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () => _exitApp(context),
-      child: Scaffold(
-        key: _scaffoldKey,
-        //  backgroundColor: Colors.black,
-        appBar: AppBar(
-          actions: <Widget>[
-            new IconButton(
-              icon: new Image.asset(
-                'images/LogoTrans.png',
-              ),
-              iconSize: 80,
-              onPressed: null,
-            ),
-          ],
-          centerTitle: true,
-          // backgroundColor: Colors.black,
-          title: Text(
-            "MENU",
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-          ),
-        ),
-        floatingActionButton: Stack(
-          children: <Widget>[
-            FloatingActionButton(
-              onPressed: () {
-                print(CartList.getItems().length);
-                if (CartList.getItems().length == 0) {
-                  _showErrorDialog("Warning", "Your Cart is Empty!");
-                } else {
-                  if (LocalData.currentCustomer == null) {
-                    _showErrorDialog(
-                        "Warning!", "Please Sign In to View Cart!");
-                  } else {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Cart()));
-                  }
-                }
-              },
-              backgroundColor: Color(0xffbc282b),
-              child: Icon(Icons.add_shopping_cart),
-            ),
-            Positioned(
-              right: 7,
-              top: 7,
-              child: Container(
-                padding: EdgeInsets.all(2),
-                decoration: new BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                constraints: BoxConstraints(
-                  minWidth: 14,
-                  minHeight: 14,
-                ),
-                child: Text(
-                  CartList.getItems() == null
-                      ? "0"
-                      : CartList.getItems().length.toString(),
-                  style: TextStyle(
-                    color: Color(0xffbc282b),
-                    fontSize: 12,
+    isInternetConnected = checkConnectionStatus(context);
+    return isInternetConnected
+        ? WillPopScope(
+            onWillPop: () => _exitApp(context),
+            child: Scaffold(
+              key: _scaffoldKey,
+              //  backgroundColor: Colors.black,
+              appBar: AppBar(
+                actions: <Widget>[
+                  new IconButton(
+                    icon: new Image.asset(
+                      'images/LogoTrans.png',
+                    ),
+                    iconSize: 80,
+                    onPressed: null,
                   ),
-                  textAlign: TextAlign.center,
+                ],
+                centerTitle: true,
+                // backgroundColor: Colors.black,
+                title: Text(
+                  "MENU",
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
                 ),
               ),
-            )
-          ],
-        ),
-        drawer: LocalData.currentCustomer == null
-            ? CustomDrawerGuest()
-            : CustomDrawer(),
-        body: Container(
-          child: Column(
-              // mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Carosal(),
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height / 18,
-                  color: Color(0xffCE862A),
-                  child: Center(
-                      child: Text(
-                    "CATEGORIES",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 20),
-                  )),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Expanded(
-                  child: FutureBuilder<List<CategoryModel>>(
-                    future: _service.fetchAll(),
-                    builder:
-                        (context, AsyncSnapshot<List<CategoryModel>> snapshot) {
-                      if (snapshot.hasData) {
-                        switch (snapshot.connectionState) {
-                          case ConnectionState.none:
-                            return Text("No Connection");
-                          case ConnectionState.waiting:
-                            return Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          case ConnectionState.active:
-                            return Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          case ConnectionState.done:
-                            if (snapshot.data.isEmpty) {
-                              return Center(
-                                child: Text("No Categories Found"),
-                              );
-                            } else {
-                              return GridView.builder(
-                                  itemCount: snapshot.data.length,
-                                  gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                          childAspectRatio: 1 / 1.05,
-                                          crossAxisCount: 2,
-                                          crossAxisSpacing: 10,
-                                          mainAxisSpacing: 5),
-                                  itemBuilder: (context, i) {
-                                    return Container(
-                                        child: GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => Order(
-                                                categoryModel:
-                                                    snapshot.data[i]),
-                                          ),
-                                        );
-                                      },
-                                      child: Column(
-                                        children: <Widget>[
-                                          Container(
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(100)),
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(100),
-                                              child: Image.network(
-                                                  "http://toppers-pakistan.toppers-mart.com/images/category/" +
-                                                      snapshot.data[i].image,
-                                                  fit: BoxFit.cover,
-                                                  loadingBuilder:
-                                                      (context, widget, event) {
-                                                if (event != null) {
-                                                  return CircularProgressIndicator();
-                                                } else if (widget != null) {
-                                                  return widget;
-                                                }
-                                                return CircularProgressIndicator();
-                                              }),
-                                            ),
-                                            height: 140,
-                                            width: 140,
-                                          ),
-                                          SizedBox(height: 9),
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(6),
-                                              color: Color(0xffbc282b),
-                                            ),
-                                            padding: EdgeInsets.all(8.0),
-                                            child: Text(
-                                              snapshot.data[i].name,
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ));
-                                  });
-                            }
-                        }
+              floatingActionButton: Stack(
+                children: <Widget>[
+                  FloatingActionButton(
+                    onPressed: () {
+                      print(CartList.getItems().length);
+                      if (CartList.getItems().length == 0) {
+                        _showErrorDialog("Warning", "Your Cart is Empty!");
                       } else {
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
+                        if (LocalData.currentCustomer == null) {
+                          _showErrorDialog(
+                              "Warning!", "Please Sign In to View Cart!");
+                        } else {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => Cart()));
+                        }
                       }
                     },
+                    backgroundColor: Color(0xffbc282b),
+                    child: Icon(Icons.add_shopping_cart),
                   ),
+                  Positioned(
+                    right: 7,
+                    top: 7,
+                    child: Container(
+                      padding: EdgeInsets.all(2),
+                      decoration: new BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      constraints: BoxConstraints(
+                        minWidth: 14,
+                        minHeight: 14,
+                      ),
+                      child: Text(
+                        CartList.getItems() == null
+                            ? "0"
+                            : CartList.getItems().length.toString(),
+                        style: TextStyle(
+                          color: Color(0xffbc282b),
+                          fontSize: 12,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              drawer: LocalData.currentCustomer == null
+                  ? CustomDrawerGuest()
+                  : CustomDrawer(),
+              body: Container(
+                child: Column(
+                    // mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Carosal(),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height / 18,
+                        color: Color(0xffCE862A),
+                        child: Center(
+                            child: Text(
+                          "CATEGORIES",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 20),
+                        )),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Expanded(
+                        child: FutureBuilder<List<CategoryModel>>(
+                          future: _service.fetchAll(),
+                          builder: (context,
+                              AsyncSnapshot<List<CategoryModel>> snapshot) {
+                            if (snapshot.hasData) {
+                              switch (snapshot.connectionState) {
+                                case ConnectionState.none:
+                                  return Text("No Connection");
+                                case ConnectionState.waiting:
+                                  return Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                case ConnectionState.active:
+                                  return Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                case ConnectionState.done:
+                                  if (snapshot.data.isEmpty) {
+                                    return Center(
+                                      child: Text("No Categories Found"),
+                                    );
+                                  } else {
+                                    return GridView.builder(
+                                        itemCount: snapshot.data.length,
+                                        gridDelegate:
+                                            SliverGridDelegateWithFixedCrossAxisCount(
+                                                childAspectRatio: 1 / 1.05,
+                                                crossAxisCount: 2,
+                                                crossAxisSpacing: 10,
+                                                mainAxisSpacing: 5),
+                                        itemBuilder: (context, i) {
+                                          return Container(
+                                              child: GestureDetector(
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      SubCategories(
+                                                          categoryModel:
+                                                              snapshot.data[i]),
+                                                ),
+                                              );
+                                            },
+                                            child: Column(
+                                              children: <Widget>[
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              100)),
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            100),
+                                                    child: Image.network(
+                                                        "http://toppers-pakistan.toppers-mart.com/images/category/" +
+                                                            snapshot
+                                                                .data[i].image,
+                                                        fit: BoxFit.cover,
+                                                        loadingBuilder:
+                                                            (context, widget,
+                                                                event) {
+                                                      if (event != null) {
+                                                        return CircularProgressIndicator();
+                                                      } else if (widget !=
+                                                          null) {
+                                                        return widget;
+                                                      }
+                                                      return CircularProgressIndicator();
+                                                    }),
+                                                  ),
+                                                  height: 140,
+                                                  width: 140,
+                                                ),
+                                                SizedBox(height: 9),
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            6),
+                                                    color: Color(0xffbc282b),
+                                                  ),
+                                                  padding: EdgeInsets.all(8.0),
+                                                  child: Text(
+                                                    snapshot.data[i].name,
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ));
+                                        });
+                                  }
+                              }
+                            } else {
+                              return Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                          },
+                        ),
+                      ),
+                    ]),
+              ),
+            ),
+          )
+        : Scaffold(
+            appBar: AppBar(
+              actions: <Widget>[
+                new IconButton(
+                  icon: new Image.asset(
+                    'images/LogoTrans.png',
+                  ),
+                  iconSize: 80,
+                  onPressed: null,
                 ),
-              ]),
-        ),
-      ),
-    );
+              ],
+              centerTitle: true,
+              // backgroundColor: Colors.black,
+              title: Text(
+                "MENU",
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+            ),
+            drawer: LocalData.currentCustomer == null
+                ? CustomDrawerGuest()
+                : CustomDrawer(),
+            body: Center(child: ShowNoInternet()));
   }
 
   void _displaySnackbar(title, message) {

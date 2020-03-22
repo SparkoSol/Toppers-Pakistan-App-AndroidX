@@ -36,6 +36,20 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          widget.product.name,
+          style: TextStyle(color: Colors.white),
+        ),
+        centerTitle: true,
+        actions: <Widget>[
+          new IconButton(
+            icon: new Image.asset('images/LogoTrans.png'),
+            iconSize: 80.0,
+            onPressed: null,
+          ),
+        ],
+      ),
       body: FutureBuilder<List<UnitModel>>(
         future: widget._service.fetchAllById(widget.product.unitId),
         builder: (context, AsyncSnapshot<List<UnitModel>> snapshot) {
@@ -50,7 +64,7 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
                           widget.product.image,
                       width: MediaQuery.of(context).size.width,
                       fit: BoxFit.cover,
-                      height: MediaQuery.of(context).size.height / 2,
+                      height: MediaQuery.of(context).size.height / 2.2,
                     ),
                     SizedBox(
                       height: 10,
@@ -75,9 +89,6 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
                               fontSize: 18,
                               color: Colors.black),
                         ),
-                        subtitle: Text("serving(s) " +
-                            widget.product.serving +
-                            " person(s)"),
                         trailing: Container(
                           decoration: BoxDecoration(
                               color: Colors.red,
@@ -173,11 +184,12 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
                                 widget.product.restaurantId;
                             orderItem.categoryId = widget.product.categoryId;
                             orderItem.unit = snapshot.data[i].name;
-                            orderItem.serving = widget.product.serving;
                             orderItem.unitPrice = widget.product.unitPrice;
                             orderItem.image = widget.product.image;
                             orderItem.weight = widget.product.quantity;
                             CartList.addToCart(orderItem);
+                            print("Order Item Unit Price : " +CartList.getItems()[0].unitPrice);
+                            Navigator.pop(context);
                             Navigator.pop(context);
                             Navigator.pop(context);
                           },

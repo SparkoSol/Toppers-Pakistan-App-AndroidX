@@ -13,6 +13,12 @@ class LocalData {
     return currentCustomer;
   }
 
+
+  static void logout(){
+    currentCustomer = null;
+    writeData();
+  }
+
   static void setProfile(CustomerModel profile) {
     _signedIn = profile != null;
     currentCustomer = profile;

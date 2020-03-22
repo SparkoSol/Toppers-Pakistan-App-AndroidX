@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:topperspakistan/models/product_model.dart';
+import 'package:topperspakistan/models/subCategories_model.dart';
 
 import '_model.dart';
 
@@ -19,16 +19,17 @@ class CategoryModel extends Model {
         'image': image,
       };
 
-  Future<List<ProductModel>> fetchProduct(id) async {
+  Future<List<SubCategoryModel>> fetchSubCategory(id) async {
+   print("http://toppers-pakistan.toppers-mart.com/api/category/$id/subCategories");
     var response = await http.get(
-        Uri.encodeFull("http://toppers-pakistan.toppers-mart.com/api/category/$id/products"),
+        Uri.encodeFull(
+            "http://toppers-pakistan.toppers-mart.com/api/category/$id/subCategories"),
         headers: {"Accept": "application/json"});
     var data = jsonDecode(response.body) as List;
-
-    return data.map((item) => parse(item)).toList();
+    return data.map((item) => parseSub(item)).toList();
   }
 
-  ProductModel parse(Map<String, dynamic> json) {
-    return ProductModel.fromJson(json);
+  SubCategoryModel parseSub(Map<String, dynamic> json) {
+    return SubCategoryModel.fromJson(json);
   }
 }

@@ -3,13 +3,14 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:topperspakistan/models/category_model.dart';
 import 'package:topperspakistan/models/product_model.dart';
+import 'package:topperspakistan/models/subCategories_model.dart';
 import 'package:topperspakistan/pages/model.dart';
 import 'package:topperspakistan/pages/order_confirm.dart';
 
 class Order extends StatefulWidget {
-  final CategoryModel categoryModel;
+  final SubCategoryModel subCategoryModel;
 
-  Order({this.categoryModel});
+  Order({this.subCategoryModel});
 
   @override
   _OrderState createState() => _OrderState();
@@ -19,10 +20,22 @@ class _OrderState extends State<Order> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Colors.black,
+      appBar: AppBar(
+        title: Text("Products",
+          style: TextStyle(color: Colors.white),
+        ),
+        centerTitle: true,
+        actions: <Widget>[
+            new IconButton(
+            icon: new Image.asset('images/LogoTrans.png'),
+            iconSize: 80.0,
+            onPressed: null,
+          ),
+          ],
+      ),      // backgroundColor: Colors.black,
       backgroundColor: Colors.white,
       body: FutureBuilder<List<ProductModel>>(
-          future: widget.categoryModel.fetchProduct(widget.categoryModel.id),
+          future: widget.subCategoryModel.fetchProduct(widget.subCategoryModel.id),
           builder: (context, AsyncSnapshot<List<ProductModel>> snapshot) {
             if (snapshot.hasData) {
               switch (snapshot.connectionState) {
@@ -106,14 +119,6 @@ class _OrderState extends State<Order> {
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 16,
                                                 color: Colors.black),
-                                          ),
-                                          Text(
-                                            "serving(s) " +
-                                                snapshot.data[i].serving +
-                                                " person",
-                                            style: TextStyle(
-                                                color: Colors.black38,
-                                                fontSize: 14),
                                           ),
                                         ],
                                       ),

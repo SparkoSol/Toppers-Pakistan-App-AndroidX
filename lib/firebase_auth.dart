@@ -4,26 +4,37 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class FirebaseAuthentication {
   static facebookAuth(void Function(FirebaseUser) onComplete) async {
-    final facebookLogin = FacebookLogin();
+    print("fb1 ");
+    final facebookLogin = new FacebookLogin();
+    print("fb2 ");
+    final FacebookLoginResult result = await facebookLogin.logIn(['email']);
 
-    final authResult = await facebookLogin.logIn(["email", "public_profile"]);
-
-    switch (authResult.status) {
+    switch (result.status) {
       case FacebookLoginStatus.loggedIn:
-        onComplete((await FirebaseAuth.instance.signInWithCredential(
-                FacebookAuthProvider.getCredential(
-                    accessToken: authResult.accessToken.token)))
-            .user);
-        print("Fb logged in");
-
+        FacebookAccessToken accessToken = result.accessToken;
+        AuthCredential credential =
+            FacebookAuthProvider.getCredential(accessToken: accessToken.token);
+        try {
+          print("1");
+          var hd = await FirebaseAuth.instance.signInWithCredential(credential);
+          print('2=>'+ hd.toString());
+          FirebaseUser user = (hd).user;
+          onComplete(user);
+        } catch (e) {
+          onComplete(null);
+          print("error=>" + e.toString());
+          break;
+        }
+        print("Fb logged in");  
         break;
       case FacebookLoginStatus.cancelledByUser:
         break;
       case FacebookLoginStatus.error:
         onComplete(null);
-        print(authResult.errorMessage);
+        print(result.errorMessage);
         break;
     }
+
   }
 
   static googleAuth(void Function(FirebaseUser) onComplete) async {
@@ -36,7 +47,7 @@ class FirebaseAuthentication {
         (await FirebaseAuth.instance.signInWithCredential(credential)).user);
   }
 
-  static googleDestroy() async{
+  static googleDestroy() async {
     await GoogleSignIn().disconnect();
     await GoogleSignIn().signOut();
   }

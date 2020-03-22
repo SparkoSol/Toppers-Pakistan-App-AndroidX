@@ -20,9 +20,12 @@ class _CartState extends State<Cart> {
 
   int calcTotal() {
     int total = 0;
-    for (var orderItem in CartList.getItems()) {
-      total += orderItem.quantity * int.parse(orderItem.unitPrice);
+    for (var i = 0; i < CartList.getItems().length; i++) {
+           print("Me: " + CartList.getItems()[i].unitPrice.toString()); 
+      total += CartList.getItems()[i].quantity * int.parse(CartList.getItems()[i].unitPrice);
     }
+    // for (var orderItem in CartList.getItems()) {
+    // }
     return total;
   }
 

@@ -68,6 +68,7 @@ class _SignUpState extends State<SignUp> {
     customerModel.name = nameController.text;
     customerModel.email = emailController.text;
     customerModel.phone = phoneController.text;
+    customerModel.other = 0;
 
     if (passwordController.text == confirmPasswordController.text) {
       customerModel.password = passwordController.text;
@@ -423,6 +424,7 @@ class _SignUpState extends State<SignUp> {
                               CustomerModel customerModel = new CustomerModel();
                               customerModel.name = user.displayName;
                               customerModel.email = user.email;
+                              customerModel.other = 1;
                               if (user.phoneNumber == null) {
                                 customerModel.phone = "00000000000";
                               } else {
@@ -541,6 +543,7 @@ class _SignUpState extends State<SignUp> {
                             CustomerModel customerModel = new CustomerModel();
                             customerModel.name = user.displayName;
                             customerModel.email = user.email;
+                            customerModel.other = 1;
                             if (user.phoneNumber == null) {
                               customerModel.phone = "00000000000";
                             } else {

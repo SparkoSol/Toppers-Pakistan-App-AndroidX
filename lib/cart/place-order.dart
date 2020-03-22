@@ -46,9 +46,10 @@ class _PlaceOrderState extends State<PlaceOrder> {
     order.totatlPrice = totalPrice;
     order.instruction = CartList.instruction;
     order.branchId = selectedBranch.id.toString();
+    order.delivery = 1;
 
     OrderModel newOrder = await _service.insert(order);
-
+    print(newOrder.toJson());
     for (var orderItem in CartList.getItems()) {
       orderItem.orderId = newOrder.id.toString();
 

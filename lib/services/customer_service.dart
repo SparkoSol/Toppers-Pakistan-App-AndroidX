@@ -33,6 +33,7 @@ class CustomerService extends Service<CustomerModel> {
 
   Future<CustomerModel> login(CustomerModel customerModel) async {
     var jsonData = jsonEncode(customerModel);
+    print(jsonData);
     try {
       print('waiting');
       var response = await http.post(Uri.encodeFull("$apiUrl/login-customer"),
@@ -41,8 +42,9 @@ class CustomerService extends Service<CustomerModel> {
             "Content-Type": "application/json",
             "Accept": "application/json"
           });
+          print("after");
       var data = jsonDecode(response.body);
-      print(parse(data).email);
+      print("Email=> "+parse(data).email);
       return parse(data);
     } catch (e) {
       return null;
@@ -80,6 +82,28 @@ class CustomerService extends Service<CustomerModel> {
             "Accept": "application/json"
           });
       var data = jsonDecode(response.body);
+      if(data == true){
+        return true;
+      }else{
+        return false;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
+    Future<bool> forgetPassword(email) async {
+    var data =   {"email": "$email"}; 
+    var jsonData = jsonEncode(data);
+    print(jsonData);
+    try {
+      var response = await http.post(Uri.encodeFull("$apiUrl/forgetPassword"),
+          body: jsonData,
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          });
+      bool data = jsonDecode(response.body);
       if(data == true){
         return true;
       }else{

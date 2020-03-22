@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:topperspakistan/cart_list.dart';
 import 'package:topperspakistan/pages/splash.dart';
 
 import 'models/local-data.dart';
+import 'utils/connectivityService.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,7 +17,9 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return StreamProvider<ConnectivityStatus>(
+      create: (context) => ConnectivityService().connectionStatusController.stream,
+      child: MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: Color(0xffbc282b),
@@ -30,6 +34,12 @@ class MyApp extends StatelessWidget {
         ),
       ),
       home: Splash(),
+    ),
     );
   }
 }
+
+
+
+
+

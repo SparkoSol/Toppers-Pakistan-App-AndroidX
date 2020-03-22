@@ -6,7 +6,6 @@ class ProductModel extends Model {
   final String categoryId;
   final String unitId;
   final String quantity;
-  final String serving;
   final String unitPrice;
   final String image;
 
@@ -17,7 +16,6 @@ class ProductModel extends Model {
       this.categoryId,
       this.unitId,
       this.quantity,
-      this.serving,
       this.unitPrice,
       this.image})
       : super(id: id);
@@ -30,7 +28,6 @@ class ProductModel extends Model {
             categoryId: json['category_id'].toString(),
             unitId: json['unit_id'].toString(),
             quantity: json['quantity'].toString(),
-            serving: json['serving'].toString(),
             unitPrice: json['unit_price'].toString(),
             image: json['image']);
 
@@ -41,7 +38,6 @@ class ProductModel extends Model {
         'category_id': categoryId,
         'unit_id': unitId,
         'quantity': quantity,
-        'serving': serving,
         'unit_price': unitPrice,
         'image': image
       };
