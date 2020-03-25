@@ -218,8 +218,8 @@ class _SigninState extends State<Signin> {
                   "Forget Password",
                   style: TextStyle(color: Colors.white),
                 ),
-                onTap: () => Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => ForgotPassword() )),
+                onTap: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ForgotPassword())),
               ),
               SizedBox(
                 height: 20.0,
@@ -232,14 +232,29 @@ class _SigninState extends State<Signin> {
                       shape: RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(28.0),
                       ),
-                      color: Color(0xffBC282B),
-                      child: Text(
-                        "Sign in with Google",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w400,
-                        ),
+                      color: Color(0xff4285F4),
+                      child: Row(
+                        children: <Widget>[
+                          Container(
+                            margin: EdgeInsets.all(10),
+                            color: Colors.white,
+                            child:Image.asset(
+                              'images/google1.png',
+                              width: 25,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Text(
+                            "Sign in with Google",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ],
                       ),
                       onPressed: () async {
                         FirebaseAuthentication.googleAuth((user) async {
@@ -323,14 +338,28 @@ class _SigninState extends State<Signin> {
                       shape: RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(28.0),
                       ),
-                      color: Color(0xffBC282B),
-                      child: Text(
-                        "Sign in with Facebook",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w400,
-                        ),
+                      color: Color(0xff3C5A99),
+                      child: Row(
+                        children: <Widget>[
+                          Container(
+                            margin: EdgeInsets.all(10),
+                            child:Image.asset(
+                              'images/facebook2.png',
+                              width: 25,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Text(
+                            "Sign in with Facebook",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ],
                       ),
                       onPressed: () async {
                         print('fb start');

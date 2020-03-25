@@ -62,6 +62,12 @@ flutter:
    - images/LogoWhite.png
    - images/LogoTrans.png
    - images/LogoHD.png
+   - images/google.png
+   - images/google1.png
+   - images/facebook.png
+   - images/facebook1.png
+   - images/facebook2.png
+
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -362,15 +362,30 @@ class _SignUpState extends State<SignUp> {
                     shape: RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(28.0),
                     ),
-                    color: Color(0xffBC282B),
-                    child: Text(
-                      "Sign Up with Google",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w400,
+                    color: Color(0xff4285F4),
+                    child:  Row(
+                        children: <Widget>[
+                          Container(
+                            margin: EdgeInsets.all(10),
+                            color: Colors.white,
+                            child:Image.asset(
+                              'images/google1.png',
+                              width: 25,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Text(
+                            "Sign up with Google",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
                     onPressed: () async {
                       await FirebaseAuthentication.googleAuth(
                         (user) async {
@@ -487,15 +502,29 @@ class _SignUpState extends State<SignUp> {
                     shape: RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(28.0),
                     ),
-                    color: Color(0xffBC282B),
-                    child: Text(
-                      "Sign Up with Facebook",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w400,
+                    color: Color(0xff3C5A99),
+                    child: Row(
+                        children: <Widget>[
+                          Container(
+                            margin: EdgeInsets.all(10),
+                            child:Image.asset(
+                              'images/facebook2.png',
+                              width: 25,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Text(
+                            "Sign up with Facebook",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
                     onPressed: () async {
                       await FirebaseAuthentication.facebookAuth((user) async {
                         if (user == null) {
