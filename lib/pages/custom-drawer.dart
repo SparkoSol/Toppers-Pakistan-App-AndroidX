@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:rate_my_app/rate_my_app.dart';
 import 'package:topperspakistan/cart/cart.dart';
 import 'package:topperspakistan/drawer/about_us.dart';
 import 'package:topperspakistan/drawer/account.dart';
@@ -9,6 +10,7 @@ import 'package:topperspakistan/firebase_auth.dart';
 import 'package:topperspakistan/models/local-data.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:topperspakistan/pages/homepage.dart';
+import 'package:topperspakistan/rate.dart';
 
 import '../cart_list.dart';
 
@@ -166,6 +168,28 @@ class CustomDrawer extends StatelessWidget {
             ),
             title: Text(
               "NOTIFICATIONS",
+              style: TextStyle(color: Colors.black),
+            ),
+          ),
+          Divider(
+            color: Colors.black,
+            height: 0,
+          ),
+          ListTile(
+            onTap: () {
+              Navigator.pop(context);
+              Rate.getRate().showRateDialog(
+                context,
+                title: "Rate Toppers Pakistan",
+                message: "If you like Toppers Pakistan, please take a little bit of your time to review it !\nIt really helps us and it shouldn\'t take you more than one minute."
+                ).then((_) => {});
+            },
+            leading: Icon(
+              Icons.rate_review,
+              color: Colors.black,
+            ),
+            title: Text(
+              "Rate",
               style: TextStyle(color: Colors.black),
             ),
           ),
