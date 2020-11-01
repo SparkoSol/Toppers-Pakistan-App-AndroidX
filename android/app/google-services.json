@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "944115863850",
+    "firebase_url": "https://toppers-pakistan.firebaseio.com",
+    "project_id": "toppers-pakistan",
+    "storage_bucket": "toppers-pakistan.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:944115863850:android:8b7a20b80509f7a753ce53",
+        "android_client_info": {
+          "package_name": "com.nabeel.topperspakistan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "944115863850-4bcso9nmmbhrbkpkj5a1lgtl7dfse8vf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nabeel.topperspakistan",
+            "certificate_hash": "2f6dd508e4498a94ff46d4af5ef1e57b04d3529e"
+          }
+        },
+        {
+          "client_id": "944115863850-r1bjl4d8jr6ot0q1a2c484k4nnbmsh2o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_Iq-hpyn3AYVpl7fkc_jqO68nJUVH2L8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "944115863850-r1bjl4d8jr6ot0q1a2c484k4nnbmsh2o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
