@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:topperspakistan/cart/cart.dart';
 import 'package:topperspakistan/cart_list.dart';
 import 'package:topperspakistan/models/local-data.dart';
-import 'package:topperspakistan/pages/carosalpage.dart';
+import 'package:topperspakistan/pages/carouselpage.dart';
 import 'package:topperspakistan/pages/custom-drawer-guest.dart';
 import 'package:topperspakistan/pages/custom-drawer.dart';
 import 'package:topperspakistan/pages/subCategories.dart';
@@ -128,7 +128,7 @@ class _FirstState extends State<First> {
   void _showErrorDialog(String title, String content) {
     showDialog(
         context: context,
-        builder: (BuildContext contex) {
+        builder: (BuildContext context) {
           return AlertDialog(
             title: new Text(
               title,
@@ -223,7 +223,7 @@ class _FirstState extends State<First> {
                           await  Navigator.push(context,
                               MaterialPageRoute(builder: (context) => Cart()));
                           setState(() {
-                            
+
                           });
                         }
                       }
@@ -266,7 +266,7 @@ class _FirstState extends State<First> {
                     // mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Carosal(),
+                      Carousel(),
                       SizedBox(
                         height: 10,
                       ),
@@ -289,6 +289,7 @@ class _FirstState extends State<First> {
                       Expanded(
                         child: FutureBuilder<List<CategoryModel>>(
                           future: _service.fetchAll(),
+                          // ignore: missing_return
                           builder: (context,
                               AsyncSnapshot<List<CategoryModel>> snapshot) {
                             if (snapshot.hasData) {
@@ -331,7 +332,7 @@ class _FirstState extends State<First> {
                                                 ),
                                               );
                                               setState(() {
-                                                
+
                                               });
                                             },
                                             child: Column(
@@ -346,7 +347,7 @@ class _FirstState extends State<First> {
                                                         BorderRadius.circular(
                                                             100),
                                                     child: Image.network(
-                                                        "https://toppers-pakistan.toppers-mart.com/images/category/" +
+                                                        "http://192.168.100.23:8000/images/category/" +
                                                             snapshot
                                                                 .data[i].image,
                                                         fit: BoxFit.cover,

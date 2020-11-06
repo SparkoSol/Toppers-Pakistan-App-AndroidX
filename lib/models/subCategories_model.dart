@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:topperspakistan/models/local-data.dart';
 import 'package:topperspakistan/models/product_model.dart';
 
 import '_model.dart';
+import 'item_model.dart';
 
 class SubCategoryModel extends Model {
   final String name;
@@ -22,16 +24,26 @@ class SubCategoryModel extends Model {
         'image': image,
       };
 
-  Future<List<ProductModel>> fetchProduct(id) async {
-    var response = await http.get(
-        Uri.encodeFull(
-            "http://192.168.100.23:8000/api/subCategory/$id/products"),
-        headers: {"Accept": "application/json"});
+  Future<List<ItemModel>> fetchProduct(id) async {
+    var response;
+    if (LocalData.branchId != null) {
+      response = await http.get(
+          Uri.encodeFull(
+              "http://192.168.100.23:8000/api/subCategory/$id/product/available/" + LocalData.branchId.id.toString()),
+          headers: {"Accept": "application/json"});
+    } else {
+      print('inside fetch product');
+      response = await http.get(
+          Uri.encodeFull(
+              "http://192.168.100.23:8000/api/subCategory/$id/product/available/null"),
+          headers: {"Accept": "application/json"});
+    }
+    print(response);
     var data = jsonDecode(response.body) as List;
     return data.map((item) => parse(item)).toList();
   }
 
-  ProductModel parse(Map<String, dynamic> json) {
-    return ProductModel.fromJson(json);
+  ItemModel parse(Map<String, dynamic> json) {
+    return ItemModel.fromJson(json);
   }
 }

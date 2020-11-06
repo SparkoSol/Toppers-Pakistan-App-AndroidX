@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:topperspakistan/models/order-item_model.dart';
 import 'package:topperspakistan/models/order_model.dart';
-import 'package:topperspakistan/services/order-item_service.dart';
-import 'package:topperspakistan/services/order_service.dart';
+import 'package:topperspakistan/models/sale-order-item_model.dart';
+import 'package:topperspakistan/models/sale-order.dart';
+import 'package:http/http.dart' as http;
+import 'package:topperspakistan/services/sale-order_service.dart';
 
 class ReOrder extends StatefulWidget {
-  final OrderModel order;
-  final List<OrderItemModel> orderItems;
+  final SaleOrder order;
+  final List<SaleOrderItem> orderItems;
 
   ReOrder({this.order, this.orderItems});
 
@@ -17,31 +18,39 @@ class ReOrder extends StatefulWidget {
 class _ReOrderState extends State<ReOrder> {
   void reOrder() async {
 
-    final _service = OrderService();
-    final _serviceOrderItem = OrderItemService();
     print("Inside Reorder");
-    OrderModel newOrder = new OrderModel();
-    newOrder.customerId = widget.order.customerId;
-    newOrder.addressId = widget.order.addressId;
-    newOrder.totatlPrice = widget.order.totatlPrice;
-    newOrder.instruction = insController.text;
-    newOrder.branchId = widget.order.branchId;
-    newOrder.delivery = 1;
-    newOrder.status = "Pending";
-
-    print("After New Order Model");
-    print("New Order Customer Id=> " +newOrder.customerId);
-    OrderModel newStoredOrder = await _service.insert(newOrder);
-    print(newStoredOrder.toJson());
-    print("New Stored Order Id => " + newStoredOrder.id.toString());
-
-    for (var orderItem in widget.orderItems) {
-      print('Inside Order Items Loop');
-      orderItem.orderId = newStoredOrder.id.toString();
-      await _serviceOrderItem.insert(orderItem);
+    final _service = SaleOrderService();
+    List<MyItem> items = [];
+    for (SaleOrderItem item in widget.orderItems) {
+      MyItem newItem = new MyItem();
+      newItem.item = item;
+      items.add(newItem);
     }
 
+    var response = await http.get(
+        Uri.encodeFull('http://192.168.100.23:8000/api/saleOrder/getInvoice'),
+        headers: {"Accept": "application/json"});
+    SaleOrder sale = new SaleOrder();
+    sale.invoiceDate = DateTime.now().toString();
+    sale.invoiceId = response.body;
+    sale.customerId = widget.order.customerId;
+    sale.addressId = widget.order.addressId;
+    sale.branchId = widget.order.branchId;
+    sale.paymentType = 'Cash';
+    sale.amount = widget.order.amount;
+    sale.origin = "App Order";
+    sale.delivery = 1;
+    sale.instructions = insController.text;
+    sale.balanceDue = int.parse(widget.order.amount);
+    sale.items = items;
+
+    SaleOrder saleOrder = await _service.insert(sale);
+    print("insertion was successfully");
+    print(saleOrder.toJson());
+    print("After New Order Model");
     print("Reorder Completed");
+
+    _service.sendMail(saleOrder.id);
 
     for (var i = 0; i < 2; i++) {
       Navigator.pop(context);

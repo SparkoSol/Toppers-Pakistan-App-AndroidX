@@ -3,13 +3,16 @@ import 'package:topperspakistan/models/order-item_model.dart';
 import 'package:topperspakistan/models/order_model.dart';
 // import 'package:date_format/date_format.dart';
 import 'package:topperspakistan/models/product_model.dart';
+import 'package:topperspakistan/models/sale-order-item_model.dart';
+import 'package:topperspakistan/models/sale-order.dart';
 import 'package:topperspakistan/orderhistory.dart/reorder.dart';
 import 'package:topperspakistan/services/order-item_service.dart';
 import 'package:topperspakistan/services/product_service.dart';
+import 'package:topperspakistan/services/sale-order-item_service.dart';
 import 'package:topperspakistan/simple-future-builder.dart';
 
 class OrderStatus extends StatefulWidget {
-  final OrderModel orderModel;
+  final SaleOrder orderModel;
 
   OrderStatus({this.orderModel});
 
@@ -30,17 +33,18 @@ class _OrderStatusState extends State<OrderStatus>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Order Status",
+        title: Text(
+          "Order Status",
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
         actions: <Widget>[
-            new IconButton(
+          new IconButton(
             icon: new Image.asset('images/LogoTrans.png'),
             iconSize: 80.0,
             onPressed: null,
           ),
-          ],
+        ],
       ),
       body: Column(
         children: <Widget>[
@@ -89,7 +93,7 @@ class _OrderStatusState extends State<OrderStatus>
 }
 
 class Order1 extends StatefulWidget {
-  final OrderModel orderModel;
+  final SaleOrder orderModel;
 
   Order1({this.orderModel});
   @override
@@ -107,14 +111,20 @@ class _Order1State extends State<Order1> {
   int subTotal;
   int totalPrice;
 
-  List<OrderItemModel> orderItems;
+  List<SaleOrderItem> orderItems;
 
-  final _service = OrderItemService();
-  final _productService = ProductService();
+  final _service = SaleOrderItemService();
   @override
   Widget build(BuildContext context) {
-    totalPrice = widget.orderModel.totatlPrice;
-    subTotal = widget.orderModel.totatlPrice - deliveryCharges - taxCharges;
+    totalPrice = int.parse(widget.orderModel.amount);
+    if (widget.orderModel.delivery > 0) {
+      subTotal =
+          int.parse(widget.orderModel.amount) - deliveryCharges - taxCharges;
+    } else {
+      subTotal =
+          int.parse(widget.orderModel.amount) + widget.orderModel.discount;
+      deliveryCharges = 0;
+    }
     return CustomScrollView(
       slivers: <Widget>[
         SliverToBoxAdapter(
@@ -166,7 +176,9 @@ class _Order1State extends State<Order1> {
                 Expanded(
                   flex: 1,
                   child: Text(
-                    widget.orderModel.status,
+                    widget.orderModel.delivery > 0
+                        ? widget.orderModel.deliveryStatus
+                        : 'Completed',
                     style: TextStyle(
                         fontSize: 14,
                         color: Colors.black,
@@ -226,52 +238,53 @@ class _Order1State extends State<Order1> {
             ),
           ),
         ),
-        SimpleFutureBuilder<List<OrderItemModel>>.simplerSliver(
+        SimpleFutureBuilder<List<SaleOrderItem>>.simplerSliver(
           future: _service.fetchAllOrderItemsByOrder(widget.orderModel.id),
           context: context,
-          builder: (AsyncSnapshot<List<OrderItemModel>> snapshot) {
+          builder: (AsyncSnapshot<List<SaleOrderItem>> snapshot) {
             orderItems = snapshot.data;
             return SliverList(
               delegate: SliverChildBuilderDelegate((context, i) {
-                return SimpleFutureBuilder<ProductModel>.simpler(
-                    future: _productService
-                        .fetchAllProductsByItem(snapshot.data[i].id),
-                    context: context,
-                    builder: (AsyncSnapshot<ProductModel> snapshot1) {
-                      return Padding(
-                        padding: const EdgeInsets.fromLTRB(5, 10, 5, 5),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Expanded(
-                                flex: 5,
-                                child: Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(10, 10, 0, 5),
-                                    child: Text(snapshot1.data.name,
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold)))),
-                            Expanded(
-                                flex: 2,
-                                child:
-                                    Text(snapshot.data[i].quantity.toString())),
-                            Expanded(
-                                flex: 2,
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(0, 5, 5, 5),
-                                  child: Text(
-                                      "Rs. " +
-                                          (int.parse(snapshot1.data.unitPrice) *
-                                                  snapshot.data[i].quantity)
-                                              .toString(),
-                                      style: TextStyle(fontSize: 16)),
-                                )),
-                          ],
-                        ),
-                      );
-                    });
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(5, 10, 5, 5),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Expanded(
+                          flex: 5,
+                          child: Padding(
+                              padding: const EdgeInsets.fromLTRB(10, 10, 0, 5),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(snapshot.data[i].product.name,
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold)),
+                                  snapshot.data[i].variant != null ? Text(snapshot.data[i].variant.name,
+                                      style: TextStyle(
+                                        fontSize: 11,
+                                      )) : SizedBox(),
+                                ],
+                              ))),
+                      Expanded(
+                          flex: 2,
+                          child: Text(snapshot.data[i].qty.toString())),
+                      Expanded(
+                          flex: 2,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 5, 5, 5),
+                            child: Text(
+                                "Rs. " +
+                                    (int.parse(snapshot.data[i].price) *
+                                            int.parse(snapshot.data[i].qty))
+                                        .toString(),
+                                style: TextStyle(fontSize: 16)),
+                          )),
+                    ],
+                  ),
+                );
               }, childCount: snapshot.data.length),
             );
           },
@@ -286,7 +299,7 @@ class _Order1State extends State<Order1> {
         ),
         SliverToBoxAdapter(
           child: Padding(
-            padding: EdgeInsets.fromLTRB(80, 10, 8, 10),
+            padding: EdgeInsets.fromLTRB(80, 10, 40, 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -309,7 +322,7 @@ class _Order1State extends State<Order1> {
         ),
         SliverToBoxAdapter(
           child: Padding(
-            padding: EdgeInsets.fromLTRB(80, 10, 8, 10),
+            padding: EdgeInsets.fromLTRB(80, 10, 40, 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -332,7 +345,7 @@ class _Order1State extends State<Order1> {
         ),
         SliverToBoxAdapter(
           child: Padding(
-            padding: EdgeInsets.fromLTRB(80, 10, 8, 10),
+            padding: EdgeInsets.fromLTRB(80, 10, 40, 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -355,7 +368,30 @@ class _Order1State extends State<Order1> {
         ),
         SliverToBoxAdapter(
           child: Padding(
-            padding: EdgeInsets.fromLTRB(80, 10, 8, 10),
+            padding: EdgeInsets.fromLTRB(80, 10, 40, 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text("Discount",
+                    style:
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+                Text("Rs. " + widget.orderModel.discount.toString(),
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500))
+              ],
+            ),
+          ),
+        ),
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Divider(
+              color: Colors.black45,
+            ),
+          ),
+        ),
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(80, 10, 40, 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -376,38 +412,42 @@ class _Order1State extends State<Order1> {
             ),
           ),
         ),
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 22),
-            child: ButtonTheme(
-              minWidth: MediaQuery.of(context).size.width / 1.1,
-              height: MediaQuery.of(context).size.height / 22,
-              child: RaisedButton(
-                color: Color(0xffCE862A),
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ReOrder(
-                              order: widget.orderModel,
-                              orderItems: orderItems)));
-                },
-                child: Text("Re-Order",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w400)),
-              ),
-            ),
-          ),
-        )
+        widget.orderModel.delivery > 0
+            ? SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 22),
+                  child: ButtonTheme(
+                    minWidth: MediaQuery.of(context).size.width / 1.1,
+                    height: MediaQuery.of(context).size.height / 22,
+                    child: RaisedButton(
+                      color: Color(0xffCE862A),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ReOrder(
+                                    order: widget.orderModel,
+                                    orderItems: orderItems)));
+                      },
+                      child: Text("Re-Order",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400)),
+                    ),
+                  ),
+                ),
+              )
+            : SliverToBoxAdapter(
+                child: SizedBox(),
+              )
       ],
     );
   }
 }
 
 class Status extends StatefulWidget {
-  final OrderModel orderModel;
+  final SaleOrder orderModel;
 
   Status({this.orderModel});
   @override
@@ -443,7 +483,7 @@ class _StatusState extends State<Status> {
                 "Order Placed",
                 style: TextStyle(fontSize: 16),
               ),
-              widget.orderModel.status == "Placed"
+              widget.orderModel.deliveryStatus == "Placed"
                   ? Icon(Icons.check)
                   : Text(''),
               // }
@@ -465,7 +505,7 @@ class _StatusState extends State<Status> {
                 "Order Pending",
                 style: TextStyle(fontSize: 16),
               ),
-              widget.orderModel.status == "Pending"
+              widget.orderModel.deliveryStatus == "Pending"
                   ? Icon(Icons.check)
                   : Text(''),
             ],
@@ -486,7 +526,7 @@ class _StatusState extends State<Status> {
                 "Order Rejected",
                 style: TextStyle(fontSize: 16),
               ),
-              widget.orderModel.status == "Rejected"
+              widget.orderModel.deliveryStatus == "Rejected"
                   ? Icon(Icons.check)
                   : Text(''),
             ],
@@ -507,7 +547,7 @@ class _StatusState extends State<Status> {
                 "Order Delivered",
                 style: TextStyle(fontSize: 16),
               ),
-              widget.orderModel.status == "Complete"
+              widget.orderModel.deliveryStatus == "Complete"
                   ? Icon(Icons.check)
                   : Text(''),
             ],

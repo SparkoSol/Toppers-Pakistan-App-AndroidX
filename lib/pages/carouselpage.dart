@@ -1,24 +1,24 @@
   import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:topperspakistan/models/carosel_model.dart';
-import 'package:topperspakistan/services/carosel_service.dart';
+import 'package:topperspakistan/models/carousel_model.dart';
+import 'package:topperspakistan/services/carousel_service.dart';
 
 import '../simple-future-builder.dart';
 
-class Carosal extends StatefulWidget {
+class Carousel extends StatefulWidget {
   @override
-  _CarosalState createState() => _CarosalState();
+  _CarouselState createState() => _CarouselState();
 }
 
-class _CarosalState extends State<Carosal> {
-  final _caroselService = CaroselService();
+class _CarouselState extends State<Carousel> {
+  final _CarouselService = CarouselService();
 
   @override
   Widget build(BuildContext context) {
-    return SimpleFutureBuilder<List<CaroselModel>>.simpler(
-        future: _caroselService.fetchAll(),
+    return SimpleFutureBuilder<List<CarouselModel>>.simpler(
+        future: _CarouselService.fetchAll(),
         context: context,
-        builder: (AsyncSnapshot<List<CaroselModel>> snapshot) {
+        builder: (AsyncSnapshot<List<CarouselModel>> snapshot) {
           if (snapshot.data.isEmpty) {
             return Center(
               child: Text("No Images Found"),
@@ -28,7 +28,7 @@ class _CarosalState extends State<Carosal> {
               height: 200.0,
               initialPage: 0,
               enlargeCenterPage: true,
-              autoPlay: true,
+              autoPlay: false,
               reverse: false,
               enableInfiniteScroll: true,
               autoPlayInterval: Duration(seconds: 3),
@@ -38,7 +38,7 @@ class _CarosalState extends State<Carosal> {
               items: snapshot.data.map((imgUrl) {
                 return Builder(
                   builder: (BuildContext context) {
-                    print("https://toppers-pakistan.toppers-mart.com/images/carosel/" +
+                    print("http://192.168.100.23:8000/images/carousel/" +
                         imgUrl.image);
                     return Container(
                       decoration: BoxDecoration(
@@ -47,7 +47,7 @@ class _CarosalState extends State<Carosal> {
                       width: MediaQuery.of(context).size.width,
                       margin: EdgeInsets.symmetric(horizontal: 10.0),
                       child: Image.network(
-                        "https://toppers-pakistan.toppers-mart.com/images/carosel/" +
+                        "http://192.168.100.23:8000/images/carousel/" +
                             imgUrl.image,
                         fit: BoxFit.fill,
                       ),

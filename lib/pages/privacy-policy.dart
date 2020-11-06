@@ -48,7 +48,7 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
                     child: WebView(
                   key: _key,
                   javascriptMode: JavascriptMode.unrestricted,
-                  initialUrl: "http://toppers-pakistan.toppers-mart.com/privacy-policy",
+                  initialUrl: "http://192.168.100.23:8000/privacy-policy",
                   onPageFinished: _handleLoad,
                 )),
               ],
@@ -62,7 +62,7 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
           ],
         )
         //  WebView(
-        //   // initialUrl: "https://www.toppers-pakistan.toppers-mart.com",
+        //   // initialUrl: "https://www.192.168.100.23:8000",
         //   initialUrl: "https://www.facebook.com",
         //   // initialUrl: "https://www.firebasestorage.googleapis.com/v0/b/toppers-pakistan.appspot.com/o/privacy-policy%2Fprivacy_policy.html?alt=media&token=dc73770f-a604-46af-9576-1093add2d7db",
         //   onWebViewCreated: (WebViewController webViewController){

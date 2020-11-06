@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:topperspakistan/cart/dialog.dart';
 import 'package:topperspakistan/cart_list.dart';
 import 'package:topperspakistan/drawer/account/order_history.dart';
-import 'package:topperspakistan/models/branch_model.dart';
 import 'package:topperspakistan/models/local-data.dart';
-import 'package:topperspakistan/models/order_model.dart';
+import 'package:topperspakistan/models/sale-order-item_model.dart';
+import 'package:topperspakistan/models/sale-order.dart';
 import 'package:topperspakistan/pages/loading.dart';
-import 'package:topperspakistan/services/branch_service.dart';
-import 'package:topperspakistan/services/order-item_service.dart';
-import 'package:topperspakistan/services/order_service.dart';
-import 'package:topperspakistan/simple-future-builder.dart';
+import 'package:topperspakistan/services/sale-order_service.dart';
+import 'package:http/http.dart' as http;
 
 import '../round-drop-down-button.dart';
 
@@ -21,57 +19,58 @@ class PlaceOrder extends StatefulWidget {
 class _PlaceOrderState extends State<PlaceOrder> {
   int deliveryCharges = 50;
   int taxCharges = 0;
-  final _branchService = BranchService();
-
-  Future<List<BranchModel>> branchListFuture;
-  List<BranchModel> branchList;
-  BranchModel selectedBranch;
 
   @override
   void initState() {
     super.initState();
-    branchListFuture = _branchService.fetchAll();
-    branchListFuture.then((data) {
-      branchList = data;
-    });
   }
 
   void _storeOrder() async {
-    final _service = OrderService();
-    final _serviceOrderItem = OrderItemService();
-
-    int totalPrice = CartList.totalPrice + deliveryCharges + taxCharges;
-
-    OrderModel order = new OrderModel();
-    order.customerId = LocalData.currentCustomer.id.toString();
-    order.addressId = CartList.address.id.toString();
-    order.totatlPrice = totalPrice;
-    order.instruction = CartList.instruction;
-    order.branchId = selectedBranch.id.toString();
-    order.delivery = 1;
-
-    OrderModel newOrder = await _service.insert(order);
-    print(newOrder.toJson());
-    for (var orderItem in CartList.getItems()) {
-      orderItem.orderId = newOrder.id.toString();
-
-      await _serviceOrderItem.insert(orderItem);
+    final _service = SaleOrderService();
+    int totalPrice = 0;
+    List<MyItem> items = [];
+    for (SaleOrderItem item in CartList.getItems()) {
+      totalPrice += item.amount;
+      MyItem newItem = new MyItem();
+      newItem.item = item;
+      items.add(newItem);
     }
+    totalPrice = totalPrice + deliveryCharges + taxCharges;
 
-    _service.sendMail(newOrder, CartList.getItems());
+    var response = await http.get(
+        Uri.encodeFull('http://192.168.100.23:8000/api/saleOrder/getInvoice'),
+        headers: {"Accept": "application/json"});
+    SaleOrder sale = new SaleOrder();
+    sale.invoiceDate = DateTime.now().toString();
+    sale.invoiceId = response.body;
+    sale.customerId = LocalData.currentCustomer.id;
+    sale.addressId = CartList.address.id;
+    sale.branchId = LocalData.branchId.id;
+    sale.paymentType = 'Cash';
+    sale.amount = totalPrice.toString();
+    sale.origin = "App Order";
+    sale.delivery = 1;
+    sale.instructions = CartList.instruction;
+    sale.balanceDue = totalPrice;
+    sale.items = items;
+
+    SaleOrder saleOrder = await _service.insert(sale);
+    print("insertion was succesfuly");
+    print(saleOrder.toJson());
+    _service.sendMail(saleOrder.id);
 
     CartList.emptyCartList();
     CartList.address = null;
     CartList.instruction = null;
     CartList.totalPrice = null;
     Navigator.pop(context);
-    _placeorder('Success', 'Your Order is Placed.');
+    _placeOrder('Success', 'Your Order is Placed.');
   }
 
-  void _placeorder(String title, String content) {
+  void _placeOrder(String title, String content) {
     showDialog(
         context: context,
-        builder: (BuildContext contex) {
+        builder: (BuildContext context) {
           return AlertDialog(
             title: new Text(
               title,
@@ -104,6 +103,7 @@ class _PlaceOrderState extends State<PlaceOrder> {
                         MaterialPageRoute(
                             builder: (context) => OrderHistory()));
                   } else {
+                    Navigator.pop(context);
                     Navigator.pop(context);
                   }
                 },
@@ -161,10 +161,11 @@ class _PlaceOrderState extends State<PlaceOrder> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    "Your order will be delivered within 30 to 45 mins.",
+                    "Your order will be delivered within 30 to 45 minutes.",
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: 20,
+                        fontSize: 18,
                         fontWeight: FontWeight.w500),
                   ),
                 )),
@@ -215,25 +216,6 @@ class _PlaceOrderState extends State<PlaceOrder> {
             SizedBox(
               height: 10,
             ),
-            SimpleFutureBuilder<List<BranchModel>>.simpler(
-              context: context,
-              future: branchListFuture,
-              builder: (AsyncSnapshot<List<BranchModel>> snapshot) {
-                return RoundDropDownButton<BranchModel>(
-                  hint: Text('Restaurant Branch'),
-                  items: branchList.map((branch) {
-                    return DropdownMenuItem(
-                      child: Text(branch.name),
-                      value: branch,
-                    );
-                  }).toList(),
-                  value: selectedBranch,
-                  onChanged: (val) => setState(() {
-                    selectedBranch = val;
-                  }),
-                );
-              },
-            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: ButtonTheme(
@@ -242,13 +224,9 @@ class _PlaceOrderState extends State<PlaceOrder> {
                 child: RaisedButton(
                   color: Color(0xffCE862A),
                   onPressed: () {
-                    if (selectedBranch == null) {
-                      _placeorder('Error', 'Please Select Restaurant Branch.');
-                    } else {
-                      openLoadingDialog(context, "Placing Order");
-                      // _placeorder('Sucess', 'Your Order is Placed.');
-                      _storeOrder();
-                    }
+                    openLoadingDialog(context, "Placing Order");
+                    // _placeorder('Success', 'Your Order is Placed.');
+                    _storeOrder();
                   },
                   child: Text("Place Order",
                       style: TextStyle(

@@ -15,7 +15,6 @@ abstract class Service<T extends Model> {
         headers: {"Accept": "application/json"});
 
     var data = jsonDecode(response.body) as List;
-
     return data.map((item) => parse(item)).toList();
   }
 
@@ -40,22 +39,17 @@ abstract class Service<T extends Model> {
 
   Future<T> insert(T t) async {
     var jsonData = jsonEncode(t);
-    print(jsonData);
     var response = await http.post(Uri.encodeFull("$apiUrl/$route"),
         body: jsonData,
         headers: {
           "Content-Type": "application/json",
           "Accept": "application/json"
         });
-    try {
-      var data = jsonDecode(response.body);
-      print("ok");
-      return parse(data);
-    } catch (e) {
-      print("Error");
-      print(e);
-      return null;
-    }
+    print('ok');
+    print(response.body);
+
+    var data = jsonDecode(response.body);
+    return parse(data);
   }
 
   T parse(Map<String, dynamic> json);

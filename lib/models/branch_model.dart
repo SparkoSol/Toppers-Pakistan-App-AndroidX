@@ -23,6 +23,7 @@ class BranchModel extends Model {
 
   @override
   Map<String, dynamic> toJson() => {
+        'id': id,
         'restaurant_id': restaurantId,
         'name': name,
         'email': email,

@@ -41,9 +41,10 @@ class _AddressState extends State<Address> {
         : Scaffold(
             floatingActionButton: FloatingActionButton(
                 child: Icon(Icons.add),
-                onPressed: () {
-                  Navigator.push(context,
+                onPressed: () async {
+                  await Navigator.push(context,
                       MaterialPageRoute(builder: (context) => AddAddress()));
+                  setState(() {});
                 }),
             appBar: AppBar(
               title: Text(

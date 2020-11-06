@@ -7,5 +7,5 @@ class BranchService extends Service<BranchModel> {
     return BranchModel.fromJson(json);
   }
 
-  String get route => "restaurant-branch";
+  String get route => "branch";
 }

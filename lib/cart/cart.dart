@@ -22,10 +22,7 @@ class _CartState extends State<Cart> {
     int total = 0;
     if (CartList.getItems() != null) {
       for (var i = 0; i < CartList.getItems().length; i++) {
-        print("This=>" + CartList.getItems()[i].unitPrice.toString());
-        print("Me: " + CartList.getItems()[i].unitPrice.toString());
-        total += CartList.getItems()[i].quantity *
-            int.parse(CartList.getItems()[i].unitPrice);
+        total += CartList.getItems()[i].amount;
       }
     }
     return total;
@@ -100,8 +97,8 @@ class _CartState extends State<Cart> {
                 var items = CartList.getItems();
                 return Dismissible(
                   onDismissed: (direction) {
-                    Scaffold.of(context).showSnackBar(
-                        SnackBar(content: Text("${items[i].name} Dissmised")));
+                    Scaffold.of(context).showSnackBar(SnackBar(
+                    content: Text("${items[i].product.name} Dismissed")));
                     setState(() {
                       CartList.removeFromCart(i);
                       if (CartList.getItems().length == 0) {
@@ -130,17 +127,22 @@ class _CartState extends State<Cart> {
                             child: Padding(
                               padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
                               child: ListTile(
-                                subtitle: Text(
-                                  "(" +
-                                      items[i].weight +
-                                      " " +
-                                      items[i].unit +
-                                      " " +
-                                      items[i].unitPrice +
-                                      ")",
+                                subtitle: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    items[i].variant != null
+                                        ? Text(items[i].variant != null
+                                            ? items[i].variant.name
+                                            : '')
+                                        : SizedBox(),
+                                    Text(items[i].price != null
+                                        ? items[i].price
+                                        : '')
+                                  ],
                                 ),
                                 title: Text(
-                                  items[i].name,
+                                  items[i].product.name,
                                   style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold),
@@ -157,22 +159,32 @@ class _CartState extends State<Cart> {
                                     icon:
                                         Icon(Icons.remove, color: Colors.black),
                                     onPressed: () {
-                                      if (items[i].quantity > 0) {
+                                      if (int.parse(items[i].qty) > 1) {
                                         setState(() {
-                                          items[i].quantity--;
+                                          items[i].qty =
+                                              (int.parse(items[i].qty) - 1)
+                                                  .toString();
+                                          items[i].amount =
+                                              int.parse(items[i].qty) *
+                                                  int.parse(items[i].price);
                                         });
                                       }
                                     }),
                                 Padding(
                                   padding:
                                       const EdgeInsets.symmetric(horizontal: 2),
-                                  child: Text(items[i].quantity.toString()),
+                                  child: Text(items[i].qty),
                                 ),
                                 IconButton(
                                   icon: Icon(Icons.add, color: Colors.black),
                                   onPressed: () {
                                     setState(() {
-                                      items[i].quantity++;
+                                      items[i].qty =
+                                          (int.parse(items[i].qty) + 1)
+                                              .toString();
+                                      items[i].amount =
+                                          int.parse(items[i].qty) *
+                                              int.parse(items[i].price);
                                     });
                                   },
                                 )
@@ -182,10 +194,7 @@ class _CartState extends State<Cart> {
                           Expanded(
                             child: Padding(
                               padding: const EdgeInsets.fromLTRB(30, 5, 5, 5),
-                              child: Text(
-                                  (int.parse(items[i].unitPrice) *
-                                          items[i].quantity)
-                                      .toString(),
+                              child: Text(items[i].amount.toString(),
                                   style: TextStyle(fontSize: 16)),
                             ),
                           ),

@@ -1,11 +1,11 @@
 import '_model.dart';
 
-class CaroselModel extends Model {
+class CarouselModel extends Model {
   String image;
 
-  CaroselModel({int id, this.image}) : super(id: id);
+  CarouselModel({int id, this.image}) : super(id: id);
 
-  CaroselModel.fromJson(Map<String, dynamic> json)
+  CarouselModel.fromJson(Map<String, dynamic> json)
       : this(id: json['id'], image: json['image']);
 
   @override

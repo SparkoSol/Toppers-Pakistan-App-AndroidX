@@ -30,10 +30,10 @@ class Result extends StatelessWidget {
                 child: status
                     ? Text(
                         "An Email sent for Password Reset",
-                        style: TextStyle(fontSize: 18),
+                        style: TextStyle(fontSize: 18, color: Colors.white),
                       )
                     : Text("There was an Error recovering your email.",
-                        style: TextStyle(fontSize: 18))),
+                        style: TextStyle(fontSize: 18, color: Colors.white))),
             SizedBox(
               height: 30,
             ),
@@ -46,6 +46,7 @@ class Result extends StatelessWidget {
                   borderRadius: new BorderRadius.circular(28.0),
                 ),
                 onPressed: () {
+                  Navigator.pop(context);
                   Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) => Signin()));
                 },

@@ -20,7 +20,6 @@ class CategoryModel extends Model {
       };
 
   Future<List<SubCategoryModel>> fetchSubCategory(id) async {
-   print("http://192.168.100.23:8000/api/category/$id/subCategories");
     var response = await http.get(
         Uri.encodeFull(
             "http://192.168.100.23:8000/api/category/$id/subCategories"),

@@ -1,18 +1,20 @@
 import 'dart:convert';
 
 import 'package:topperspakistan/models/address_model.dart';
-import 'package:topperspakistan/models/order-item_model.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
+import 'package:topperspakistan/models/sale-order-item_model.dart';
 
 class CartList {
-  static List<OrderItemModel> _orderItems = [];
+  static List<SaleOrderItem> _orderItems = [];
   static AddressModel address;
   static String instruction;
   static int totalPrice;
 
-  static List<OrderItemModel> getItems() {
-    print(_orderItems);
+  static List<SaleOrderItem> getItems() {
+    for(SaleOrderItem item in _orderItems) {
+      print(item.toJson());
+    }
     return _orderItems;
   }
 
@@ -25,6 +27,7 @@ class CartList {
   }
 
   static void addToCart(orderItem) {
+    print(orderItem);
     _orderItems.add(orderItem);
     writeCartData();
   }
@@ -40,9 +43,8 @@ class CartList {
     try {
       final data = jsonDecode(await file.readAsString());
       _orderItems = data['cart']
-          .map<OrderItemModel>((item) => OrderItemModel.fromJson(item))
+          .map<SaleOrderItem>((item) => SaleOrderItem.fromJson(item))
           .toList();
-          print('no error reading data => ' + _orderItems[0].unitPrice.toString());
     } catch (e) {
       print("error reading data");
       await file.writeAsString('');

@@ -8,6 +8,7 @@ import 'package:topperspakistan/pages/loading.dart';
 import 'package:topperspakistan/services/customer_service.dart';
 
 import '../firebase_auth.dart';
+import 'branch_page.dart';
 
 class Signin extends StatefulWidget {
   final _service = CustomerService();
@@ -18,6 +19,7 @@ class Signin extends StatefulWidget {
 class _SigninState extends State<Signin> {
   bool autoValidate = false;
   bool loading = false;
+  var _isUnique = false;
 
   var _formKey = GlobalKey<FormState>();
 
@@ -48,8 +50,10 @@ class _SigninState extends State<Signin> {
         });
         print("Sign in id manual=> " + LocalData.getProfile().id.toString());
         print(LocalData.currentCustomer.name);
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => First()));
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => Branch()),
+            (route) => false);
       }
     }
   }
@@ -57,7 +61,7 @@ class _SigninState extends State<Signin> {
   void _showErrorDialog(title, message) {
     showDialog(
         context: context,
-        builder: (BuildContext contex) {
+        builder: (BuildContext context) {
           return AlertDialog(
             title: new Text(
               title,
@@ -91,7 +95,7 @@ class _SigninState extends State<Signin> {
   Widget build(BuildContext context) {
     if (!loading) {
       return Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: Color(0xffBE311A),
         body: Form(
           autovalidate: autoValidate,
           key: _formKey,
@@ -101,7 +105,7 @@ class _SigninState extends State<Signin> {
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(28),
-                  color: Color(0xff666666),
+                  color: Colors.white,
                 ),
                 child: TextFormField(
                   validator: (value) {
@@ -114,8 +118,9 @@ class _SigninState extends State<Signin> {
                     }
                   },
                   controller: emailController,
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.black),
                   decoration: new InputDecoration(
+                    errorStyle: TextStyle(color: Colors.black,),
                     focusedBorder: new OutlineInputBorder(
                       borderSide: BorderSide(
                         color: Color(0xff66666),
@@ -134,7 +139,7 @@ class _SigninState extends State<Signin> {
                     ),
                     prefixIcon: Icon(
                       Icons.person,
-                      color: Colors.white,
+                      color: Colors.black,
                     ),
                     border: InputBorder.none,
                     hintText: "Email",
@@ -145,7 +150,7 @@ class _SigninState extends State<Signin> {
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(28),
-                  color: Color(0xff666666),
+                  color: Colors.white,
                 ),
                 child: TextFormField(
                   obscureText: true,
@@ -153,8 +158,9 @@ class _SigninState extends State<Signin> {
                     return value.isEmpty ? "Please Enter password" : null;
                   },
                   controller: passwordController,
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.black),
                   decoration: new InputDecoration(
+                    errorStyle: TextStyle(color: Colors.black,),
                     focusedBorder: new OutlineInputBorder(
                       borderSide: BorderSide(
                         color: Color(0xff66666),
@@ -171,7 +177,7 @@ class _SigninState extends State<Signin> {
                     ),
                     prefixIcon: Icon(
                       Icons.lock,
-                      color: Colors.white,
+                      color: Colors.black,
                     ),
                     border: InputBorder.none,
                     hintText: "Password",
@@ -238,7 +244,7 @@ class _SigninState extends State<Signin> {
                           Container(
                             margin: EdgeInsets.all(10),
                             color: Colors.white,
-                            child:Image.asset(
+                            child: Image.asset(
                               'images/google1.png',
                               width: 25,
                             ),
@@ -257,8 +263,11 @@ class _SigninState extends State<Signin> {
                         ],
                       ),
                       onPressed: () async {
+                        print('inside google sign in');
                         FirebaseAuthentication.googleAuth((user) async {
+                          print('inside google auth');
                           if (user == null) {
+                            print('inside user == null');
                             await GoogleSignIn().disconnect();
                             await GoogleSignIn().signOut();
                             print("Issue while signing in with google");
@@ -277,50 +286,92 @@ class _SigninState extends State<Signin> {
                                       ],
                                     ));
                           } else {
+                            print('inside user found');
                             setState(() {
                               loading = true;
                             });
-                            CustomerModel customerModel = new CustomerModel();
-                            customerModel.name = user.displayName;
-                            customerModel.email = user.email;
-                            customerModel.password = "12345678";
+                            _isUnique =
+                                await widget._service.userExists(user.email);
 
-                            var prof =
-                                await widget._service.login(customerModel);
-                            if (prof != null) {
-                              print(prof.email);
-                              if (prof.email == null) {
-                                print("no sign in prof");
+                            if (_isUnique) {
+                              CustomerModel customerModel = new CustomerModel();
+                              customerModel.name = user.displayName;
+                              customerModel.email = user.email;
+                              customerModel.password = "12345678";
+
+                              var prof =
+                                  await widget._service.login(customerModel);
+
+                              if (prof != null) {
+                                print(prof.email);
+                                if (prof.email == null) {
+                                  print("no sign in prof");
+                                  setState(() {
+                                    loading = false;
+                                  });
+                                  await GoogleSignIn().disconnect();
+                                  await GoogleSignIn().signOut();
+                                  _showErrorDialog("Error", "Sign In Failed");
+                                } else {
+                                  print("sign in");
+                                  LocalData.setProfile(prof);
+                                  setState(() {
+                                    loading = false;
+                                  });
+                                  print("Google Sign in=> " +
+                                      LocalData.getProfile().id.toString());
+                                  print(LocalData.currentCustomer.name);
+                                  Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Branch()),
+                                      (route) => false);
+                                }
+                              } else {
+                                print("no sign in");
                                 setState(() {
                                   loading = false;
                                 });
                                 await GoogleSignIn().disconnect();
                                 await GoogleSignIn().signOut();
-                                _showErrorDialog(
-                                    "Error", "No Profile Found Please Sign Up");
-                              } else {
-                                print("sign in");
-                                LocalData.setProfile(prof);
-                                setState(() {
-                                  loading = false;
-                                });
-                                print("Google Sign in=> " +
-                                    LocalData.getProfile().id.toString());
-                                print(LocalData.currentCustomer.name);
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => First()));
                               }
                             } else {
-                              print("no sign in");
-                              setState(() {
-                                loading = false;
-                              });
-                              await GoogleSignIn().disconnect();
-                              await GoogleSignIn().signOut();
-                              _showErrorDialog(
-                                  "Error", "No Profile Found Please Sign Up");
+                              CustomerModel customerModel = new CustomerModel();
+                              customerModel.name = user.displayName;
+                              customerModel.email = user.email;
+                              customerModel.other = 1;
+                              customerModel.phone = user.phoneNumber;
+                              customerModel.password = "12345678";
+
+                              CustomerModel prof =
+                                  await widget._service.insert(customerModel);
+
+                              print(prof.toString());
+                              if (prof != null) {
+                                print(prof.email);
+                                if (prof.email == null) {
+                                  await GoogleSignIn().disconnect();
+                                  await GoogleSignIn().signOut();
+                                  print("no sign in prof");
+                                  setState(() {
+                                    loading = false;
+                                  });
+                                  _showErrorDialog('Error', 'Error Signing In');
+                                } else {
+                                  print("sign in");
+                                  LocalData.setProfile(prof);
+                                  setState(() {
+                                    loading = false;
+                                  });
+
+                                  print(LocalData.currentCustomer.name);
+                                  Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Branch()),
+                                      (route) => false);
+                                }
+                              }
                             }
                           }
                         });
@@ -343,7 +394,7 @@ class _SigninState extends State<Signin> {
                         children: <Widget>[
                           Container(
                             margin: EdgeInsets.all(10),
-                            child:Image.asset(
+                            child: Image.asset(
                               'images/facebook2.png',
                               width: 25,
                             ),
@@ -385,44 +436,87 @@ class _SigninState extends State<Signin> {
                             setState(() {
                               loading = true;
                             });
-                            print("User=>" + user.displayName.toString());
-                            CustomerModel customerModel = new CustomerModel();
-                            customerModel.name = user.displayName;
-                            customerModel.email = user.email;
-                            customerModel.password = "12345678";
-
-                            var prof =
-                                await widget._service.login(customerModel);
-                            if (prof != null) {
-                              print(prof.email);
-                              if (prof.email == null) {
-                                print("no sign in prof");
-                                setState(() {
-                                  loading = false;
-                                });
-                                _showErrorDialog(
-                                    "Error", "No profile found please sign up");
-                              } else {
-                                print("sign in");
-                                LocalData.setProfile(prof);
-                                setState(() {
-                                  loading = false;
-                                });
-                                print("Facebook Sign in=> " +
-                                    LocalData.getProfile().id.toString());
-                                print(LocalData.currentCustomer.name);
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => First()));
-                              }
-                            } else {
-                              print("no sign in");
+                            if (user.email == null) {
                               setState(() {
                                 loading = false;
                               });
-                              _showErrorDialog(
-                                  "Error", "No profile found please sign up");
+                              _showErrorDialog("Error", "No Email Found");
+                              return;
+                            }
+                            _isUnique =
+                                await widget._service.userExists(user.email);
+                            if (_isUnique) {
+                              CustomerModel customerModel = new CustomerModel();
+                              customerModel.name = user.displayName;
+                              customerModel.email = user.email;
+                              customerModel.password = "12345678";
+
+                              var prof =
+                                  await widget._service.login(customerModel);
+
+                              if (prof != null) {
+                                print(prof.email);
+                                if (prof.email == null) {
+                                  print("no sign in prof");
+                                  setState(() {
+                                    loading = false;
+                                  });
+                                  _showErrorDialog("Error", "Sign In Failed");
+                                } else {
+                                  print("sign in");
+                                  LocalData.setProfile(prof);
+                                  setState(() {
+                                    loading = false;
+                                  });
+                                  print("Google Sign in=> " +
+                                      LocalData.getProfile().id.toString());
+                                  print(LocalData.currentCustomer.name);
+                                  Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Branch()),
+                                      (route) => false);
+                                }
+                              } else {
+                                print("no sign in");
+                                setState(() {
+                                  loading = false;
+                                });
+                              }
+                            } else {
+                              CustomerModel customerModel = new CustomerModel();
+                              customerModel.name = user.displayName;
+                              customerModel.email = user.email;
+                              customerModel.other = 1;
+                              customerModel.phone = user.phoneNumber;
+                              customerModel.password = "12345678";
+
+                              CustomerModel prof =
+                                  await widget._service.insert(customerModel);
+
+                              print(prof.toString());
+                              if (prof != null) {
+                                print(prof.email);
+                                if (prof.email == null) {
+                                  print("no sign in prof");
+                                  setState(() {
+                                    loading = false;
+                                  });
+                                  _showErrorDialog('Error', 'Error Signing In');
+                                } else {
+                                  print("sign in");
+                                  LocalData.setProfile(prof);
+                                  setState(() {
+                                    loading = false;
+                                  });
+                                  print(LocalData.currentCustomer.name);
+                                  Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Branch()),
+                                      (route) => false);
+                                }
+                              }
                             }
                           }
                         });

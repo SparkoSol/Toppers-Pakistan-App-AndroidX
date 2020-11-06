@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:topperspakistan/models/item_model.dart';
 import 'package:topperspakistan/models/product_model.dart';
 import 'package:topperspakistan/models/subCategories_model.dart';
 import 'package:topperspakistan/pages/order_confirm.dart';
@@ -14,6 +15,13 @@ class Order extends StatefulWidget {
 }
 
 class _OrderState extends State<Order> {
+  getPrice(val,length,variants) {
+    if (val != null) {
+      return val.toString();
+    } else {
+      return variants[0].salePrice.toString() + ' - ' + variants[length - 1].salePrice.toString();
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,9 +39,10 @@ class _OrderState extends State<Order> {
           ],
       ),      // backgroundColor: Colors.black,
       backgroundColor: Colors.white,
-      body: FutureBuilder<List<ProductModel>>(
+      body: FutureBuilder<List<ItemModel>>(
           future: widget.subCategoryModel.fetchProduct(widget.subCategoryModel.id),
-          builder: (context, AsyncSnapshot<List<ProductModel>> snapshot) {
+          // ignore: missing_return
+          builder: (context, AsyncSnapshot<List<ItemModel>> snapshot) {
             if (snapshot.hasData) {
               switch (snapshot.connectionState) {
                 case ConnectionState.none:
@@ -60,7 +69,7 @@ class _OrderState extends State<Order> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => ConfirmOrder(
-                                  product: snapshot.data[i],
+                                  item: snapshot.data[i],
                                 ),
                               ),
                             );
@@ -80,11 +89,11 @@ class _OrderState extends State<Order> {
                                     height: 100,
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(50),
-                                      child: Image.network(
-                                        "https://toppers-pakistan.toppers-mart.com/images/products/" +
-                                            snapshot.data[i].image,
+                                      child: snapshot.data[i].images.length > 0 ? Image.network(
+                                        "http://192.168.100.23:8000/images/items/" +
+                                            snapshot.data[i].images[0].name,
                                         fit: BoxFit.cover,
-                                      ),
+                                      ) : Image.asset('images/LogoTrans.png',fit: BoxFit.cover,),
                                     ),
                                   ),
                                   SizedBox(
@@ -102,16 +111,15 @@ class _OrderState extends State<Order> {
                                             MainAxisAlignment.center,
                                         children: <Widget>[
                                           Text(
-                                            snapshot.data[i].name,
+                                            snapshot.data[i].item.name,
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 16,
                                                 color: Colors.black),
                                           ),
                                           Text(
-                                            "Price: " +
-                                                snapshot.data[i].unitPrice +
-                                                " Rs",
+                                            "Price: Rs. " +
+                                            getPrice(snapshot.data[i].item.salePrice, snapshot.data.length, snapshot.data[i].variants),
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 16,

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:topperspakistan/models/customer_model.dart';
 import 'package:topperspakistan/models/local-data.dart';
-import 'package:topperspakistan/pages/first.dart';
+import 'package:topperspakistan/pages/branch_page.dart';
 import 'package:topperspakistan/pages/loading.dart';
 import 'package:topperspakistan/pages/privacy-policy.dart';
 import 'package:topperspakistan/services/customer_service.dart';
@@ -32,7 +31,7 @@ class _SignUpState extends State<SignUp> {
   void _showErrorDialog() {
     showDialog(
         context: context,
-        builder: (BuildContext contex) {
+        builder: (BuildContext context) {
           return AlertDialog(
             title: new Text(
               "Error",
@@ -106,8 +105,10 @@ class _SignUpState extends State<SignUp> {
         });
 
         print(LocalData.currentCustomer.name);
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => First()));
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => Branch()),
+                (route) => false);
       }
     }
   }
@@ -116,7 +117,7 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     if (!loading) {
       return Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: Color(0xffBE311A),
         body: Form(
           autovalidate: autoValidate,
           key: _formKey,
@@ -126,16 +127,17 @@ class _SignUpState extends State<SignUp> {
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(28),
-                  color: Color(0xff666666),
+                  color: Colors.white,
                 ),
                 child: TextFormField(
                   validator: (value) {
                     return value.isEmpty ? "Please Enter name" : null;
                   },
                   controller: nameController,
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.black),
                   decoration: new InputDecoration(
                     // contentPadding: EdgeInsets.only(left: 20, top: 15),
+                    errorStyle: TextStyle(color: Colors.black,),
                     focusedBorder: new OutlineInputBorder(
                       borderSide: BorderSide(
                         color: Color(0xff66666),
@@ -152,7 +154,7 @@ class _SignUpState extends State<SignUp> {
                     ),
                     prefixIcon: Icon(
                       Icons.person,
-                      color: Colors.white,
+                      color: Colors.black,
                     ),
                     border: InputBorder.none,
                     hintText: "Name",
@@ -163,7 +165,7 @@ class _SignUpState extends State<SignUp> {
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(28),
-                  color: Color(0xff666666),
+                  color: Colors.white,
                 ),
                 child: TextFormField(
                   validator: (value) {
@@ -176,8 +178,9 @@ class _SignUpState extends State<SignUp> {
                     }
                   },
                   controller: emailController,
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.black),
                   decoration: new InputDecoration(
+                    errorStyle: TextStyle(color: Colors.black,),
                     focusedBorder: new OutlineInputBorder(
                       borderSide: BorderSide(
                         color: Color(0xff66666),
@@ -196,7 +199,7 @@ class _SignUpState extends State<SignUp> {
                     ),
                     prefixIcon: Icon(
                       Icons.mail,
-                      color: Colors.white,
+                      color: Colors.black,
                     ),
                     border: InputBorder.none,
                     hintText: "Email",
@@ -207,7 +210,7 @@ class _SignUpState extends State<SignUp> {
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(28),
-                  color: Color(0xff666666),
+                  color: Colors.white,
                 ),
                 child: TextFormField(
                   keyboardType: TextInputType.number,
@@ -215,8 +218,9 @@ class _SignUpState extends State<SignUp> {
                     return value.isEmpty ? "Please Enter phone" : null;
                   },
                   controller: phoneController,
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.black),
                   decoration: new InputDecoration(
+                    errorStyle: TextStyle(color: Colors.black,),
                     focusedBorder: new OutlineInputBorder(
                       borderSide: BorderSide(
                         color: Color(0xff66666),
@@ -235,7 +239,7 @@ class _SignUpState extends State<SignUp> {
                     ),
                     prefixIcon: Icon(
                       Icons.phone,
-                      color: Colors.white,
+                      color: Colors.black,
                     ),
                     border: InputBorder.none,
                     hintText: "Phone",
@@ -246,7 +250,7 @@ class _SignUpState extends State<SignUp> {
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(28),
-                  color: Color(0xff666666),
+                  color: Colors.white,
                 ),
                 child: TextFormField(
                   obscureText: true,
@@ -254,8 +258,9 @@ class _SignUpState extends State<SignUp> {
                     return value.isEmpty ? "Please Enter Password" : null;
                   },
                   controller: passwordController,
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.black),
                   decoration: new InputDecoration(
+                    errorStyle: TextStyle(color: Colors.black,),
                     focusedBorder: new OutlineInputBorder(
                       borderSide: BorderSide(
                         color: Color(0xff66666),
@@ -274,7 +279,7 @@ class _SignUpState extends State<SignUp> {
                     ),
                     prefixIcon: Icon(
                       Icons.lock,
-                      color: Colors.white,
+                      color: Colors.black,
                     ),
                     border: InputBorder.none,
                     hintText: "Password",
@@ -285,7 +290,7 @@ class _SignUpState extends State<SignUp> {
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(28),
-                  color: Color(0xff666666),
+                  color: Colors.white,
                 ),
                 child: TextFormField(
                   obscureText: true,
@@ -293,8 +298,9 @@ class _SignUpState extends State<SignUp> {
                     return value.isEmpty ? "Please Retype Password" : null;
                   },
                   controller: confirmPasswordController,
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.black),
                   decoration: new InputDecoration(
+                    errorStyle: TextStyle(color: Colors.black,),
                     focusedBorder: new OutlineInputBorder(
                       borderSide: BorderSide(
                         color: Color(0xff66666),
@@ -313,7 +319,7 @@ class _SignUpState extends State<SignUp> {
                     ),
                     prefixIcon: Icon(
                       Icons.lock,
-                      color: Colors.white,
+                      color: Colors.black,
                     ),
                     border: InputBorder.none,
                     hintText: "Confirm Password",
@@ -384,271 +390,6 @@ class _SignUpState extends State<SignUp> {
               SizedBox(
                 height: 20.0,
               ),
-              SizedBox(
-                child: ButtonTheme(
-                  minWidth: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height / 15,
-                  child: RaisedButton(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(28.0),
-                    ),
-                    color: Color(0xff4285F4),
-                    child: Row(
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.all(10),
-                          color: Colors.white,
-                          child: Image.asset(
-                            'images/google1.png',
-                            width: 25,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        Text(
-                          "Sign up with Google",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ],
-                    ),
-                    onPressed: () async {
-                      await FirebaseAuthentication.googleAuth(
-                        (user) async {
-                          if (user == null) {
-                            await GoogleSignIn().disconnect();
-                            await GoogleSignIn().signOut();
-                            showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                title: Text("Error"),
-                                content:
-                                    Text("Error Occurred while signing-up"),
-                                actions: <Widget>[
-                                  FlatButton(
-                                      child: Text("Ok"),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      })
-                                ],
-                              ),
-                            );
-                          } else {
-                            setState(() {
-                              loading = true;
-                            });
-                            print(user.email);
-                            _isUnique = await _service.userExists(user.email);
-                            print(" Username unique: $_isUnique");
-                            if (_isUnique) {
-                              await GoogleSignIn().disconnect();
-                              await GoogleSignIn().signOut();
-                              Navigator.of(context).pop();
-                              showDialog(
-                                context: context,
-                                builder: (context) => AlertDialog(
-                                  title: Text("User already exists!"),
-                                  content: Text("Please sign in!"),
-                                  actions: <Widget>[
-                                    FlatButton(
-                                        child: Text("Ok"),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        })
-                                  ],
-                                ),
-                              );
-                              setState(() {
-                                loading = false;
-                              });
-                            } else {
-                              CustomerModel customerModel = new CustomerModel();
-                              customerModel.name = user.displayName;
-                              customerModel.email = user.email;
-                              customerModel.other = 1;
-                              if (user.phoneNumber == null) {
-                                customerModel.phone = "00000000000";
-                              } else {
-                                customerModel.phone = user.phoneNumber;
-                              }
-                              customerModel.password = "12345678";
-
-                              CustomerModel prof =
-                                  await _service.insert(customerModel);
-
-                              print(prof.toString());
-                              if (prof != null) {
-                                print(prof.email);
-                                if (prof.email == null) {
-                                  await GoogleSignIn().disconnect();
-                                  await GoogleSignIn().signOut();
-                                  print("no sign in prof");
-                                  setState(() {
-                                    loading = false;
-                                  });
-                                  _showErrorDialog();
-                                } else {
-                                  print("sign in");
-                                  LocalData.setProfile(prof);
-                                  setState(() {
-                                    loading = false;
-                                  });
-
-                                  print(LocalData.currentCustomer.name);
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => First()));
-                                }
-                              } else {
-                                print("no sign in");
-                                setState(() {
-                                  loading = false;
-                                });
-                                await GoogleSignIn().disconnect();
-                                await GoogleSignIn().signOut();
-                                _showErrorDialog();
-                              }
-                            }
-                          }
-                        },
-                      );
-                    },
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
-              SizedBox(
-                child: ButtonTheme(
-                  minWidth: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height / 15,
-                  child: RaisedButton(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(28.0),
-                    ),
-                    color: Color(0xff3C5A99),
-                    child: Row(
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.all(10),
-                          child: Image.asset(
-                            'images/facebook2.png',
-                            width: 25,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        Text(
-                          "Sign up with Facebook",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ],
-                    ),
-                    onPressed: () async {
-                      await FirebaseAuthentication.facebookAuth((user) async {
-                        if (user == null) {
-                          showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title: Text("Error"),
-                              content: Text("Error Occurred while signing-up"),
-                              actions: <Widget>[
-                                FlatButton(
-                                    child: Text("Ok"),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    })
-                              ],
-                            ),
-                          );
-                        } else {
-                          setState(() {
-                            loading = true;
-                          });
-                          print(user.email);
-                          _isUnique = await _service.userExists(user.email);
-                          print(" Username unique: $_isUnique");
-                          if (_isUnique) {
-                            Navigator.of(context).pop();
-                            showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                title: Text("User already exists!"),
-                                content: Text("Please sign in!"),
-                                actions: <Widget>[
-                                  FlatButton(
-                                      child: Text("Ok"),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      })
-                                ],
-                              ),
-                            );
-                            setState(() {
-                              loading = false;
-                            });
-                          } else {
-                            CustomerModel customerModel = new CustomerModel();
-                            customerModel.name = user.displayName;
-                            customerModel.email = user.email;
-                            customerModel.other = 1;
-                            if (user.phoneNumber == null) {
-                              customerModel.phone = "00000000000";
-                            } else {
-                              customerModel.phone = user.phoneNumber;
-                            }
-                            customerModel.password = "12345678";
-
-                            CustomerModel prof =
-                                await _service.insert(customerModel);
-
-                            print(prof.toString());
-                            if (prof != null) {
-                              print(prof.email);
-                              if (prof.email == null) {
-                                print("no sign in prof");
-                                setState(() {
-                                  loading = false;
-                                });
-                                _showErrorDialog();
-                              } else {
-                                print("sign in");
-                                LocalData.setProfile(prof);
-                                setState(() {
-                                  loading = false;
-                                });
-
-                                print(LocalData.currentCustomer.name);
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => First()));
-                              }
-                            } else {
-                              print("no sign in");
-                              setState(() {
-                                loading = false;
-                              });
-                              _showErrorDialog();
-                            }
-                          }
-                        }
-                      });
-                    },
-                  ),
-                ),
-              )
             ],
           ),
         ),

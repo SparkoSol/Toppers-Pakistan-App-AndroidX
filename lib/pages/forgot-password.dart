@@ -13,12 +13,29 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   bool _validate = false;
 
   TextEditingController emailEditingController = new TextEditingController();
+  void _showLoadingDialog() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+                content: Row(
+                  children: [
+                    CircularProgressIndicator(),
+                    SizedBox(width: 20,),
+                    Text('Loading')
+                  ],
+            ),
+          );
+        });
+  }
 
   void forgetPass() async {
-    Loading();
+    _showLoadingDialog();
     var customerService = CustomerService();
     bool result =
         await customerService.forgetPassword(emailEditingController.text);
+    print(result);
+    Navigator.pop(context);
     if (result) {
       Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (context) => Result(status: true)));
@@ -31,17 +48,16 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Color(0xffBE311A),
       body: ListView(
         padding: EdgeInsets.fromLTRB(15, 220, 15, 0),
         children: <Widget>[
           Container(
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(28),
-                color: Color(0xff666666)),
+                borderRadius: BorderRadius.circular(28), color: Colors.white),
             child: TextField(
               controller: emailEditingController,
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Colors.black),
               decoration: new InputDecoration(
                   hoverColor: Colors.white,
                   errorText: _validate ? "Email is required" : null,
@@ -51,6 +67,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       const Radius.circular(28),
                     ),
                   ),
+                  errorStyle: TextStyle(
+                    color: Colors.black,
+                  ),
                   enabledBorder: new OutlineInputBorder(
                     borderSide: BorderSide(color: Color(0xff66666)),
                     borderRadius: const BorderRadius.all(
@@ -58,8 +77,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     ),
                   ),
                   prefixIcon: Icon(
-                    Icons.mobile_screen_share,
-                    color: Colors.white,
+                    Icons.mail,
+                    color: Colors.black,
                   ),
                   border: InputBorder.none,
                   hintText: "Email"),

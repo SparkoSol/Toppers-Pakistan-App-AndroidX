@@ -17,7 +17,7 @@ class CustomDrawer extends StatelessWidget {
   void _showErrorDialog(context) {
     showDialog(
         context: context,
-        builder: (BuildContext contex) {
+        builder: (BuildContext context) {
           return AlertDialog(
             title: new Text(
               "Warning!",
@@ -52,12 +52,14 @@ class CustomDrawer extends StatelessWidget {
     return Drawer(
       child: ListView(
         children: <Widget>[
-          SizedBox(
-            height: 30.0,
-          ),
           Container(
             child: Center(
-              child: Image.asset('images/LogoTrans.png'),
+              child: Column(
+                children: [
+                  Image.asset('images/LogoTrans.png', height: 100),
+                  Text(LocalData.branchId != null ? LocalData.branchId.name.toString() : '')
+                ],
+              ),
             ),
             height: MediaQuery.of(context).size.height / 5,
           ),
@@ -230,7 +232,7 @@ class CustomDrawer extends StatelessWidget {
               }
               print("object");
               LocalData.logout();
-              CartList.emptyCartList();
+              // CartList.emptyCartList();
               CartList.instruction = "";
               CartList.address = null;
               CartList.totalPrice = 0;
