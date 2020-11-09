@@ -15,11 +15,16 @@ class Order extends StatefulWidget {
 }
 
 class _OrderState extends State<Order> {
-  getPrice(val,length,variants) {
+  getPrice(val,length,List variants) {
     if (val != null) {
       return val.toString();
     } else {
-      return variants[0].salePrice.toString() + ' - ' + variants[length - 1].salePrice.toString();
+      print('Get Price');
+      var prices = variants.map((e) => e.salePrice);
+
+      final min = prices.skip(1).fold(prices.elementAt(0), (previousValue, element) => previousValue < element ? previousValue : element);
+      final max = prices.fold(-1, (previousValue, element) => previousValue > element ? previousValue : element);
+      return min.toString() + ' - ' + max.toString();
     }
   }
   @override

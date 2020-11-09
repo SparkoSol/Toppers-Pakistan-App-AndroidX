@@ -26,6 +26,7 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
   final _service = OptionService();
   var value = 1;
   bool match = false;
+  bool nomatch = false;
   Map<int, dynamic> _values = {};
   int _incrementCounter() {
     setState(() {
@@ -199,7 +200,10 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
           : SizedBox(),
       Divider(height: 2),
       SizedBox(height: 10),
-      match ? selection() : SizedBox()
+      match ? selection() : SizedBox(),
+      nomatch ? Center(
+        child: Text('Out of Stock!'),
+      ) : SizedBox()
     ]);
   }
 
@@ -443,13 +447,23 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
     }
     for (var itemVariant in widget.item.variants) {
       if (variant == itemVariant.name) {
+        nomatch = false;
         match = true;
         saleOrderItem = new SaleOrderItem();
         saleOrderItem.variant = itemVariant;
         saleOrderItem.variantId = itemVariant.id;
         print(saleOrderItem.toJson());
-        setState(() {});
+        break;
+      } else {
+        match = false;
+        nomatch = true;
+        saleOrderItem = null;
       }
+      // else {
+      //   match = false;
+      //   nomatch = true;
+      // }
+      setState(() {});
     }
   }
 }

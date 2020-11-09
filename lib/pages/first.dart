@@ -6,6 +6,7 @@ import 'package:topperspakistan/models/local-data.dart';
 import 'package:topperspakistan/pages/carouselpage.dart';
 import 'package:topperspakistan/pages/custom-drawer-guest.dart';
 import 'package:topperspakistan/pages/custom-drawer.dart';
+import 'package:topperspakistan/pages/notification-page.dart';
 import 'package:topperspakistan/pages/subCategories.dart';
 import 'package:topperspakistan/services/category_service.dart';
 import 'package:topperspakistan/models/category_model.dart';
@@ -15,12 +16,10 @@ import 'package:topperspakistan/drawer/notification.dart';
 import 'package:topperspakistan/utils/connectivityService.dart';
 import 'package:topperspakistan/utils/no-internet-widget.dart';
 
-
 import 'dart:async';
 
 import "package:cloud_firestore/cloud_firestore.dart";
 import 'package:firebase_messaging/firebase_messaging.dart';
-
 
 class First extends StatefulWidget {
   @override
@@ -41,16 +40,25 @@ class _FirstState extends State<First> {
 
     _fcm.subscribeToTopic("notifications");
     _fcm.configure(onMessage: (Map<String, dynamic> message) async {
-      final snackBar =
-          SnackBar(content: Text(message['notification']['title']));
+      final snackBar = SnackBar(
+        content: Text(message['notification']['title']),
+        action: SnackBarAction(
+          label: 'View',
+          onPressed: () async => {
+            await Navigator.push(context,
+                MaterialPageRoute(builder: (context) => NotificationPage())),
+            setState(() {})
+          },
+        ),
+      );
       print("On Message : $message");
-      Future.delayed(Duration(seconds: 1)).then((_) => _displaySnackbar(
+      Future.delayed(Duration(seconds: 3)).then((_) => _displaySnackbar(
           message['notification']['title'], message['notification']['body']));
       if (LocalData.currentCustomer != null) {
         Scaffold.of(context).showSnackBar(snackBar);
 
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => Notification2()));
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => NotificationPage()));
         setState(() {
           notification = true;
         });
@@ -87,15 +95,15 @@ class _FirstState extends State<First> {
       // );
     }, onLaunch: (Map<String, dynamic> message) async {
       print("onLaunch : $message");
-      if (LocalData.currentCustomer != null) {
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => Notification2()));
+      if (LocalData.getProfile() != null) {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => NotificationPage()));
       }
     }, onResume: (Map<String, dynamic> message) async {
       print("onResume : $message");
       if (LocalData.currentCustomer != null) {
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => Notification2()));
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => NotificationPage()));
       }
 
       //          showDialog(
@@ -220,11 +228,9 @@ class _FirstState extends State<First> {
                           _showErrorDialog(
                               "Warning!", "Please Sign In to View Cart!");
                         } else {
-                          await  Navigator.push(context,
+                          await Navigator.push(context,
                               MaterialPageRoute(builder: (context) => Cart()));
-                          setState(() {
-
-                          });
+                          setState(() {});
                         }
                       }
                     },
@@ -331,9 +337,7 @@ class _FirstState extends State<First> {
                                                               snapshot.data[i]),
                                                 ),
                                               );
-                                              setState(() {
-
-                                              });
+                                              setState(() {});
                                             },
                                             child: Column(
                                               children: <Widget>[
@@ -426,7 +430,17 @@ class _FirstState extends State<First> {
   }
 
   void _displaySnackbar(title, message) {
-    _scaffoldKey.currentState.showSnackBar(
-        SnackBar(duration: Duration(seconds: 2), content: Text(message)));
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
+      duration: Duration(seconds: 2),
+      content: Text(message),
+      action: SnackBarAction(
+        label: 'View',
+        onPressed: () async => {
+          await Navigator.push(context,
+              MaterialPageRoute(builder: (context) => NotificationPage())),
+          setState(() {})
+        },
+      ),
+    ));
   }
 }

@@ -4,10 +4,10 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:topperspakistan/cart/cart.dart';
 import 'package:topperspakistan/drawer/about_us.dart';
 import 'package:topperspakistan/drawer/account.dart';
-import 'package:topperspakistan/drawer/notification.dart';
 import 'package:topperspakistan/models/local-data.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:topperspakistan/pages/homepage.dart';
+import 'package:topperspakistan/pages/notification-page.dart';
 import 'package:topperspakistan/rate.dart';
 import 'privacy-policy.dart';
 
@@ -161,7 +161,7 @@ class CustomDrawer extends StatelessWidget {
             onTap: () {
               Navigator.pop(context);
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => Notification2()));
+                  MaterialPageRoute(builder: (context) => NotificationPage()));
             },
             leading: Icon(
               Icons.notifications,
