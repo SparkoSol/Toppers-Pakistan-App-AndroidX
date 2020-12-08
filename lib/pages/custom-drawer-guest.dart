@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:topperspakistan/drawer/about_us.dart';
 import 'package:topperspakistan/models/local-data.dart';
 import 'package:topperspakistan/pages/signin.dart';
 import 'package:topperspakistan/pages/signup.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'privacy-policy.dart';
 
 
@@ -79,6 +82,24 @@ class CustomDrawerGuest extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
+              Navigator.pop(context);
+              launchWhatsApp(phone: '+92 300 1300533', message: '');
+            },
+            leading: Icon(
+              Icons.phone,
+              color: Colors.black,
+            ),
+            title: Text(
+              "Contact Us",
+              style: TextStyle(color: Colors.black),
+            ),
+          ),
+          Divider(
+            color: Colors.black,
+            height: 0,
+          ),
+          ListTile(
+            onTap: () {
               LocalData.currentCustomer = null;
               Navigator.pop(context);
               Navigator.pushReplacement(
@@ -116,5 +137,25 @@ class CustomDrawerGuest extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+
+void launchWhatsApp(
+    {@required String phone,
+      @required String message,
+    }) async {
+  String url() {
+    if (Platform.isIOS) {
+      return "whatsapp://wa.me/$phone/?text=${Uri.parse(message)}";
+    } else {
+      return "whatsapp://send?phone=$phone&text=${Uri.parse(message)}";
+    }
+  }
+
+  if (await canLaunch(url())) {
+    await launch(url());
+  } else {
+    throw 'Could not launch ${url()}';
   }
 }

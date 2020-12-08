@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:topperspakistan/models/local-data.dart';
 
 abstract class Service<T extends Model> {
-  final apiUrl = "http://192.168.100.23:8000/api";
+  final apiUrl = "https://api.toppers-mart.com/api";
 
   String get route;
 
@@ -47,6 +47,7 @@ abstract class Service<T extends Model> {
         });
     print('ok');
     print(response.body);
+    print('ok1');
 
     var data = jsonDecode(response.body);
     return parse(data);

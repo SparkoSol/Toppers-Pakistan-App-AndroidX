@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
@@ -9,6 +11,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:topperspakistan/pages/homepage.dart';
 import 'package:topperspakistan/pages/notification-page.dart';
 import 'package:topperspakistan/rate.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'branch_page.dart';
 import 'privacy-policy.dart';
 
 import '../cart_list.dart';
@@ -57,7 +61,32 @@ class CustomDrawer extends StatelessWidget {
               child: Column(
                 children: [
                   Image.asset('images/LogoTrans.png', height: 100),
-                  Text(LocalData.branchId != null ? LocalData.branchId.name.toString() : '')
+                  GestureDetector(
+                      onTap: () => {
+                            Navigator.pop(context),
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Branch())),
+                          },
+                      child: Column(
+                        children: [
+                          Text(LocalData.branchId != null
+                              ? LocalData.branchId.name.toString()
+                              : '', textAlign: TextAlign.center,),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text('Swap Branch'),
+                              Icon(
+                                Icons.arrow_forward,
+                                size: 18,
+                              )
+                            ],
+                          )
+                        ],
+                      ))
                 ],
               ),
             ),
@@ -121,6 +150,25 @@ class CustomDrawer extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => Branch()));
+            },
+            leading: Icon(
+              Icons.store,
+              color: Colors.black,
+            ),
+            title: Text(
+              "Swap Branch",
+              style: TextStyle(color: Colors.black),
+            ),
+          ),
+          Divider(
+            color: Colors.black,
+            height: 0,
+          ),
+          ListTile(
+            onTap: () {
               Navigator.pop(context);
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => AboutUS()));
@@ -131,6 +179,24 @@ class CustomDrawer extends StatelessWidget {
             ),
             title: Text(
               "ABOUT US",
+              style: TextStyle(color: Colors.black),
+            ),
+          ),
+          Divider(
+            color: Colors.black,
+            height: 0,
+          ),
+          ListTile(
+            onTap: () {
+              Navigator.pop(context);
+              launchWhatsApp(phone: '+92 300 1300533', message: '');
+            },
+            leading: Icon(
+              Icons.phone,
+              color: Colors.black,
+            ),
+            title: Text(
+              "Contact Us",
               style: TextStyle(color: Colors.black),
             ),
           ),
@@ -256,5 +322,25 @@ class CustomDrawer extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+
+void launchWhatsApp(
+    {@required String phone,
+      @required String message,
+    }) async {
+  String url() {
+    if (Platform.isIOS) {
+      return "whatsapp://wa.me/$phone/?text=${Uri.parse(message)}";
+    } else {
+      return "whatsapp://send?phone=$phone&text=${Uri.parse(message)}";
+    }
+  }
+
+  if (await canLaunch(url())) {
+    await launch(url());
+  } else {
+    throw 'Could not launch ${url()}';
   }
 }

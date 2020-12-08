@@ -351,7 +351,7 @@ class _FirstState extends State<First> {
                                                         BorderRadius.circular(
                                                             100),
                                                     child: Image.network(
-                                                        "http://192.168.100.23:8000/images/category/" +
+                                                        "https://api.toppers-mart.com/images/category/" +
                                                             snapshot
                                                                 .data[i].image,
                                                         fit: BoxFit.cover,

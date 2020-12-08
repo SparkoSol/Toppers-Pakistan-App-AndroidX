@@ -17,7 +17,6 @@ class PlaceOrder extends StatefulWidget {
 }
 
 class _PlaceOrderState extends State<PlaceOrder> {
-  int deliveryCharges = 50;
   int taxCharges = 0;
 
   @override
@@ -35,10 +34,10 @@ class _PlaceOrderState extends State<PlaceOrder> {
       newItem.item = item;
       items.add(newItem);
     }
-    totalPrice = totalPrice + deliveryCharges + taxCharges;
+    totalPrice = totalPrice + LocalData.branchId.delivery + taxCharges;
 
     var response = await http.get(
-        Uri.encodeFull('http://192.168.100.23:8000/api/saleOrder/getInvoice'),
+        Uri.encodeFull('https://api.toppers-mart.com/api/saleOrder/getInvoice'),
         headers: {"Accept": "application/json"});
     SaleOrder sale = new SaleOrder();
     sale.invoiceDate = DateTime.now().toString();
@@ -53,6 +52,8 @@ class _PlaceOrderState extends State<PlaceOrder> {
     sale.instructions = CartList.instruction;
     sale.balanceDue = totalPrice;
     sale.items = items;
+    sale.deliveryFee = LocalData.branchId.delivery;
+    
 
     SaleOrder saleOrder = await _service.insert(sale);
     print("insertion was succesfuly");
@@ -195,7 +196,7 @@ class _PlaceOrderState extends State<PlaceOrder> {
                   ),
                   ListTile(
                     leading: Text("Delivery Charges"),
-                    trailing: Text("Rs." + (deliveryCharges).toString()),
+                    trailing: Text("Rs." + (LocalData.branchId.delivery).toString()),
                   ),
                   Divider(
                     color: Colors.black,
@@ -205,7 +206,7 @@ class _PlaceOrderState extends State<PlaceOrder> {
                     leading: Text("Total"),
                     trailing: Text(
                       "Rs. " +
-                          (CartList.totalPrice + deliveryCharges + taxCharges)
+                          (CartList.totalPrice + LocalData.branchId.delivery + taxCharges)
                               .toString(),
                       style: TextStyle(color: Colors.red),
                     ),

@@ -56,7 +56,9 @@ class _HomePageState extends State<HomePage> {
 
     return isInternetConnected
         ? LocalData.getProfile() != null
-            ? LocalData.branchId != null ? First() : Branch()
+            ? LocalData.branchId != null
+                ? First()
+                : Branch()
             : Scaffold(
                 backgroundColor: Color(0xffBE311A),
                 body: Center(

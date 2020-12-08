@@ -48,7 +48,7 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
                     child: WebView(
                   key: _key,
                   javascriptMode: JavascriptMode.unrestricted,
-                  initialUrl: "http://192.168.100.23:8000/privacy-policy",
+                  initialUrl: "https://api.toppers-mart.com/privacy-policy",
                   onPageFinished: _handleLoad,
                 )),
               ],

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:topperspakistan/cart_list.dart';
+import 'package:topperspakistan/pages/homepage.dart';
 import 'package:topperspakistan/pages/privacy-policy.dart';
 import 'package:topperspakistan/pages/splash.dart';
 import 'package:topperspakistan/rate.dart';
@@ -20,8 +21,8 @@ class MyHttpOverrides extends HttpOverrides{
 }
 
 void main() async {
-  HttpOverrides.global = new MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
+  HttpOverrides.global = new MyHttpOverrides();
   await LocalData.initPath();
   await CartList.readCartData();
   Rate.initState();
@@ -48,7 +49,7 @@ class MyApp extends StatelessWidget {
             Theme.of(context).textTheme,
           ),
         ),
-        home: Splash(),
+        home: HomePage(),
         // home: PrivacyPolicy(),
       ),
     );

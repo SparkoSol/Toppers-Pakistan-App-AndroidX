@@ -1,13 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:topperspakistan/models/order-item_model.dart';
-import 'package:topperspakistan/models/order_model.dart';
-// import 'package:date_format/date_format.dart';
-import 'package:topperspakistan/models/product_model.dart';
 import 'package:topperspakistan/models/sale-order-item_model.dart';
 import 'package:topperspakistan/models/sale-order.dart';
 import 'package:topperspakistan/orderhistory.dart/reorder.dart';
-import 'package:topperspakistan/services/order-item_service.dart';
-import 'package:topperspakistan/services/product_service.dart';
 import 'package:topperspakistan/services/sale-order-item_service.dart';
 import 'package:topperspakistan/simple-future-builder.dart';
 
@@ -106,7 +100,6 @@ class _Order1State extends State<Order1> {
   //       .toString();
   // }
 
-  int deliveryCharges = 50;
   int taxCharges = 0;
   int subTotal;
   int totalPrice;
@@ -119,11 +112,11 @@ class _Order1State extends State<Order1> {
     totalPrice = int.parse(widget.orderModel.amount);
     if (widget.orderModel.delivery > 0) {
       subTotal =
-          int.parse(widget.orderModel.amount) - deliveryCharges - taxCharges;
+          int.parse(widget.orderModel.amount) - widget.orderModel.deliveryFee - taxCharges;
     } else {
       subTotal =
           int.parse(widget.orderModel.amount) + widget.orderModel.discount;
-      deliveryCharges = 0;
+      widget.orderModel.deliveryFee = 0;
     }
     return CustomScrollView(
       slivers: <Widget>[
@@ -352,7 +345,7 @@ class _Order1State extends State<Order1> {
                 Text("Delivery Charges",
                     style:
                         TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-                Text("Rs. " + deliveryCharges.toString(),
+                Text("Rs. " + widget.orderModel.deliveryFee.toString(),
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500))
               ],
             ),

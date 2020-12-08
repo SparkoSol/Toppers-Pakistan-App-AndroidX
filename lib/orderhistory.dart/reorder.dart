@@ -28,7 +28,7 @@ class _ReOrderState extends State<ReOrder> {
     }
 
     var response = await http.get(
-        Uri.encodeFull('http://192.168.100.23:8000/api/saleOrder/getInvoice'),
+        Uri.encodeFull('https://api.toppers-mart.com/api/saleOrder/getInvoice'),
         headers: {"Accept": "application/json"});
     SaleOrder sale = new SaleOrder();
     sale.invoiceDate = DateTime.now().toString();

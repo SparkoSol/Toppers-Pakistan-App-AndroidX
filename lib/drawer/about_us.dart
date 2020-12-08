@@ -77,7 +77,7 @@ class _AboutUSState extends State<AboutUS> {
                     style: TextStyle(color: Colors.black45),
                   ),
                   Text(
-                    "(PKR 50.00)",
+                    "Calculated at Checkout",
                     style: TextStyle(color: Colors.black45),
                   )
                 ],

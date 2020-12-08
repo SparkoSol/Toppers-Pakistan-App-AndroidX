@@ -95,7 +95,7 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
                           width: MediaQuery.of(context).size.width,
                           margin: EdgeInsets.symmetric(horizontal: 10.0),
                           child: Image.network(
-                            "http://192.168.100.23:8000/images/items/" +
+                            "https://api.toppers-mart.com/images/items/" +
                                 imgUrl.name,
                             fit: BoxFit.fill,
                           ),
@@ -446,7 +446,7 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
         break;
     }
     for (var itemVariant in widget.item.variants) {
-      if (variant == itemVariant.name) {
+      if (variant.replaceAll(new RegExp(r"\s+"), "") == itemVariant.name.replaceAll(new RegExp(r"\s+"), "")) {
         nomatch = false;
         match = true;
         saleOrderItem = new SaleOrderItem();
@@ -455,14 +455,11 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
         print(saleOrderItem.toJson());
         break;
       } else {
+        print('no match');
         match = false;
         nomatch = true;
         saleOrderItem = null;
       }
-      // else {
-      //   match = false;
-      //   nomatch = true;
-      // }
       setState(() {});
     }
   }

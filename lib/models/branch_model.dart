@@ -8,8 +8,9 @@ class BranchModel extends Model {
   String address;
   String phone;
   String image;
+  int delivery;
 
-  BranchModel({int id,this.name,this.restaurantId,this.email,this.address,this.phone,this.image}) : super(id: id);
+  BranchModel({int id,this.name,this.restaurantId,this.email,this.address,this.phone,this.image,this.delivery}) : super(id: id);
 
   BranchModel.fromJson(Map<String, dynamic> json)
       : this(id: json['id'], 
@@ -19,6 +20,7 @@ class BranchModel extends Model {
       address: json['address'],
       phone: json['phone'],
       image: json['image'],
+      delivery: json['delivery']
       );
 
   @override
@@ -30,5 +32,6 @@ class BranchModel extends Model {
         'address': address,
         'phone': phone,
         'image': image,
+        'delivery': delivery
       };  
 }

@@ -22,7 +22,7 @@ class CategoryModel extends Model {
   Future<List<SubCategoryModel>> fetchSubCategory(id) async {
     var response = await http.get(
         Uri.encodeFull(
-            "http://192.168.100.23:8000/api/category/$id/subCategories"),
+            "https://api.toppers-mart.com/api/category/$id/subCategories"),
         headers: {"Accept": "application/json"});
     var data = jsonDecode(response.body) as List;
     return data.map((item) => parseSub(item)).toList();

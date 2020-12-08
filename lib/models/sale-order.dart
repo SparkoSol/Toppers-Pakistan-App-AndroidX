@@ -29,6 +29,7 @@ class SaleOrder extends Model {
   BranchModel branch;
   AddressModel address;
   List<MyItem> items;
+  int deliveryFee;
 
   SaleOrder(
       {this.id,
@@ -52,7 +53,8 @@ class SaleOrder extends Model {
         this.customer,
         this.branch,
         this.address,
-        this.items
+        this.items,
+        this.deliveryFee
       });
 
   SaleOrder.fromJson(Map<String, dynamic> json) {
@@ -69,6 +71,7 @@ class SaleOrder extends Model {
     origin = json['origin'];
     delivery = json['delivery'];
     discount =  int.tryParse(json['discount'].toString()) ?? 0;
+    deliveryFee =  int.tryParse(json['delivery_fee'].toString()) ?? 0;
     instructions = json['instructions'];
     balanceDue = int.tryParse(json['balance_due'].toString()) ?? 0;
     returnStatus = json['return_status'];
@@ -95,6 +98,7 @@ class SaleOrder extends Model {
     data['delivery_status'] = this.deliveryStatus;
     data['origin'] = this.origin;
     data['delivery'] = this.delivery;
+    data['delivery_fee'] = this.deliveryFee;
     data['discount'] = this.discount;
     data['instruction'] = this.instructions;
     data['balance'] = this.balanceDue;

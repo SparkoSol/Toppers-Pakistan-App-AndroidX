@@ -36,12 +36,14 @@ dependencies:
   google_fonts: ^0.3.9  
   connectivity:
   webview_flutter:
+  url_launcher: ^5.7.10
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   http:
   date_format: ^1.0.8
+  flutter_native_splash: ^0.1.9
   
 
 # For information on the generic Dart part of this file, see the

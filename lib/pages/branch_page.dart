@@ -90,7 +90,7 @@ class _BranchState extends State<Branch> {
                               borderRadius: BorderRadius.circular(50),
                               child: snapshot.data[i].image != null
                                   ? Image.network(
-                                      "http://192.168.100.23:8000/images/branch/" +
+                                      "https://api.toppers-mart.com/images/branch/" +
                                           snapshot.data[i].image,
                                       fit: BoxFit.cover,
                                     )
