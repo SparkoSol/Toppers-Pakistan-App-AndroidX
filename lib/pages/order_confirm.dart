@@ -68,7 +68,7 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
         centerTitle: true,
         actions: <Widget>[
           new IconButton(
-            icon: new Image.asset('images/LogoTrans.png'),
+            icon: new Image.asset('images/ApnaStore.png'),
             iconSize: 80.0,
             onPressed: null,
           ),
@@ -95,7 +95,7 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
                           width: MediaQuery.of(context).size.width,
                           margin: EdgeInsets.symmetric(horizontal: 10.0),
                           child: Image.network(
-                            "https://api.toppers-mart.com/images/items/" +
+                            "https://api.apnapos.pk/images/items/" +
                                 imgUrl.name,
                             fit: BoxFit.fill,
                           ),
@@ -104,7 +104,7 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
                     );
                   }).toList(),
                 )
-              : Image.asset('images/LogoTrans.png'),
+              : Image.asset('images/ApnaStore.png'),
           SizedBox(height: 10),
           Text(
             widget.item.item.name,

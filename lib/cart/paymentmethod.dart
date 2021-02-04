@@ -23,7 +23,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
         title: Text('Payment Method',style: TextStyle(color:Colors.white),),
         actions: <Widget>[
             new IconButton(
-            icon: new Image.asset('images/LogoTrans.png'),
+            icon: new Image.asset('images/ApnaStore.png'),
             iconSize: 80.0,
             onPressed: null,
           ),

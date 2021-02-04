@@ -30,7 +30,7 @@ class _AddressState extends State<Address> {
               centerTitle: true,
               actions: <Widget>[
                 new IconButton(
-                  icon: new Image.asset('images/LogoTrans.png'),
+                  icon: new Image.asset('images/ApnaStore.png'),
                   iconSize: 80.0,
                   onPressed: null,
                 ),
@@ -54,7 +54,7 @@ class _AddressState extends State<Address> {
               centerTitle: true,
               actions: <Widget>[
                 new IconButton(
-                  icon: new Image.asset('images/LogoTrans.png'),
+                  icon: new Image.asset('images/ApnaStore.png'),
                   iconSize: 80.0,
                   onPressed: null,
                 ),
@@ -78,16 +78,16 @@ class _AddressState extends State<Address> {
                             color: Colors.black,
                           ),
                           ListTile(
-                            title: Text(snapshot.data[i].description),
+                            title: Text(snapshot.data[i].description ?? 'Description'),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(snapshot.data[i].house +
-                                    ", " +
+                                    ", " ?? '' +
                                     snapshot.data[i].street +
-                                    ", " +
-                                    snapshot.data[i].area),
-                                Text("Phone:" + snapshot.data[i].mobile),
+                                    ", " ?? '' +
+                                    snapshot.data[i].area ?? ''),
+                                Text("Phone:" + snapshot.data[i].mobile ?? 'No Phone'),
                               ],
                             ),
                             trailing: IconButton(

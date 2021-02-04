@@ -19,7 +19,7 @@ class Result extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               child: ClipRRect(
                 child: Image.asset(
-                  "images/Logo.png",
+                  "images/ApnaStore.png",
                 ),
               ),
             ),

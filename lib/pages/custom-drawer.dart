@@ -60,7 +60,8 @@ class CustomDrawer extends StatelessWidget {
             child: Center(
               child: Column(
                 children: [
-                  Image.asset('images/LogoTrans.png', height: 100),
+                  SizedBox(height: 15,),
+                  Image.asset('images/ApnaStore.png', height: 65),
                   GestureDetector(
                       onTap: () => {
                             Navigator.pop(context),
@@ -117,7 +118,7 @@ class CustomDrawer extends StatelessWidget {
               color: Colors.black,
             ),
             title: Text(
-              "MENU",
+              "Menu",
               style: TextStyle(color: Colors.black),
             ),
           ),
@@ -140,7 +141,7 @@ class CustomDrawer extends StatelessWidget {
               color: Colors.black,
             ),
             title: Text(
-              "MY BASKET",
+              "My Basket",
               style: TextStyle(color: Colors.black),
             ),
           ),
@@ -178,7 +179,7 @@ class CustomDrawer extends StatelessWidget {
               color: Colors.black,
             ),
             title: Text(
-              "ABOUT US",
+              "About Us",
               style: TextStyle(color: Colors.black),
             ),
           ),
@@ -215,7 +216,7 @@ class CustomDrawer extends StatelessWidget {
               color: Colors.black,
             ),
             title: Text(
-              "MY ACCOUNT",
+              "My Account",
               style: TextStyle(color: Colors.black),
             ),
           ),
@@ -234,7 +235,7 @@ class CustomDrawer extends StatelessWidget {
               color: Colors.black,
             ),
             title: Text(
-              "NOTIFICATIONS",
+              "Notifications",
               style: TextStyle(color: Colors.black),
             ),
           ),
@@ -247,9 +248,9 @@ class CustomDrawer extends StatelessWidget {
               Navigator.pop(context);
               Rate.getRate()
                   .showRateDialog(context,
-                      title: "Rate Toppers Pakistan",
+                      title: "Rate Apna Store",
                       message:
-                          "If you like Toppers Pakistan, please take a little bit of your time to review it !\nIt really helps us and it shouldn\'t take you more than one minute.")
+                          "If you like Apna Store, please take a little bit of your time to review it !\nIt really helps us and it shouldn\'t take you more than one minute.")
                   .then((_) => {});
             },
             leading: Icon(
@@ -257,7 +258,7 @@ class CustomDrawer extends StatelessWidget {
               color: Colors.black,
             ),
             title: Text(
-              "RATE US",
+              "Rate Us",
               style: TextStyle(color: Colors.black),
             ),
           ),
@@ -311,7 +312,7 @@ class CustomDrawer extends StatelessWidget {
               color: Colors.black,
             ),
             title: Text(
-              "SIGN OUT",
+              "Sign Out",
               style: TextStyle(color: Colors.black),
             ),
           ),

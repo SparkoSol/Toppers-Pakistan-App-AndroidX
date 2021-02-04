@@ -17,7 +17,7 @@ class _AboutUSState extends State<AboutUS> {
         centerTitle: true,
         actions: <Widget>[
           new IconButton(
-            icon: new Image.asset('images/LogoTrans.png'),
+            icon: new Image.asset('images/ApnaStore.png'),
             iconSize: 80.0,
             onPressed: null,
           ),
@@ -43,7 +43,7 @@ class _AboutUSState extends State<AboutUS> {
                         size: 20,
                       ),
                       Text(
-                        " About Toppers Pakistan",
+                        " About Apna Store",
                         style: TextStyle(color: Colors.black45),
                       )
                     ],
@@ -52,7 +52,7 @@ class _AboutUSState extends State<AboutUS> {
                     height: 10,
                   ),
                   Text(
-                    "Here at Toppers Pakistan we use fresh , locally sourced produce to create healthy, convenient meals delivered direct to you",
+                    "User-Friendly Billing Software & App For All Businesses. \n We provide the best Point of sale for manage your complete business with Apna POS. \n It is the Best software for billing,inventory & Accounting. \n Most Simple,Modern,secure & easy to use Software. \n Setup in minutes,sell in seconds. \n Customers online orders accepted by our Mobile app ( Apna Store )",
                     style: TextStyle(color: Colors.black45),
                   )
                 ],

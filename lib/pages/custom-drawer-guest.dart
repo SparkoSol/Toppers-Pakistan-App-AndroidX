@@ -20,7 +20,7 @@ class CustomDrawerGuest extends StatelessWidget {
           ),
           Container(
             child: Center(
-              child: Image.asset('images/LogoTrans.png'),
+              child: Image.asset('images/ApnaStore.png'),
             ),
             height: MediaQuery.of(context).size.height / 5,
           ),
@@ -49,7 +49,7 @@ class CustomDrawerGuest extends StatelessWidget {
               color: Colors.black,
             ),
             title: Text(
-              "MENU",
+              "Menu",
               style: TextStyle(color: Colors.black),
             ),
           ),
@@ -72,7 +72,7 @@ class CustomDrawerGuest extends StatelessWidget {
               color: Colors.black,
             ),
             title: Text(
-              "ABOUT US",
+              "About Us",
               style: TextStyle(color: Colors.black),
             ),
           ),
@@ -110,7 +110,7 @@ class CustomDrawerGuest extends StatelessWidget {
               color: Colors.black,
             ),
             title: Text(
-              "SIGN IN",
+              "Sign In",
               style: TextStyle(color: Colors.black),
             ),
           ),
@@ -130,7 +130,7 @@ class CustomDrawerGuest extends StatelessWidget {
               color: Colors.black,
             ),
             title: Text(
-              "SIGN UP",
+              "Sign Up",
               style: TextStyle(color: Colors.black),
             ),
           ),

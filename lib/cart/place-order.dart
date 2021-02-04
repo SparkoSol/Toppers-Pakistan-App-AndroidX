@@ -37,7 +37,7 @@ class _PlaceOrderState extends State<PlaceOrder> {
     totalPrice = totalPrice + LocalData.branchId.delivery + taxCharges;
 
     var response = await http.get(
-        Uri.encodeFull('https://api.toppers-mart.com/api/saleOrder/getInvoice'),
+        Uri.encodeFull('https://api.apnapos.pk/api/saleOrder/getInvoice'),
         headers: {"Accept": "application/json"});
     SaleOrder sale = new SaleOrder();
     sale.invoiceDate = DateTime.now().toString();
@@ -125,7 +125,7 @@ class _PlaceOrderState extends State<PlaceOrder> {
           centerTitle: true,
           actions: <Widget>[
             new IconButton(
-              icon: new Image.asset('images/LogoTrans.png'),
+              icon: new Image.asset('images/ApnaStore.png'),
               iconSize: 80.0,
               onPressed: null,
             ),

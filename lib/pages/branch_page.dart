@@ -25,7 +25,7 @@ class _BranchState extends State<Branch> {
         centerTitle: true,
         actions: <Widget>[
           new IconButton(
-            icon: new Image.asset('images/LogoTrans.png'),
+            icon: new Image.asset('images/ApnaStore.png'),
             iconSize: 80.0,
             onPressed: null,
           ),
@@ -47,7 +47,9 @@ class _BranchState extends State<Branch> {
                       borderRadius: new BorderRadius.circular(28.0),
                     ),
                     color: Color(0xffCE862A),
-                    onPressed: () {},
+                    onPressed: () {
+                      setState(() {});
+                    },
                     child: Text(
                       "Refresh",
                       style: TextStyle(
@@ -90,12 +92,12 @@ class _BranchState extends State<Branch> {
                               borderRadius: BorderRadius.circular(50),
                               child: snapshot.data[i].image != null
                                   ? Image.network(
-                                      "https://api.toppers-mart.com/images/branch/" +
+                                      "https://api.apnapos.pk/images/branch/" +
                                           snapshot.data[i].image,
                                       fit: BoxFit.cover,
                                     )
                                   : Image.asset(
-                                      'images/LogoTrans.png',
+                                      'images/ApnaStore.png',
                                       fit: BoxFit.cover,
                                     ),
                             ),

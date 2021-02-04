@@ -72,7 +72,7 @@ class _SelectDeliveryAddressState extends State<SelectDeliveryAddress> {
         centerTitle: true,
         actions: <Widget>[
           new IconButton(
-            icon: new Image.asset('images/LogoTrans.png'),
+            icon: new Image.asset('images/ApnaStore.png'),
             iconSize: 80.0,
             onPressed: null,
           ),
@@ -97,7 +97,10 @@ class _SelectDeliveryAddressState extends State<SelectDeliveryAddress> {
                 }
               },
               child: Text("Select Payment Method",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400,color:Colors.white)),
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.white)),
             ),
           ),
         ),
@@ -105,9 +108,10 @@ class _SelectDeliveryAddressState extends State<SelectDeliveryAddress> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xffbc282b),
         child: Icon(Icons.add),
-        onPressed: () {
-          Navigator.push(
+        onPressed: () async {
+          await Navigator.push(
               context, MaterialPageRoute(builder: (context) => AddAddress()));
+          setState(() {});
         },
       ),
       body: Column(
@@ -141,7 +145,7 @@ class _SelectDeliveryAddressState extends State<SelectDeliveryAddress> {
           ),
           Expanded(
             child: SimpleFutureBuilder<List<AddressModel>>.simpler(
-              future: _service.fetchAllByCustomerId(),
+              future: AddressService().fetchAllByCustomerId(),
               context: context,
               builder: (AsyncSnapshot<List<AddressModel>> snapshot) {
                 return ListView.builder(
@@ -162,16 +166,18 @@ class _SelectDeliveryAddressState extends State<SelectDeliveryAddress> {
                               setSelectedRadio(val);
                             },
                           ),
-                          title: Text(snapshot.data[i].description),
+                          title: Text(snapshot.data[i].description != null
+                              ? snapshot.data[i].description
+                              : 'Description'),
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Text(snapshot.data[i].house +
-                                  ", " +
-                                  snapshot.data[i].street +
-                                  ", " +
-                                  snapshot.data[i].area),
-                              Text("Phone:" + snapshot.data[i].mobile),
+                              Text(snapshot.data[i].house + ", " ??
+                                  '' + snapshot.data[i].street + ", " ??
+                                  '' + snapshot.data[i].area ??
+                                  ''),
+                              Text("Phone:" + snapshot.data[i].mobile ??
+                                  'No Phone Provided'),
                             ],
                           ),
                           trailing: IconButton(

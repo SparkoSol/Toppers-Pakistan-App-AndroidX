@@ -19,7 +19,7 @@ class _AccountState extends State<Account> {
         centerTitle: true,
         actions: <Widget>[
             new IconButton(
-            icon: new Image.asset('images/LogoTrans.png'),
+            icon: new Image.asset('images/ApnaStore.png'),
             iconSize: 80.0,
             onPressed: null,
           ),

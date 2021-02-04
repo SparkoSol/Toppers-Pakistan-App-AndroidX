@@ -45,7 +45,7 @@ class _AddAddressState extends State<AddAddress> {
         ),
         actions: <Widget>[
           new IconButton(
-            icon: new Image.asset('images/LogoTrans.png'),
+            icon: new Image.asset('images/ApnaStore.png'),
             onPressed: null,
             iconSize: 80.0,
           ),
@@ -57,12 +57,9 @@ class _AddAddressState extends State<AddAddress> {
         child: ListView(
           children: <Widget>[
             TextFormField(
-              validator: (value) {
-                return value.isEmpty ? "Please Enter Description" : null;
-              },
               controller: descriptionController,
               decoration: new InputDecoration(
-                  contentPadding: EdgeInsets.all(15), hintText: "Description"),
+                  contentPadding: EdgeInsets.all(15), hintText: "Description (Optional)"),
             ),
             SizedBox(
               height: 10,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:topperspakistan/models/local-data.dart';
 import 'package:topperspakistan/models/order_model.dart';
 import 'package:topperspakistan/models/sale-order-item_model.dart';
 import 'package:topperspakistan/models/sale-order.dart';
@@ -28,7 +29,7 @@ class _ReOrderState extends State<ReOrder> {
     }
 
     var response = await http.get(
-        Uri.encodeFull('https://api.toppers-mart.com/api/saleOrder/getInvoice'),
+        Uri.encodeFull('https://api.apnapos.pk/api/saleOrder/getInvoice'),
         headers: {"Accept": "application/json"});
     SaleOrder sale = new SaleOrder();
     sale.invoiceDate = DateTime.now().toString();
@@ -43,6 +44,7 @@ class _ReOrderState extends State<ReOrder> {
     sale.instructions = insController.text;
     sale.balanceDue = int.parse(widget.order.amount);
     sale.items = items;
+    sale.deliveryFee = LocalData.branchId.delivery;
 
     SaleOrder saleOrder = await _service.insert(sale);
     print("insertion was successfully");
@@ -68,7 +70,7 @@ class _ReOrderState extends State<ReOrder> {
         ),
         actions: <Widget>[
             new IconButton(
-            icon: new Image.asset('images/LogoTrans.png'),
+            icon: new Image.asset('images/ApnaStore.png'),
             iconSize: 80.0,
             onPressed: null,
           ),

@@ -33,7 +33,7 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
           centerTitle: true,
           actions: <Widget>[
             new IconButton(
-              icon: new Image.asset('images/LogoTrans.png'),
+              icon: new Image.asset('images/ApnaStore.png'),
               iconSize: 80.0,
               onPressed: null,
             ),
@@ -48,7 +48,7 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
                     child: WebView(
                   key: _key,
                   javascriptMode: JavascriptMode.unrestricted,
-                  initialUrl: "https://api.toppers-mart.com/privacy-policy",
+                  initialUrl: "https://api.apnapos.pk/privacy-policy",
                   onPageFinished: _handleLoad,
                 )),
               ],

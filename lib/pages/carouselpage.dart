@@ -38,7 +38,7 @@ class _CarouselState extends State<Carousel> {
               items: snapshot.data.map((imgUrl) {
                 return Builder(
                   builder: (BuildContext context) {
-                    print("https://api.toppers-mart.com/images/carousel/" +
+                    print("https://api.apnapos.pk/images/carousel/" +
                         imgUrl.image);
                     return Container(
                       decoration: BoxDecoration(
@@ -47,7 +47,7 @@ class _CarouselState extends State<Carousel> {
                       width: MediaQuery.of(context).size.width,
                       margin: EdgeInsets.symmetric(horizontal: 10.0),
                       child: Image.network(
-                        "https://api.toppers-mart.com/images/carousel/" +
+                        "https://api.apnapos.pk/images/carousel/" +
                             imgUrl.image,
                         fit: BoxFit.fill,
                       ),

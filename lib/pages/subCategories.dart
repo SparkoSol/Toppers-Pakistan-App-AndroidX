@@ -28,7 +28,7 @@ class _SubCategoriesState extends State<SubCategories> {
         centerTitle: true,
         actions: <Widget>[
             new IconButton(
-            icon: new Image.asset('images/LogoTrans.png'),
+            icon: new Image.asset('images/ApnaStore.png'),
             iconSize: 80.0,
             onPressed: null,
           ),
@@ -73,7 +73,7 @@ class _SubCategoriesState extends State<SubCategories> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(50),
                                 child: Image.network(
-                                  "https://api.toppers-mart.com/images/subCategory/" +
+                                  "https://api.apnapos.pk/images/subCategory/" +
                                       snapshot.data[i].image,
                                   fit: BoxFit.cover,
                                 ),

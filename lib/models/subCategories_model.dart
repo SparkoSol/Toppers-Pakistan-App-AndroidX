@@ -29,13 +29,13 @@ class SubCategoryModel extends Model {
     if (LocalData.branchId != null) {
       response = await http.get(
           Uri.encodeFull(
-              "https://api.toppers-mart.com/api/subCategory/$id/product/available/" + LocalData.branchId.id.toString()),
+              "https://api.apnapos.pk/api/subCategory/$id/product/available/" + LocalData.branchId.id.toString()),
           headers: {"Accept": "application/json"});
     } else {
       print('inside fetch product');
       response = await http.get(
           Uri.encodeFull(
-              "https://api.toppers-mart.com/api/subCategory/$id/product/available/null"),
+              "https://api.apnapos.pk/api/subCategory/$id/product/available/null"),
           headers: {"Accept": "application/json"});
     }
     print(response);

@@ -22,7 +22,7 @@ class _SplashState extends State<Splash> {
       backgroundColor: Color(0xffBE311A),
       body: Center(
           child: Image.asset(
-        "images/Logo.png",
+        "images/ApnaStore.png",
         height: 250,
         width: 250,
       )),

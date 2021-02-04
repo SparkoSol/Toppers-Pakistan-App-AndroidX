@@ -71,7 +71,7 @@ class _HomePageState extends State<HomePage> {
                         width: MediaQuery.of(context).size.width,
                         child: ClipRRect(
                           child: Image.asset(
-                            "images/Logo.png",
+                            "images/ApnaStore.png",
                           ),
                         ),
                       ),
@@ -138,7 +138,7 @@ class _HomePageState extends State<HomePage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => First()));
+                                    builder: (context) => Branch()));
                           },
                           child: Text(
                             "Proceed As A Guest",
@@ -164,7 +164,7 @@ class _HomePageState extends State<HomePage> {
     //               actions: <Widget>[
     //                 new IconButton(
     //                   icon: new Image.asset(
-    //                     'images/LogoTrans.png',
+    //                     'images/ApnaStore.png',
     //                   ),
     //                   iconSize: 80,
     //                   onPressed: null,

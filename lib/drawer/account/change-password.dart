@@ -101,7 +101,7 @@ class _ChangePasswordState extends State<ChangePassword> {
               ),
               actions: <Widget>[
                 new IconButton(
-                  icon: new Image.asset('images/LogoTrans.png'),
+                  icon: new Image.asset('images/ApnaStore.png'),
                   iconSize: 80.0,
                   onPressed: null,
                 ),
@@ -118,7 +118,7 @@ class _ChangePasswordState extends State<ChangePassword> {
               ),
               actions: <Widget>[
                 new IconButton(
-                  icon: new Image.asset('images/LogoTrans.png'),
+                  icon: new Image.asset('images/ApnaStore.png'),
                   iconSize: 80.0,
                   onPressed: null,
                 ),

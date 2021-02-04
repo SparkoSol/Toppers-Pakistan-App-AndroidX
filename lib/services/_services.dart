@@ -6,11 +6,13 @@ import 'package:http/http.dart' as http;
 import 'package:topperspakistan/models/local-data.dart';
 
 abstract class Service<T extends Model> {
-  final apiUrl = "https://api.toppers-mart.com/api";
+  final apiUrl = "https://api.apnapos.pk/api";
 
   String get route;
 
   Future<List<T>> fetchAll() async {
+    print('branch');
+    print("$apiUrl/$route");
     var response = await http.get(Uri.encodeFull("$apiUrl/$route"),
         headers: {"Accept": "application/json"});
 

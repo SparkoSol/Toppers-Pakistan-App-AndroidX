@@ -62,17 +62,10 @@ flutter:
   #  - images/appstore.png
   #  - images/ToppersPakistanLogo.png
   - images/Logo.png
-  #  - images/LogoMain.png
-  #  - images/LogoWhite.png
   - images/LogoTrans.png
-  #  - images/LogoHD.png
-  #  - images/google.png
   - images/google1.png
-  #  - images/facebook.png
-  #  - images/facebook1.png
   - images/facebook2.png
-
-  #  - images/a_dot_ham.jpeg
+  - images/ApnaStore.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
